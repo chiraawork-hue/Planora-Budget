@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Planora Admin</title><meta name="theme-color" content="#087A5B">
+<meta name="application-name" content="Planora Admin">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Planora Admin">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icon.svg">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Inter,ui-rounded,"Segoe UI",sans-serif;background:#f7f8f6;color:#17332b}.wrap{max-width:1100px;margin:auto;padding:28px 18px}.brand{font-size:25px;font-weight:800;color:#087A5B}.muted{color:#6d7c77}.card{background:#fff;border:1px solid #e5ebe7;border-radius:22px;padding:22px;box-shadow:0 8px 30px #1232}.login{max-width:430px;margin:9vh auto}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{background:#fff;border:1px solid #e5ebe7;border-radius:18px;padding:16px}.stat b{font-size:24px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}input,select,button{font:inherit;border-radius:12px;padding:12px 14px;border:1px solid #d9e3de}input,select{background:#fff;min-width:180px}button{border:0;background:#087A5B;color:white;font-weight:700;cursor:pointer}button.secondary{background:#eef5f2;color:#087A5B}button.danger{background:#fff0f0;color:#b42318}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.table{overflow:auto}.item{display:grid;grid-template-columns:1.4fr 1.2fr .8fr .7fr 1.5fr;gap:10px;align-items:center;padding:14px 4px;border-bottom:1px solid #edf1ef}.code{font-family:ui-monospace,monospace;font-weight:800}.pill{display:inline-block;padding:6px 9px;border-radius:999px;background:#edf7f3;color:#087A5B;font-size:12px;font-weight:800}.pill.disabled{background:#fff0f0;color:#b42318}.hide{display:none}.msg{margin-top:12px;font-size:14px}.actions{display:flex;gap:6px;flex-wrap:wrap}.actions button{padding:8px 10px;font-size:12px}@media(max-width:760px){.grid{grid-template-columns:1fr 1fr}.item{grid-template-columns:1fr}.head{display:none}input,select{width:100%}}
@@ -28,4 +35,5 @@ window.toggleLicense=async(id,status)=>{const next=status==='disabled'?'active':
 window.resetDevices=async id=>{if(!confirm('Reset semua perangkat untuk kode ini?'))return;const {error}=await sb.from('planora_devices').delete().eq('license_id',id);if(error)alert(error.message);else load()}
 window.deleteOrder=async(id,name)=>{if(!confirm('Hapus pesanan '+name+'? Access code juga akan dihapus dan tidak bisa dipakai lagi.'))return;const {error}=await sb.from('planora_licenses').delete().eq('id',id);if(error)alert(error.message);else load()}
 init();
+if ('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script></body></html>
