@@ -2,8 +2,10 @@
 <html lang="id">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f5f5f1"><title>Planora Budget</title>
+<meta name="theme-color" content="#087A5B"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Planora"><title>Planora Budget</title>
 <link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
 <style>
 :root{--bg:#f5f5f1;--card:#fff;--ink:#121713;--muted:#7d837d;--line:#dfe2dc;--accent:#ef6548;--green:#748c68}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;font-size:14px}
@@ -541,10 +543,73 @@ body.camera-open{overflow:hidden}
 .location-loading span{width:12px;height:12px;border:2px solid #d7ddd8;border-top-color:#66756a;border-radius:50%;animation:locspin .7s linear infinite}
 @keyframes locspin{to{transform:rotate(360deg)}}
 .location-result.use-typed{background:#f5f7f4}
+
+/* V24 WHITE DIRECT */
+html,body,.app{background:#fff!important}
+.card,.money-card{background:#f7f8f6}
+.progress,.goalbar,.reportbar{background:#edf0ec}
+.progress i,.goalbar i,.reportbar i{background:#8fbe72}
+.goal-life-copy{font-size:11px;color:#687068;margin:-5px 0 14px}
+.goal-complete{margin-top:12px;padding:13px 14px;border:1px solid #dbe8d3;border-radius:16px;background:#f0f6ec}
+.goal-complete b{display:block;font-size:13px;margin-bottom:3px}
+.goal-complete .pill{margin-top:9px;background:#718168;color:#fff;border-color:#718168}
+
+/* EMERALD MICRO ACCENTS — targeted fix */
+.eyebrow{
+  color:#087A5B !important;
+}
+.moment-plus{
+  background:#087A5B !important;
+  border-color:#087A5B !important;
+  color:#ffffff !important;
+}
+/* small plus accents inside outlined action pills only */
+.section-head .pill:first-letter{
+  color:#087A5B;
+}
+
+
+/* PLANORA CH CONCEPT 2 — playful + premium */
+.planora-ch2{width:34px;height:34px;color:#087A5B;display:block}
+.brandmark{width:38px;height:38px;display:grid;place-items:center}
+#planoraSplash .planora-ch2{width:92px;height:92px;margin:auto;color:#087A5B}
+
+
+/* GOAL CELEBRATION — emerald + dismissible */
+
+.goal-complete{position:relative;padding-right:48px}
+.goal-complete-close{
+ position:absolute;top:10px;right:10px;width:32px;height:32px;border:0;border-radius:50%;
+ background:transparent;color:#687068;font-size:20px;line-height:32px;cursor:pointer
+}
+.goal-complete-close:hover{background:#e5eee9;color:#087A5B}
+.goal-complete .pill{background:#087A5B!important;border-color:#087A5B!important;color:#fff!important}
+
+
+/* FINAL PLANORA BUDGET PROGRESS LANGUAGE */
+.progress i,.reportbar i{background:#8fbe72}
+.progress i.planora-near,.reportbar i.planora-near{background:#8fbe72!important}
+
+
 </style>
 </head><body>
+<div id="planoraSplash" style="position:fixed;inset:0;z-index:9999;background:#fff;display:grid;place-items:center;transition:.35s">
+ <div style="text-align:center">
+  <svg class="planora-ch2" viewBox="0 0 64 64" aria-label="Planora">
+<path d="M42 12C24 6 10 17 10 32s13 25 30 20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+<path d="M29 18v29M29 33c7-7 15-9 21-4v18" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+<circle cx="51" cy="20" r="4.2" fill="#C9AE83"/>
+</svg>
+  <div style="font-weight:900;letter-spacing:.12em;margin-top:14px">PLANORA</div>
+  <div class="sub" style="margin-top:7px">money, moments & little things.</div>
+ </div>
+</div>
 <div class="app">
-<header><div class="brand-lockup"><svg class="brandmark" viewBox="0 0 64 64" aria-label="Planora CH"><path d="M45 13C25 7 10 18 10 33s13 25 29 20c8-2 13-8 15-14" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M26 18v31M26 34c8-10 19-12 25-5v20" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M43 11l3 5 5 3-5 3-3 5-3-5-5-3 5-3z" fill="#ef9b69"/></svg><div><div class="brand">PLANORA</div><div class="sub">money, moments & little things.</div></div></div><button class="iconbtn" onclick="page('settings')">⚙</button></header>
+<header><div class="brand-lockup"><svg class="planora-ch2" viewBox="0 0 64 64" aria-label="Planora">
+<path d="M42 12C24 6 10 17 10 32s13 25 30 20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+<path d="M29 18v29M29 33c7-7 15-9 21-4v18" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+<circle cx="51" cy="20" r="4.2" fill="#C9AE83"/>
+</svg><div><div class="brand">PLANORA</div><div class="sub">money, moments & little things.</div></div></div><button class="iconbtn" onclick="page('settings')">⚙</button></header>
 
 <main id="home" class="active">
 <div class="eyebrow">MONEY CHECK-IN</div><div class="money-period-head"><h1 class="title" id="moneyPeriodTitle">This month</h1><button class="period-filter-btn" onclick="togglePeriodPicker()">⌄</button></div><div class="period-picker hidden" id="periodPicker"><div class="period-mode"><button id="modeMonth" class="active" onclick="setPeriodMode('month')">Bulanan</button><button id="modeYear" onclick="setPeriodMode('year')">Tahunan</button></div><div class="period-controls"><button onclick="shiftPeriod(-1)">‹</button><b id="periodLabel"></b><button onclick="shiftPeriod(1)">›</button></div></div>
@@ -563,7 +628,7 @@ body.camera-open{overflow:hidden}
 <div class="section-head"><h2 data-i18n="recentTx">Transaksi terbaru</h2><button class="pill" onclick="page('transactions')">Lihat semua</button></div><div id="recent"></div>
 </main>
 
-<main id="moments"><div class="section-head" style="margin-top:0"><div><div class="eyebrow">LIFE LATELY</div><h1 class="title" style="margin-bottom:5px" data-i18n="moments">Moments</h1><div class="sub">Bukan cuma angka. Simpan hal-hal kecil yang membuat hidup terasa hidup.</div></div><button class="moment-plus" onclick="openMoment()" aria-label="Tambah Moment">＋</button></div><div id="momentsAll" style="margin-top:10px"></div></main>
+<main id="moments"><div class="section-head" style="margin-top:0"><div><div class="eyebrow">LIFE LATELY</div><h1 class="title" style="margin-bottom:5px" data-i18n="moments">Moments</h1><div class="sub">Uang boleh pergi. Momennya tetap tinggal.</div></div><button class="moment-plus" onclick="openMoment()" aria-label="Tambah Moment">＋</button></div><div id="momentsAll" style="margin-top:10px"></div></main>
 
 <main id="transactions"><div class="eyebrow">MONEY FLOW</div><h1 class="title" data-i18n="transactions">Transaksi</h1><div id="txList"></div></main>
 
@@ -572,7 +637,7 @@ body.camera-open{overflow:hidden}
 <div class="card"><label>Batas budget bulanan</label><input id="monthlyBudget" type="number" inputmode="numeric" placeholder="0"><button class="btn primary wide" style="margin-top:12px" onclick="saveMonthlyBudget()">Simpan budget</button></div>
 <div class="section-head"><div><h2>Budget per kategori</h2><div class="sub">Terpakai dihitung langsung dari riwayat transaksi bulan berjalan.</div></div><button class="pill" onclick="openCat()">+ Kategori</button></div>
 <div class="card summary"><div><small>Monthly Budget</small><b id="sumBudget">Rp0</b></div><div><small>Allocated</small><b id="sumAllocated">Rp0</b></div><div><small>Unallocated</small><b id="sumUnallocated">Rp0</b></div></div><div id="catList"></div>
-<div class="section-head"><h2 data-i18n="goals">Goals</h2><button class="pill" onclick="openGoal()">+ Goal</button></div><div id="goalList"></div>
+<div class="section-head"><h2 data-i18n="goals">Goals</h2><button class="pill" onclick="openGoal()">+ Goal</button></div><div class="goal-life-copy">Sedikit demi sedikit, untuk sesuatu yang kamu tunggu-tunggu.</div><div id="goalList"></div>
 <div class="section-head"><h2 data-i18n="bills">Tagihan</h2><button class="pill" onclick="openBill()">+ Tagihan</button></div><div id="billList"></div>
 </main>
 
@@ -725,11 +790,38 @@ function editTx(id){let t=data.transactions.find(x=>x.id===id);if(!t)return;txId
 function saveTx(){let amount=Number(txAmount.value),date=txDate.value;if(amount<=0||!date)return toastMsg('Isi nominal dan tanggal');let id=txId.value,obj={id:id||uid(),type:txType.value,amount,date,category:txCategory.value,note:txNote.value.trim()};if(id){let i=data.transactions.findIndex(x=>x.id===id);if(i>=0)data.transactions[i]=obj}else data.transactions.push(obj);persist();closeM('txModal');toastMsg('Transaksi tersimpan')}
 function deleteTx(){let id=txId.value;data.transactions=data.transactions.filter(x=>x.id!==id);data.moments.forEach(m=>{if(m.transactionId===id){m.transactionId='';m.amount=0}});persist();closeM('txModal');toastMsg('Transaksi dihapus')}
 function saveMonthlyBudget(){let n=Number(monthlyBudget.value);if(n<0)return;data.monthlyBudget=n;persist();toastMsg('Budget tersimpan')}
-function renderBudget(){let allocated=Object.values(data.categoryBudgets).reduce((s,n)=>s+Number(n),0);sumBudget.textContent=rp(data.monthlyBudget);sumAllocated.textContent=rp(allocated);let u=data.monthlyBudget-allocated;sumUnallocated.textContent=(u<0?'-':'')+rp(Math.abs(u));sumUnallocated.classList.toggle('over',u<0);let tx=monthTx().filter(t=>t.type==='expense');catList.innerHTML=Object.entries(data.categoryBudgets).map(([c,b])=>{let matches=tx.filter(t=>t.category.trim().toLowerCase()===c.trim().toLowerCase()),spent=matches.reduce((s,t)=>s+t.amount,0),pct=b?Math.round(spent/b*100):0,left=b-spent;return `<div class="card" onclick="openCat('${esc(c)}')"><div class="row"><b>${esc(c)}</b><b>${rp(spent)} / ${rp(b)}</b></div><div class="progress"><i style="width:${Math.min(100,pct)}%"></i></div><div class="row sub"><span>${matches.length} transaksi · ${pct}% terpakai</span><b class="${left<0?'over':''}">${left>=0?'Sisa '+rp(left):'Lewat '+rp(-left)}</b></div></div>`}).join('')||`<div class="card empty"><span class="sub">Belum ada alokasi kategori.</span></div>`}
+function renderBudget(){let allocated=Object.values(data.categoryBudgets).reduce((s,n)=>s+Number(n),0);sumBudget.textContent=rp(data.monthlyBudget);sumAllocated.textContent=rp(allocated);let u=data.monthlyBudget-allocated;sumUnallocated.textContent=(u<0?'-':'')+rp(Math.abs(u));sumUnallocated.classList.toggle('over',u<0);let tx=monthTx().filter(t=>t.type==='expense');catList.innerHTML=Object.entries(data.categoryBudgets).map(([c,b])=>{let matches=tx.filter(t=>t.category.trim().toLowerCase()===c.trim().toLowerCase()),spent=matches.reduce((s,t)=>s+t.amount,0),pct=b?Math.round(spent/b*100):0,left=b-spent;return `<div class="card" onclick="openCat('${esc(c)}')"><div class="row"><b>${esc(c)}</b><b>${rp(spent)} / ${rp(b)}</b></div><div class="progress"><i style="width:${Math.min(100,pct)}%;background:${pct>100?'#e65d5d':pct===100?'#087A5B':'#8fbe72'}"></i></div><div class="row sub"><span>${matches.length} transaksi · ${pct}% terpakai</span><b class="${left<0?'over':''}">${left>=0?'Sisa '+rp(left):'Lewat '+rp(-left)}</b></div></div>`}).join('')||`<div class="card empty"><span class="sub">Belum ada alokasi kategori.</span></div>`}
 function openCat(c=''){catOld.value=c;catName.innerHTML=expenseCats.map(x=>`<option ${x===c?'selected':''}>${x}</option>`).join('');catName.disabled=!!c;catAmount.value=c?data.categoryBudgets[c]:'';catDelete.classList.toggle('hidden',!c);openM('catModal')}
 function saveCat(){let c=catName.value,n=Number(catAmount.value);if(n<0)return;data.categoryBudgets[c]=n;persist();closeM('catModal');toastMsg('Budget kategori tersimpan')}
 function deleteCat(){delete data.categoryBudgets[catOld.value];persist();closeM('catModal')}
-function renderGoals(){goalList.innerHTML=data.goals.map(g=>{let pct=g.target?Math.round(g.current/g.target*100):0;return `<div class="card"><div class="row"><div><b>${esc(g.name)}</b><div class="sub">Tersimpan ${rp(g.current)} dari target ${rp(g.target)}</div></div><button class="pill" onclick="event.stopPropagation();openSaving('${g.id}')">+ Nabung</button></div><div class="goalbar"><i style="width:${Math.min(100,pct)}%"></i></div><div class="row" style="margin-top:9px"><span class="sub">${pct}%</span><button class="pill" onclick="openGoal('${g.id}')">Edit</button></div></div>`}).join('')||`<div class="card empty"><span class="sub">Belum ada goal.</span></div>`}
+
+const GOAL_CELEBRATION_KEY='planora_goal_celebration_dismissed';
+function dismissedGoalCelebrations(){
+ try{return JSON.parse(localStorage.getItem(GOAL_CELEBRATION_KEY)||'[]')}catch(e){return[]}
+}
+function dismissGoalCelebration(id){
+ const a=dismissedGoalCelebrations();
+ if(!a.includes(id))a.push(id);
+ localStorage.setItem(GOAL_CELEBRATION_KEY,JSON.stringify(a));
+ renderGoals();
+}
+
+function renderGoals(){
+ goalList.innerHTML=data.goals.map(g=>{
+  let pct=g.target?Math.round(g.current/g.target*100):0;
+  let hidden=dismissedGoalCelebrations().includes(g.id);
+  let done=(pct>=100&&!hidden)?`<div class="goal-complete"><button class="goal-complete-close" aria-label="Tutup" title="Tidak perlu tampilkan lagi" onclick="event.stopPropagation();dismissGoalCelebration('${g.id}')">×</button><b>You made it! ✨</b><span class="sub">Yang kamu tunggu akhirnya tercapai.</span><br><button class="pill" onclick="event.stopPropagation();goalToMoment('${g.id}')">Make it a Moment →</button></div>`:'';
+  return `<div class="card"><div class="row"><div><b>${esc(g.name)}</b><div class="sub">Tersimpan ${rp(g.current)} dari target ${rp(g.target)}</div></div><button class="pill" onclick="event.stopPropagation();openSaving('${g.id}')">+ Nabung</button></div><div class="goalbar"><i style="width:${Math.min(100,pct)}%;background:${pct>=100?'#087A5B':'#8fbe72'}"></i></div><div class="row" style="margin-top:9px"><span class="sub">${pct>=100?'100% · Goal reached ✨':pct+'%'}</span><button class="pill" onclick="openGoal('${g.id}')">Edit</button></div>${done}</div>`
+ }).join('')||`<div class="card empty"><span class="sub">Belum ada goal. Bisa untuk tas baru, liburan, konser, gadget, atau hal kecil yang kamu tunggu.</span></div>`
+}
+function goalToMoment(id){
+ let g=data.goals.find(x=>x.id===id); if(!g)return;
+ openMoment();
+ setTimeout(()=>{
+   if(typeof momentCaption!=='undefined'&&momentCaption) momentCaption.value=g.name;
+   if(typeof momentKind!=='undefined'&&momentKind) momentKind.value='Achievement';
+ },30)
+}
 function openGoal(id=''){let g=data.goals.find(x=>x.id===id);goalId.value=id;goalName.value=g?.name||'';goalTarget.value=g?.target||'';goalCurrent.value=g?.current||'';goalDelete.classList.toggle('hidden',!id);openM('goalModal')}
 function saveGoal(){let id=goalId.value,n=goalName.value.trim(),target=Number(goalTarget.value),current=Number(goalCurrent.value);if(!n||target<0||current<0)return;if(id){let g=data.goals.find(x=>x.id===id);Object.assign(g,{name:n,target,current})}else data.goals.push({id:uid(),name:n,target,current,history:[]});persist();closeM('goalModal')}
 function deleteGoal(){data.goals=data.goals.filter(x=>x.id!==goalId.value);persist();closeM('goalModal')}
@@ -1061,4 +1153,5 @@ document.addEventListener('keydown',e=>{
 });
 
 applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
+setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1100);
 </script></body></html>
