@@ -1,0 +1,1064 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f5f1"><title>Planora Budget</title>
+<link rel="manifest" href="./manifest.json">
+<style>
+:root{--bg:#f5f5f1;--card:#fff;--ink:#121713;--muted:#7d837d;--line:#dfe2dc;--accent:#ef6548;--green:#748c68}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;font-size:14px}
+button,input,select,textarea{font:inherit}.app{max-width:620px;margin:auto;min-height:100vh;padding:22px 18px 100px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.brand{font-weight:900;letter-spacing:-.03em}.iconbtn,.pill{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 12px;cursor:pointer}
+main{display:none}main.active{display:block}.eyebrow{color:var(--accent);font-size:11px;font-weight:900;letter-spacing:.1em}.title{font-size:22px;margin:3px 0 14px}
+.money-strip{display:grid;grid-template-columns:1.5fr .9fr;gap:10px;margin-bottom:24px}.money-card{border:1px solid var(--line);border-radius:22px;padding:18px;background:#fff}.money-card.dark{background:#171b17;color:#fff;border-color:#171b17}.money-card small{display:block;color:#9aa198;margin-bottom:8px}.money-card.dark small{color:#d0d4cf}.money-card b{font-size:21px}.money-card .note{font-size:11px;margin-top:7px;color:#879086}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:20px 0 10px}.section-head h2{font-size:17px;margin:0}.sub{font-size:11px;color:var(--muted);line-height:1.45}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:10px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.btn{border:1px solid var(--line);background:#fff;border-radius:13px;padding:11px 14px;font-weight:800;cursor:pointer}.btn.primary{background:#121a15;color:#fff;border-color:#121a15}.btn.danger{color:#b64d3a;border-color:#eccac3}.wide{width:100%}
+input,select,textarea{width:100%;border:1px solid var(--line);border-radius:14px;background:#fff;padding:12px;margin-top:6px;color:var(--ink)}label{display:block;font-size:11px;font-weight:800;margin-top:12px;color:#626862}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(620px,100%);display:grid;grid-template-columns:1fr 1fr 64px 1fr 1fr;background:rgba(250,250,247,.96);border-top:1px solid var(--line);padding:8px 12px calc(8px + env(safe-area-inset-bottom));z-index:20;backdrop-filter:blur(12px)}
+.nav button{border:0;background:transparent;font-size:10px;color:#687068;cursor:pointer}.nav .add{width:50px;height:50px;border-radius:50%;background:var(--accent);color:#fff;font-size:25px;margin:-18px auto 0;box-shadow:0 7px 18px #0002}
+.modal{position:fixed;inset:0;background:#18201955;display:none;align-items:flex-end;justify-content:center;z-index:50}.modal.open{display:flex}.sheet{width:min(620px,100%);max-height:88vh;overflow:auto;background:#fafaf7;border-radius:28px 28px 0 0;padding:22px}.sheet h3{margin:2px 0 10px;font-size:19px}
+.actions{display:flex;gap:8px;margin-top:16px}.actions>*{flex:1}
+.tx{cursor:pointer}.tx b{font-size:13px}.amount.expense{color:#c55442}.amount.income{color:#55754f}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.summary small{display:block;color:var(--muted);font-size:9px}.summary b{display:block;margin-top:5px;font-size:12px}
+.progress{height:7px;background:#eceee9;border-radius:99px;overflow:hidden;margin:10px 0 7px}.progress i{display:block;height:100%;background:var(--accent);border-radius:inherit}.over{color:var(--accent)}
+.carousel-wrap{position:relative;margin:0 -18px}.carousel{display:flex;gap:12px;overflow-x:hidden;padding:8px 13% 18px;scroll-snap-type:x mandatory}.moment{flex:0 0 78%;scroll-snap-align:center;opacity:.58;transform:scale(.92) translateY(7px);transition:.25s}.moment.active{opacity:1;transform:none}.moment img{width:100%;height:270px;object-fit:cover;border-radius:19px;display:block}.arrow{position:absolute;top:46%;z-index:3;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:23px;box-shadow:0 5px 16px #0002}.arrow.prev{left:7px}.arrow.next{right:7px}.arrow:disabled{opacity:.3}
+.dots{text-align:center;margin-top:-8px}.dot{display:inline-block;width:5px;height:5px;border-radius:9px;background:#c8cdc6;margin:0 3px}.dot.active{width:16px;background:var(--accent)}
+.empty{text-align:center;padding:25px 15px}.goalbar{height:8px;background:#eceee9;border-radius:9px;overflow:hidden;margin-top:10px}.goalbar i{height:100%;display:block;background:var(--green)}
+.reportbar{height:9px;background:#eceee9;border-radius:10px;overflow:hidden;margin-top:7px}.reportbar i{display:block;height:100%;background:var(--accent)}
+.toast{position:fixed;bottom:90px;left:50%;transform:translate(-50%,15px);background:#151a16;color:#fff;padding:10px 14px;border-radius:99px;opacity:0;pointer-events:none;transition:.2s;z-index:100;font-size:11px}.toast.show{opacity:1;transform:translate(-50%,0)}
+.hidden{display:none!important}
+@media(max-width:380px){.summary{grid-template-columns:1fr}.money-card b{font-size:18px}}
+
+/* V2 — Moments peek carousel */
+.carousel-wrap{overflow:hidden;position:relative;margin:0 -18px;padding:3px 0 2px}
+.carousel{display:flex;gap:13px;overflow-x:hidden;padding:10px 16% 20px;scroll-snap-type:x mandatory}
+.moment{flex:0 0 76%;scroll-snap-align:center;opacity:.42;transform:scale(.88) translateY(13px);filter:saturate(.78);transition:transform .28s ease,opacity .28s ease,filter .28s ease}
+.moment.active{opacity:1;transform:scale(1) translateY(0);filter:none;z-index:2}
+.moment img{height:285px;box-shadow:0 10px 28px #18201916}
+.arrow{top:42%;width:40px;height:40px;font-weight:800}
+.arrow.prev{left:9px}.arrow.next{right:9px}
+.moment-add-btn{white-space:nowrap}
+.add-sheet{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+.money-add-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+.money-add{border:1px solid var(--line);border-radius:19px;background:#fff;padding:16px 13px;text-align:left;display:flex;align-items:center;gap:11px;color:var(--ink);cursor:pointer}
+.money-add>span{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:21px;font-weight:800;background:#f1f2ed}
+.money-add b{display:block;font-size:13px}.money-add small{display:block;color:var(--muted);font-size:9px;margin-top:3px;line-height:1.3}
+.expense-add>span{color:var(--accent)}.income-add>span{color:#587552}
+@media(max-width:380px){.money-add-grid{grid-template-columns:1fr}.moment{flex-basis:80%}.carousel{padding-left:13%;padding-right:13%}}
+
+/* V3 lifestyle Moments — softer, photo-first, side peek */
+.moment-stage{position:relative;margin:0 -18px;overflow:hidden;padding:5px 0 3px}
+.moment-stage .carousel{display:flex;align-items:center;gap:14px;overflow:hidden;padding:12px 15% 22px}
+.moment-stage .moment{position:relative;flex:0 0 74%;opacity:.38;transform:scale(.86) translateY(14px) rotate(-1deg);transition:.32s cubic-bezier(.2,.8,.2,1);filter:saturate(.72)}
+.moment-stage .moment:nth-child(even){transform:scale(.86) translateY(14px) rotate(1deg)}
+.moment-stage .moment.active{opacity:1;transform:scale(1) translateY(0) rotate(0);filter:none;z-index:2}
+.moment-photo{position:relative}.moment-photo img,.moment-placeholder{width:100%;height:300px;border-radius:25px;object-fit:cover;display:block;box-shadow:0 14px 35px #1820191c}
+.moment-placeholder{display:grid;place-items:center;background:#ebece7;font-size:38px;color:#9ca29a}
+.moment-chip{position:absolute;left:12px;bottom:12px;background:#fffffff0;border:1px solid #ffffffaa;border-radius:999px;padding:7px 10px;font-size:9px;font-weight:850;backdrop-filter:blur(8px)}
+.moment-copy{padding:13px 6px 0}.moment-date{font-size:9px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:800}.moment-caption{font-size:15px;font-weight:800;line-height:1.3;margin-top:4px}.moment-meta{font-size:10px;color:var(--muted);margin-top:5px}.moment-meta b{color:var(--ink)}
+.moment-stage .arrow{top:39%;z-index:5;background:#fffffff2;box-shadow:0 6px 20px #0002;border:0}.moment-stage .arrow.prev{left:8px}.moment-stage .arrow.next{right:8px}
+.moment-empty{border:1px dashed #d5d9d2;border-radius:24px;padding:30px 20px;text-align:center;background:#fafaf7}.moment-empty-icon{font-size:28px;margin-bottom:7px;color:var(--accent)}
+#momentMoneyBox{margin-top:4px}
+
+/* V4 bottom nav icons */
+.nav .nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:9px;transition:.18s}
+.nav-icon{display:block;font-size:19px;line-height:20px;color:#7b827a}.nav-item.active{font-weight:800;color:var(--ink)}.nav-item.active .nav-icon{color:var(--accent)}
+.nav .add{display:grid;place-items:center}.nav .add span{font-size:27px;line-height:1}
+/* Camera / gallery Moment composer */
+.photo-source-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:7px}
+.photo-source{border:1px solid var(--line);background:#fff;border-radius:17px;padding:13px 10px;display:flex;align-items:center;gap:9px;text-align:left;color:var(--ink);cursor:pointer}
+.photo-source-icon{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#f0f1ec;font-size:18px;color:var(--accent)}
+.photo-source b{display:block;font-size:11px}.photo-source small{display:block;font-size:8px;color:var(--muted);margin-top:2px;line-height:1.3}
+.moment-photo-preview{display:flex;align-items:center;gap:10px;margin-top:10px;padding:9px;border:1px solid var(--line);border-radius:16px;background:#fff}
+.moment-photo-preview img{width:54px;height:54px;border-radius:12px;object-fit:cover}.moment-photo-preview b{font-size:10px;display:block;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-remove{border:0;background:transparent;color:var(--accent);padding:4px 0;font-size:9px;font-weight:800;cursor:pointer}
+@media(max-width:380px){.photo-source-grid{grid-template-columns:1fr}}
+
+/* V5 live camera */
+.camera-sheet{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+.camera-frame{position:relative;width:100%;aspect-ratio:3/4;background:#111;border-radius:23px;overflow:hidden;margin-top:12px}
+.camera-frame video,.camera-frame img{width:100%;height:100%;object-fit:cover;display:block}
+.camera-status{text-align:center;margin:10px 8px 4px}
+.camera-controls{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+.camera-shutter{width:62px;height:62px;border-radius:50%;border:3px solid #fff;background:var(--accent);box-shadow:0 0 0 2px var(--accent),0 7px 20px #0002;display:grid;place-items:center;cursor:pointer}
+.camera-shutter span{width:46px;height:46px;border:2px solid #fff;border-radius:50%}
+
+/* V6 — large immersive Moments */
+.moment-plus{
+ width:34px;height:34px;min-width:34px;border-radius:50%;border:1px solid var(--line);
+ background:#fff;color:var(--ink);display:grid;place-items:center;padding:0;
+ font-size:20px;line-height:1;cursor:pointer;box-shadow:none
+}
+.moment-plus:active{transform:scale(.94)}
+.moment-stage{margin:0 -18px;overflow:hidden;padding:6px 0 5px}
+.moment-stage .carousel{
+ display:flex;align-items:center;gap:13px;overflow:hidden;
+ padding:12px 8% 24px;
+}
+.moment-stage .moment{
+ flex:0 0 86%;
+ opacity:.32;
+ transform:scale(.84) translateY(18px);
+ filter:saturate(.7);
+ transition:.32s cubic-bezier(.2,.8,.2,1);
+}
+.moment-stage .moment:nth-child(even){transform:scale(.84) translateY(18px)}
+.moment-stage .moment.active{
+ opacity:1;transform:scale(1) translateY(0);filter:none;z-index:2
+}
+.moment-photo img,.moment-placeholder{
+ height:390px;border-radius:27px;
+}
+.moment-copy{padding:14px 8px 2px}
+.moment-caption{font-size:17px;line-height:1.28}
+.moment-stage .arrow{top:42%}
+@media(max-width:430px){
+ .moment-stage .carousel{padding-left:7%;padding-right:7%}
+ .moment-stage .moment{flex-basis:87%}
+ .moment-photo img,.moment-placeholder{height:430px}
+}
+@media(max-width:370px){
+ .moment-photo img,.moment-placeholder{height:370px}
+}
+
+/* V7 — synchronized money check-in */
+.safe-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:17px 18px;margin:-10px 0 24px}
+.safe-top{display:flex;justify-content:space-between;align-items:center}.safe-label{font-size:9px;font-weight:900;letter-spacing:.1em;color:var(--accent);margin-bottom:4px}.safe-top b{font-size:22px;letter-spacing:-.03em}.safe-leaf{font-size:25px;color:var(--green);transform:rotate(-18deg)}
+.safe-note{font-size:10px;color:var(--muted);margin-top:3px}.safe-progress{height:7px;background:#eceee9;border-radius:99px;overflow:hidden;margin:13px 0 7px}.safe-progress i{display:block;height:100%;width:0;background:var(--green);border-radius:inherit;transition:.25s}.safe-foot{display:flex;justify-content:space-between;font-size:9px;color:var(--muted)}
+
+/* V8 — camera always above Moment composer */
+#momentModal{z-index:60}
+#cameraModal{
+ z-index:120;
+ background:rgba(12,16,13,.78);
+ backdrop-filter:blur(7px);
+ -webkit-backdrop-filter:blur(7px);
+}
+#cameraModal .camera-sheet{
+ position:relative;
+ z-index:121;
+ box-shadow:0 -18px 55px rgba(0,0,0,.22);
+}
+body.camera-open{overflow:hidden}
+
+/* V9 brand */
+.brand-lockup{display:flex;align-items:center;gap:9px}.brandmark{width:35px;height:35px;color:#728268}.brand-lockup .brand{line-height:1}
+/* V9 smoother, tighter home carousel */
+#homeMoments .moment-stage .carousel{gap:4px;padding-left:6%;padding-right:6%;scroll-behavior:smooth}
+#homeMoments .moment-stage .moment{flex-basis:88%;transform:scale(.90) translateY(10px);transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .45s ease,filter .45s ease}
+#homeMoments .moment-stage .moment.active{transform:scale(1) translateY(0)}
+/* Moments tab = vertical journal feed; Home remains horizontal */
+#moments .moments-feed{display:flex;flex-direction:column;gap:28px;padding:4px 0 18px}
+#moments .moment-vertical{width:100%;opacity:1;transform:none;filter:none}
+#moments .moment-vertical .moment-photo img,#moments .moment-vertical .moment-placeholder{height:min(72vh,520px);width:100%;border-radius:27px}
+#moments .moment-vertical .moment-copy{padding:14px 8px 0}
+#moments .moment-vertical .moment-caption{font-size:18px}
+
+/* V10 — activity-feed Moments */
+#moments .moments-feed{gap:0;padding:2px 0 24px}
+#moments .moment-vertical{position:relative;width:100%;padding:0 0 26px;margin:0 0 26px;border-bottom:1px solid #d9ddd6}
+#moments .moment-vertical:last-child{border-bottom:0;margin-bottom:0}
+#moments .moment-vertical .moment-photo img,#moments .moment-vertical .moment-placeholder{height:min(70vh,520px);border-radius:22px;box-shadow:none}
+#moments .moment-vertical .moment-copy{padding:13px 3px 0}
+#moments .moment-vertical .moment-date{margin-bottom:5px}
+#moments .moment-vertical .moment-caption{font-size:18px;font-weight:850}
+#moments .moment-vertical .moment-meta{margin-top:7px}
+/* Home carousel */
+#homeMoments .moment-stage{overflow:hidden}
+#homeMoments .moment-stage .carousel{gap:2px;padding:12px 5.5% 24px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+#homeMoments .moment-stage .carousel::-webkit-scrollbar{display:none}
+#homeMoments .moment-stage .moment{flex:0 0 89%;scroll-snap-align:center;scroll-snap-stop:always;transform:scale(.94) translateY(6px);opacity:.42;transition:transform .58s cubic-bezier(.22,1,.36,1),opacity .5s ease,filter .5s ease;will-change:transform,opacity}
+#homeMoments .moment-stage .moment.active{transform:scale(1);opacity:1}
+
+/* V11 — minimal Moment composer */
+#momentModal .sheet{padding-top:20px}
+#momentModal label{margin-top:13px}
+.moment-quick-row{margin-top:13px}.mood-pills,.money-feeling{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;margin-top:6px}.mood-pills::-webkit-scrollbar,.money-feeling::-webkit-scrollbar{display:none}
+.mood{width:36px;height:36px;min-width:36px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:16px;cursor:pointer}.mood.active{background:#171b17;color:#fff;border-color:#171b17}
+.feeling{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 10px;font-size:9px;color:var(--muted);cursor:pointer}.feeling.active{border-color:#b8beb6;color:var(--ink);background:#f0f1ec}
+.details-toggle{border:0;background:transparent;padding:13px 0 3px;color:var(--accent);font-weight:800;font-size:10px;cursor:pointer}
+.moment-details{margin-top:4px}.two-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+/* cleaner feed metadata */
+.moment-meta-row{display:flex;justify-content:space-between;align-items:center;gap:8px}.favorite-btn{border:0;background:transparent;font-size:20px;color:#929991;padding:0 3px;cursor:pointer}.favorite-btn.active{color:var(--accent)}
+.little-note{font-size:11px;line-height:1.45;color:#646b64;margin-top:8px;padding-left:10px;border-left:2px solid #e2e5df}
+#moments .moment-vertical{padding-bottom:22px;margin-bottom:22px}
+
+/* V12 — smaller, quieter, more elegant Moments */
+
+/* Home: compact editorial carousel */
+#homeMoments .moment-stage{
+ margin:0 -10px;
+ padding:2px 0 2px;
+}
+#homeMoments .moment-stage .carousel{
+ gap:7px;
+ padding:8px 10% 17px;
+}
+#homeMoments .moment-stage .moment{
+ flex:0 0 78%;
+ transform:scale(.95) translateY(4px);
+ opacity:.38;
+}
+#homeMoments .moment-stage .moment.active{
+ transform:scale(1);
+ opacity:1;
+}
+#homeMoments .moment-photo img,
+#homeMoments .moment-placeholder{
+ height:285px;
+ border-radius:20px;
+ box-shadow:0 8px 22px rgba(24,32,25,.09);
+}
+#homeMoments .moment-chip{
+ left:10px;bottom:10px;
+ padding:6px 9px;
+ font-size:8px;
+}
+#homeMoments .moment-copy{
+ padding:10px 5px 0;
+}
+#homeMoments .moment-date{
+ font-size:8px;
+}
+#homeMoments .moment-caption{
+ font-size:14px;
+ font-weight:750;
+ line-height:1.32;
+ margin-top:3px;
+}
+#homeMoments .moment-meta,
+#homeMoments .moment-meta-row{
+ font-size:9px;
+ margin-top:4px;
+}
+#homeMoments .favorite-btn{
+ font-size:17px;
+}
+#homeMoments .little-note{
+ display:none;
+}
+#homeMoments .moment-stage .arrow{
+ width:34px;height:34px;
+ font-size:20px;
+ background:rgba(255,255,255,.94);
+}
+#homeMoments .moment-stage .arrow.prev{left:3px}
+#homeMoments .moment-stage .arrow.next{right:3px}
+
+/* Moments page: restrained vertical journal */
+#moments .moments-feed{
+ max-width:500px;
+ margin:0 auto;
+}
+#moments .moment-vertical{
+ padding-bottom:20px;
+ margin-bottom:20px;
+ border-bottom-color:#e1e4de;
+}
+#moments .moment-vertical .moment-photo img,
+#moments .moment-vertical .moment-placeholder{
+ height:min(54vh,410px);
+ border-radius:20px;
+}
+#moments .moment-vertical .moment-chip{
+ left:10px;bottom:10px;
+ padding:6px 9px;
+ font-size:8px;
+}
+#moments .moment-vertical .moment-copy{
+ padding:11px 4px 0;
+}
+#moments .moment-vertical .moment-date{
+ font-size:8px;
+ letter-spacing:.08em;
+ margin-bottom:4px;
+}
+#moments .moment-vertical .moment-caption{
+ font-size:15px;
+ font-weight:760;
+ line-height:1.35;
+}
+#moments .moment-vertical .moment-meta{
+ font-size:9px;
+}
+#moments .moment-vertical .favorite-btn{
+ font-size:18px;
+}
+#moments .moment-vertical .little-note{
+ font-size:10px;
+ margin-top:7px;
+}
+
+/* quieter section header */
+#moments .section-head{
+ margin-bottom:13px;
+}
+#moments .title{
+ font-size:21px!important;
+}
+#moments .moment-plus,
+#home .moment-plus{
+ width:31px;height:31px;min-width:31px;
+ font-size:18px;
+}
+
+/* Phones */
+@media(max-width:430px){
+ #homeMoments .moment-stage .moment{flex-basis:80%}
+ #homeMoments .moment-photo img,
+ #homeMoments .moment-placeholder{height:300px}
+ #moments .moment-vertical .moment-photo img,
+ #moments .moment-vertical .moment-placeholder{height:390px}
+}
+@media(max-width:370px){
+ #homeMoments .moment-photo img,
+ #homeMoments .moment-placeholder{height:265px}
+ #moments .moment-vertical .moment-photo img,
+ #moments .moment-vertical .moment-placeholder{height:340px}
+}
+
+/* V13 — Life Timeline */
+.timeline-controls{display:flex;align-items:center;gap:12px;margin:18px 0 13px}
+.year-pill{border:1px solid #dfe2dc;background:#fff;border-radius:999px;padding:8px 11px;font-size:10px;font-weight:850;color:var(--ink);cursor:pointer}
+.month-strip{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1;padding:2px 1px}.month-strip::-webkit-scrollbar{display:none}
+.month-pill{border:0;background:transparent;border-radius:999px;padding:8px 10px;font-size:9px;color:var(--muted);cursor:pointer;white-space:nowrap}
+.month-pill.active{background:#1b201b;color:white}
+.month-summary{display:flex;justify-content:space-between;align-items:center;padding:13px 15px;border:1px solid #e3e5e0;border-radius:16px;background:#f6f6f2;margin-bottom:20px}
+.month-summary-label{font-size:9px;font-weight:900;letter-spacing:.12em}.month-summary-copy{font-size:9px;color:var(--muted);margin-top:4px}.month-summary>span{font-size:17px;color:var(--accent)}
+.life-timeline{max-width:620px;margin:0 auto}
+.timeline-entry{display:grid;grid-template-columns:28px minmax(0,1fr);position:relative}
+.timeline-rail{position:relative;display:flex;justify-content:center}
+.timeline-rail:after{content:"";position:absolute;top:18px;bottom:0;width:1px;background:#d9ddd6}
+.timeline-entry:last-child .timeline-rail:after{display:none}
+.timeline-dot{position:relative;z-index:1;margin-top:5px;width:8px;height:8px;border-radius:50%;background:#ef6548;box-shadow:0 0 0 5px #f6f6f2}
+.timeline-body{padding:0 0 29px 10px}
+.timeline-date{height:18px;display:flex;align-items:center;gap:6px;font-size:8px;font-weight:850;letter-spacing:.09em;color:#70776f;margin-bottom:8px}
+.timeline-date span{font-size:12px;color:#788774}
+.timeline-photo{width:min(76%,430px)}
+.timeline-photo img,.timeline-photo .moment-placeholder{display:block;width:100%;height:290px;object-fit:cover;border-radius:19px;background:#e7e8e4}
+.timeline-copy{width:min(76%,430px);padding:10px 2px 0}
+.timeline-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.timeline-title-row .moment-caption{font-size:15px;font-weight:800;line-height:1.35}
+.timeline-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}.timeline-tags span{font-size:8px;color:#626a62;background:#f0f1ed;border-radius:999px;padding:5px 7px}
+.timeline-with{font-size:9px;color:var(--muted);margin-top:8px}.timeline-note{font-size:10px;color:#5f665f;line-height:1.5;margin-top:8px;font-style:italic}
+.timeline-empty{padding:50px 20px;text-align:center;color:var(--muted);border-left:1px solid #e1e4df;margin-left:14px}.timeline-empty span{display:block;font-size:20px;margin-bottom:9px;color:var(--accent)}.timeline-empty b{display:block;color:var(--ink);font-size:12px;margin-bottom:5px}.timeline-empty div{font-size:10px}
+/* keep Home compact and independent from Timeline */
+#homeMoments .moment-photo img,#homeMoments .moment-placeholder{height:275px}
+@media(max-width:600px){
+ .timeline-photo,.timeline-copy{width:94%}
+ .timeline-photo img,.timeline-photo .moment-placeholder{height:330px}
+}
+
+/* V14 — editorial Moment journal */
+.timeline-controls,.month-summary,.timeline-rail,.timeline-dot{display:none!important}
+#moments{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+#moments .title{font-size:25px!important;font-weight:800;letter-spacing:-.04em}
+#moments .section-head .sub{font-size:10px;line-height:1.55;max-width:470px}
+.life-journal{max-width:560px;margin:19px auto 0}
+.journal-entry{padding:0 0 27px;margin:0 0 27px;border-bottom:1px solid #e1e4df}
+.journal-entry:last-child{border-bottom:0}
+.journal-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:9px;padding:0 2px}
+.journal-date{font-size:8px;font-weight:850;letter-spacing:.1em;color:#697169;text-transform:uppercase}.journal-mood{font-size:13px;color:#7a8875;margin-top:3px}
+.journal-gallery,.journal-copy{width:82%}
+.moment-gallery{display:grid;gap:3px;overflow:hidden;border-radius:18px;background:#eceee9}
+.moment-gallery img{display:block;width:100%;height:300px;object-fit:cover}
+.moment-gallery.count-2{grid-template-columns:1fr 1fr}.moment-gallery.count-2 img{height:285px}
+.moment-gallery.count-3{grid-template-columns:1.35fr .85fr;grid-template-rows:1fr 1fr;height:300px}.moment-gallery.count-3 img{height:100%;min-height:0}.moment-gallery.count-3 img:first-child{grid-row:1/3}
+.journal-copy{padding:11px 2px 0}.journal-title{font-size:16px;font-weight:780;letter-spacing:-.025em;line-height:1.35}
+.journal-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}.journal-tags span{font-size:8px;color:#646c64;background:#f0f1ed;border-radius:999px;padding:5px 7px}
+.journal-with{font-size:9px;color:var(--muted);margin-top:8px}.journal-note{font-family:Georgia,"Times New Roman",serif;font-size:12px;line-height:1.55;color:#596059;margin-top:9px}
+.composer-gallery{display:grid;gap:3px;border-radius:16px;overflow:hidden;margin-bottom:8px}.composer-gallery img{width:100%;height:180px;object-fit:cover}.composer-gallery.count-2{grid-template-columns:1fr 1fr}.composer-gallery.count-3{grid-template-columns:1.3fr .85fr .85fr}
+.composer-photo-foot{display:flex;justify-content:space-between;align-items:center;font-size:9px;margin-top:7px}
+@media(max-width:600px){.journal-gallery,.journal-copy{width:94%}.moment-gallery img{height:275px}.moment-gallery.count-2 img{height:255px}.moment-gallery.count-3{height:280px}}
+
+/* V15 multi-photo picker */
+.photo-limit-note{font-size:9px;color:var(--muted);margin-top:6px}
+.composer-photo-item{position:relative;min-width:0}
+.composer-photo-item img{display:block;width:100%;height:180px;object-fit:cover}
+.composer-photo-item>button{position:absolute;right:7px;top:7px;width:25px;height:25px;border:0;border-radius:50%;background:rgba(20,23,20,.72);color:white;font-size:17px;line-height:25px;padding:0;cursor:pointer}
+.composer-gallery.count-1{grid-template-columns:1fr}
+.composer-gallery.count-2{grid-template-columns:1fr 1fr}
+.composer-gallery.count-3{grid-template-columns:1.2fr .9fr .9fr}
+
+/* V16 budget period filter */
+.money-period-head{display:flex;align-items:center;gap:8px;margin-bottom:14px}.money-period-head .title{margin:0}
+.period-filter-btn{width:31px;height:31px;border:1px solid #dde1db;border-radius:50%;background:#fff;font-size:16px;cursor:pointer}
+.period-picker{width:min(100%,410px);padding:10px;border:1px solid #e0e3dd;border-radius:15px;background:#f7f7f3;margin:-5px 0 16px}
+.period-mode{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:3px;background:#eceee9;border-radius:10px}.period-mode button{border:0;background:transparent;border-radius:8px;padding:7px;font-size:9px;font-weight:800;color:#737a72}.period-mode button.active{background:#fff;color:#171b17;box-shadow:0 1px 4px rgba(20,25,20,.07)}
+.period-controls{display:grid;grid-template-columns:35px 1fr 35px;align-items:center;margin-top:8px}.period-controls button{border:0;background:transparent;font-size:19px;cursor:pointer}.period-controls b{text-align:center;font-size:11px}
+
+/* V18 — swipeable Moment photo carousel */
+.journal-gallery{width:82%}
+.moment-gallery.swipe-gallery{position:relative;display:block;overflow:hidden;border-radius:18px;background:#eceee9}
+.swipe-track{display:flex;width:100%;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.swipe-track::-webkit-scrollbar{display:none}
+.swipe-slide{flex:0 0 100%;width:100%;scroll-snap-align:start;scroll-snap-stop:always}
+.moment-gallery.swipe-gallery .swipe-slide img{display:block;width:100%;height:300px;object-fit:cover}
+.gallery-count{position:absolute;right:10px;top:10px;background:rgba(20,23,20,.62);color:white;border-radius:999px;padding:5px 8px;font-size:8px;font-weight:800;backdrop-filter:blur(5px)}
+.gallery-dots{position:absolute;left:50%;bottom:9px;transform:translateX(-50%);display:flex;gap:5px;padding:5px 7px;border-radius:999px;background:rgba(20,23,20,.24)}
+.gallery-dots i{display:block;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.5);transition:width .2s ease,background .2s ease}
+.gallery-dots i.active{width:13px;border-radius:999px;background:#fff}
+@media(max-width:600px){.journal-gallery{width:94%}.moment-gallery.swipe-gallery .swipe-slide img{height:280px}}
+
+/* V19 polish: Maps tag */
+.map-tag-box{margin-top:4px}.map-tag-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:center}.map-open-btn{height:39px;border:1px solid #dfe2dc;border-radius:11px;background:#f6f7f3;padding:0 11px;font-size:9px;font-weight:800;cursor:pointer}.map-help{font-size:8px;margin-top:5px}.hidden-fix{display:none!important}
+.journal-tags .place-tag.linked{cursor:pointer;background:#e9efe8;color:#52624f}.journal-tags .place-tag.linked:hover{text-decoration:underline}
+/* Wrapped gets its own compact period control */
+.wrapped-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}.wrapped-head .title{margin:0}
+.wrapped-filter-btn{width:31px;height:31px;border:1px solid #dde1db;border-radius:50%;background:#fff;font-size:16px;cursor:pointer}
+.wrapped-picker{width:min(100%,410px);padding:10px;border:1px solid #e0e3dd;border-radius:15px;background:#f7f7f3;margin:0 0 16px}
+
+/* V20 — Life Lately visual polish */
+#moments{
+ --moment-sage:#73856f;
+ --moment-coral:#ef765d;
+ --moment-butter:#e7c86b;
+ --moment-blue:#8ba8b7;
+ --moment-paper:#fbfaf6;
+ background:
+   radial-gradient(circle at 92% 4%,rgba(139,168,183,.10),transparent 19rem),
+   radial-gradient(circle at 3% 30%,rgba(231,200,107,.10),transparent 17rem);
+}
+#moments .section-head{
+ position:relative;padding:18px 18px 17px;margin:0 -6px 18px;
+ border-radius:22px;
+ background:linear-gradient(135deg,rgba(115,133,111,.12),rgba(139,168,183,.09) 52%,rgba(239,118,93,.09));
+ overflow:hidden;
+}
+#moments .section-head:after{
+ content:"✦";position:absolute;right:58px;top:13px;
+ font-size:18px;color:var(--moment-butter);transform:rotate(9deg)
+}
+#moments .eyebrow{color:var(--moment-sage);letter-spacing:.16em}
+#moments .title{font-size:28px!important;letter-spacing:-.045em}
+#moments .section-head .sub{color:#626a63;max-width:390px}
+#moments .moment-plus{background:var(--moment-coral);color:white;border:0;box-shadow:0 7px 18px rgba(239,118,93,.20)}
+
+.life-journal{max-width:580px;margin-top:8px}
+.journal-entry{
+ position:relative;
+ padding:15px 15px 23px;margin:0 0 17px;
+ border:1px solid #e4e6e0;border-bottom:1px solid #dfe2dc;
+ border-radius:22px;background:rgba(255,255,255,.82);
+ box-shadow:0 9px 28px rgba(43,51,43,.045);
+}
+.journal-entry:nth-child(4n+1){border-top:3px solid rgba(115,133,111,.75)}
+.journal-entry:nth-child(4n+2){border-top:3px solid rgba(239,118,93,.70)}
+.journal-entry:nth-child(4n+3){border-top:3px solid rgba(139,168,183,.72)}
+.journal-entry:nth-child(4n){border-top:3px solid rgba(231,200,107,.76)}
+.journal-head{margin-bottom:10px}
+.journal-date{font-size:9px;color:#596359}
+.journal-mood{
+ display:inline-flex;align-items:center;justify-content:center;
+ width:25px;height:25px;border-radius:50%;margin-top:6px;
+ background:#eef2eb;color:var(--moment-sage);font-size:13px
+}
+.journal-gallery,.journal-copy{width:100%}
+.moment-gallery.swipe-gallery{border-radius:18px;box-shadow:0 6px 18px rgba(33,39,33,.07)}
+.moment-gallery.swipe-gallery .swipe-slide img{height:315px}
+.journal-copy{padding:13px 2px 0}
+.journal-title{font-size:17px;font-weight:790;letter-spacing:-.03em;color:#222722}
+.journal-tags{gap:6px;margin-top:9px}
+.journal-tags span{font-size:8px;padding:6px 8px;background:#f0f3ed;color:#586257}
+.journal-tags span:nth-child(2){background:#fff0eb;color:#9c4e3d}
+.journal-tags span:nth-child(3){background:#f7f1dc;color:#786629}
+.journal-tags .place-tag{background:#eaf1f4!important;color:#526b77!important}
+.journal-tags .place-tag.linked{background:#eaf1f4!important;color:#526b77!important}
+.journal-note{
+ margin-top:11px;padding:10px 12px;border-radius:12px;border-left:0;
+ background:#f6f3ed;font-family:Georgia,"Times New Roman",serif;
+ font-size:12px;color:#565e56
+}
+.favorite-btn{transition:transform .18s ease}.favorite-btn:active{transform:scale(.88)}
+.gallery-dots{background:rgba(22,27,23,.20)}
+.gallery-dots i.active{background:#fff}
+
+/* Home Moments: a little more life without making the dashboard noisy */
+#homeMoments .moment-stage .moment.active .moment-photo{
+ filter:none;
+}
+#homeMoments .moment-chip{
+ background:rgba(247,248,243,.92);color:#4e5f4c;
+ border:1px solid rgba(255,255,255,.55);backdrop-filter:blur(7px)
+}
+#homeMoments .moment-caption{letter-spacing:-.02em}
+#homeMoments .dot.active{background:#73856f}
+#home .section-head:has(+ #homeMoments) .moment-plus{background:#ef765d;color:white;border:0}
+
+/* Location composer: designed as in-app tagging entry point */
+.map-tag-box{
+ margin-top:10px;padding:11px;border:1px solid #dfe6df;border-radius:14px;
+ background:linear-gradient(135deg,#f2f6f1,#f0f5f7)
+}
+.map-open-btn{background:#71836d;color:white;border:0}
+.map-tag-box label:before{content:"⌖ ";color:#71836d}
+
+/* V21 — neutral, clearer Moments */
+#moments{--moment-ink:#202622;--moment-sage:#66756a;--moment-slate:#6f8792;background:linear-gradient(180deg,#fafaf7,#f7f8f5);color:var(--moment-ink)}
+#moments .section-head{background:linear-gradient(135deg,#edf1ec,#f1f3f2);border:1px solid #e1e5df}
+#moments .section-head:after{color:#7c8980;opacity:.55}
+#moments .eyebrow{color:#59675d;font-size:10px;font-weight:800}
+#moments .title{color:#1f2521;font-size:28px!important;font-weight:820;line-height:1.08}
+#moments .section-head .sub{color:#555e58;font-size:11px;line-height:1.55}
+#moments .moment-plus{background:#26332c;color:#fff;box-shadow:none}
+.journal-entry{background:#fff;border:1px solid #dde2dc;box-shadow:none;padding:16px 16px 23px}
+.journal-entry:nth-child(4n+1),.journal-entry:nth-child(4n+2),.journal-entry:nth-child(4n+3),.journal-entry:nth-child(4n){border-top:2px solid #77847b}
+.journal-date{font-size:10px;font-weight:700;color:#59625c}
+.journal-mood{background:#edf1ed;color:#536159}
+.journal-title{font-size:18px!important;font-weight:800!important;line-height:1.3!important;color:#202622!important}
+.journal-copy{color:#303832}
+.journal-tags span{font-size:9px;font-weight:700;line-height:1.2;background:#eef1ed!important;color:#4d5951!important;border:1px solid #e0e5df}
+.journal-note{background:#f4f5f2;color:#424b45;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:11px;line-height:1.55;border-left:3px solid #77847b}
+.map-tag-box{background:#f0f3f0;border-color:#dce3dc}.map-open-btn{background:#34463b;color:#fff}
+#homeMoments .moment-chip{background:rgba(246,248,245,.94);color:#435147}#homeMoments .dot.active{background:#66756a}
+.caption-location{display:flex;align-items:center;gap:5px;margin-top:7px;font-size:10px;font-weight:750;color:#49616c}
+.caption-location.linked{cursor:pointer}.caption-location.linked:hover{text-decoration:underline}
+
+/* V22 — simple location tag */
+.simple-location{background:#f4f6f3;border:1px solid #dfe4de;padding:12px}
+.simple-location label{font-size:10px;font-weight:800;color:#303a33}
+.simple-location label:before{content:none!important}
+.simple-location .map-tag-row{margin-top:7px}
+.simple-location .map-open-btn{min-width:58px}
+.caption-location{color:#435a4d}
+
+/* V23 — Instagram-like location picker shell */
+.simple-location{position:relative}
+.location-search-wrap{position:relative;margin-top:7px}
+.location-search-wrap>input{width:100%;height:44px;border:1px solid #d7ddd7!important;border-radius:13px!important;background:#fff!important;padding:0 13px!important;font-size:12px!important}
+.location-search-wrap>input:focus{outline:2px solid rgba(102,117,106,.16);border-color:#748178!important}
+.location-suggestions{position:absolute;z-index:40;left:0;right:0;top:49px;background:#fff;border:1px solid #dce2dc;border-radius:14px;box-shadow:0 14px 35px rgba(31,38,33,.12);overflow:hidden}
+.location-result{display:flex;width:100%;gap:10px;align-items:center;text-align:left;padding:11px 12px;border:0;border-bottom:1px solid #edf0ec;background:#fff;cursor:pointer}
+.location-result:last-child{border-bottom:0}.location-result:hover{background:#f5f7f4}
+.location-result .pin{font-size:14px}.location-result b{display:block;font-size:11px;color:#252c27}.location-result small{display:block;margin-top:2px;font-size:9px;color:#707871}
+.location-empty{padding:13px;font-size:10px;color:#747b75}
+.selected-location{margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 11px;border:1px solid #dce3dc;border-radius:13px;background:#fff}
+.selected-location>span{font-size:11px;font-weight:800;color:#2d3831}.selected-location small{display:block;margin:2px 0 0 20px;font-size:9px;font-weight:500;color:#707871}
+.selected-location button{width:25px;height:25px;border:0;border-radius:50%;background:#eef1ed;color:#536057;font-size:15px;cursor:pointer}
+
+/* V24 — real Geoapify autocomplete */
+.location-loading{display:flex;align-items:center;gap:8px;padding:13px;font-size:10px;color:#68716a}
+.location-loading span{width:12px;height:12px;border:2px solid #d7ddd8;border-top-color:#66756a;border-radius:50%;animation:locspin .7s linear infinite}
+@keyframes locspin{to{transform:rotate(360deg)}}
+.location-result.use-typed{background:#f5f7f4}
+</style>
+</head><body>
+<div class="app">
+<header><div class="brand-lockup"><svg class="brandmark" viewBox="0 0 64 64" aria-label="Planora CH"><path d="M45 13C25 7 10 18 10 33s13 25 29 20c8-2 13-8 15-14" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M26 18v31M26 34c8-10 19-12 25-5v20" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M43 11l3 5 5 3-5 3-3 5-3-5-5-3 5-3z" fill="#ef9b69"/></svg><div><div class="brand">PLANORA</div><div class="sub">money, moments & little things.</div></div></div><button class="iconbtn" onclick="page('settings')">⚙</button></header>
+
+<main id="home" class="active">
+<div class="eyebrow">MONEY CHECK-IN</div><div class="money-period-head"><h1 class="title" id="moneyPeriodTitle">This month</h1><button class="period-filter-btn" onclick="togglePeriodPicker()">⌄</button></div><div class="period-picker hidden" id="periodPicker"><div class="period-mode"><button id="modeMonth" class="active" onclick="setPeriodMode('month')">Bulanan</button><button id="modeYear" onclick="setPeriodMode('year')">Tahunan</button></div><div class="period-controls"><button onclick="shiftPeriod(-1)">‹</button><b id="periodLabel"></b><button onclick="shiftPeriod(1)">›</button></div></div>
+<div class="money-strip">
+ <div class="money-card dark"><small data-i18n="available">Uang tersedia</small><b id="available">Rp0</b><div class="note" data-i18n="availableNote">setelah pengeluaran, tagihan & goals</div></div>
+ <div class="money-card"><small data-i18n="saved">Tersimpan</small><b id="saved">Rp0</b><div class="note" data-i18n="savedNote">sedang disisihkan di goals</div></div>
+</div>
+<div class="safe-card">
+ <div class="safe-top"><div><div class="safe-label" data-i18n="safe">AMAN DIBELANJAKAN</div><b id="safeToSpend">Rp0</b></div><div class="safe-leaf">⌁</div></div>
+ <div class="safe-note" id="safeSpendNote">Sesuai sisa budget bulan ini</div>
+ <div class="safe-progress"><i id="safeSpendBar"></i></div>
+ <div class="safe-foot"><span id="safeSpent">Terpakai Rp0</span><span id="safeBudget">Budget Rp0</span></div>
+</div>
+<div class="section-head"><div><div class="eyebrow" data-i18n="yourWeek">MINGGU INI</div><h2 data-i18n="lifeLately">Life lately</h2><div class="sub">Hidupmu juga layak diingat.</div></div><button class="moment-plus" onclick="openMoment()" aria-label="Tambah Moment">＋</button></div>
+<div id="homeMoments"></div>
+<div class="section-head"><h2 data-i18n="recentTx">Transaksi terbaru</h2><button class="pill" onclick="page('transactions')">Lihat semua</button></div><div id="recent"></div>
+</main>
+
+<main id="moments"><div class="section-head" style="margin-top:0"><div><div class="eyebrow">LIFE LATELY</div><h1 class="title" style="margin-bottom:5px" data-i18n="moments">Moments</h1><div class="sub">Bukan cuma angka. Simpan hal-hal kecil yang membuat hidup terasa hidup.</div></div><button class="moment-plus" onclick="openMoment()" aria-label="Tambah Moment">＋</button></div><div id="momentsAll" style="margin-top:10px"></div></main>
+
+<main id="transactions"><div class="eyebrow">MONEY FLOW</div><h1 class="title" data-i18n="transactions">Transaksi</h1><div id="txList"></div></main>
+
+<main id="plan"><div class="eyebrow">YOUR PLAN</div><h1 class="title" data-i18n="plan">Plan</h1>
+<div class="section-head"><h2 data-i18n="budget">Budget</h2><span class="sub">bulan berjalan</span></div>
+<div class="card"><label>Batas budget bulanan</label><input id="monthlyBudget" type="number" inputmode="numeric" placeholder="0"><button class="btn primary wide" style="margin-top:12px" onclick="saveMonthlyBudget()">Simpan budget</button></div>
+<div class="section-head"><div><h2>Budget per kategori</h2><div class="sub">Terpakai dihitung langsung dari riwayat transaksi bulan berjalan.</div></div><button class="pill" onclick="openCat()">+ Kategori</button></div>
+<div class="card summary"><div><small>Monthly Budget</small><b id="sumBudget">Rp0</b></div><div><small>Allocated</small><b id="sumAllocated">Rp0</b></div><div><small>Unallocated</small><b id="sumUnallocated">Rp0</b></div></div><div id="catList"></div>
+<div class="section-head"><h2 data-i18n="goals">Goals</h2><button class="pill" onclick="openGoal()">+ Goal</button></div><div id="goalList"></div>
+<div class="section-head"><h2 data-i18n="bills">Tagihan</h2><button class="pill" onclick="openBill()">+ Tagihan</button></div><div id="billList"></div>
+</main>
+
+<main id="reports"><div class="eyebrow">WRAPPED</div><div class="wrapped-head"><h1 class="title" data-i18n="moneyStory">Cerita uangmu</h1><button class="wrapped-filter-btn" onclick="toggleWrappedPicker()">⌄</button></div><div id="wrappedPicker" class="wrapped-picker hidden"><div class="period-mode"><button id="wrappedModeMonth" class="active" onclick="setWrappedMode('month')">Bulanan</button><button id="wrappedModeYear" onclick="setWrappedMode('year')">Tahunan</button></div><div class="period-controls"><button onclick="shiftWrapped(-1)">‹</button><b id="wrappedPeriodLabel"></b><button onclick="shiftWrapped(1)">›</button></div></div>
+<div class="card"><div class="row"><div><div class="sub">Pemasukan bulan ini</div><b id="repIncome">Rp0</b></div><div style="text-align:right"><div class="sub">Pengeluaran</div><b id="repExpense">Rp0</b></div></div></div><div id="reportCats"></div></main>
+
+<main id="settings"><div class="eyebrow">PLANORA</div><h1 class="title" data-i18n="settings">Settings</h1>
+<div class="card"><b data-i18n="language">Bahasa</b><div class="sub" style="margin:5px 0 10px" data-i18n="languageNote">Pilih bahasa aplikasi.</div><select id="languageSelect" onchange="setLanguage(this.value)"><option value="id">Indonesia</option><option value="en">English</option></select></div>
+<div class="card"><b>Data</b><div class="sub" style="margin:5px 0 12px">Semua data tersimpan lokal di browser ini.</div><div class="actions"><button class="btn" onclick="backup()">Backup</button><button class="btn" onclick="document.getElementById('restoreFile').click()">Restore</button></div><input id="restoreFile" class="hidden" type="file" accept=".json" onchange="restoreBackup(event)"></div>
+<div class="card"><b>Bersihkan transaksi</b><div class="sub" style="margin:5px 0 12px">Menghapus pemasukan & pengeluaran saja. Budget, Goals, Bills, dan Moments tetap ada.</div><button class="btn danger wide" onclick="clearTransactions()">Hapus semua transaksi</button></div>
+<div class="card"><b>Reset Planora</b><div class="sub" style="margin:5px 0 12px">Kembali ke data awal Rp0.</div><button class="btn danger wide" onclick="resetAll()">Reset semua data</button></div>
+</main>
+</div>
+
+<nav class="nav">
+<button class="nav-item active" data-page="home" onclick="page('home')"><span class="nav-icon">⌂</span><span>Home</span></button>
+<button class="nav-item" data-page="moments" onclick="page('moments')"><span class="nav-icon">◫</span><span>Moments</span></button>
+<button class="add" onclick="openAdd()" aria-label="Tambah"><span>＋</span></button>
+<button class="nav-item" data-page="plan" onclick="page('plan')"><span class="nav-icon">◎</span><span>Plan</span></button>
+<button class="nav-item" data-page="reports" onclick="page('reports')"><span class="nav-icon">◒</span><span>Wrapped</span></button>
+</nav>
+
+<div class="modal" id="addModal"><div class="sheet add-sheet"><div class="row"><div><div class="eyebrow">QUICK ADD</div><h3>Catat uangmu</h3></div><button class="pill" onclick="closeM('addModal')">✕</button></div><div class="money-add-grid"><button class="money-add expense-add" onclick="openTx('expense')"><span>−</span><div><b>Pengeluaran</b><small>Catat uang yang keluar</small></div></button><button class="money-add income-add" onclick="openTx('income')"><span>+</span><div><b>Pemasukan</b><small>Catat uang yang masuk</small></div></button></div></div></div>
+
+<div class="modal" id="txModal"><div class="sheet"><div class="row"><h3 id="txHeading">Transaksi</h3><button class="pill" onclick="closeM('txModal')">✕</button></div><input id="txId" type="hidden"><input id="txType" type="hidden">
+<label>Nominal</label><input id="txAmount" type="number" inputmode="numeric"><label>Tanggal</label><input id="txDate" type="date"><label>Kategori</label><select id="txCategory"></select><label>Catatan</label><input id="txNote" placeholder="Opsional">
+<div class="actions"><button id="txDelete" class="btn danger hidden" onclick="deleteTx()">Hapus</button><button class="btn primary" onclick="saveTx()">Simpan</button></div></div></div>
+
+<div class="modal" id="catModal"><div class="sheet"><div class="row"><h3>Budget kategori</h3><button class="pill" onclick="closeM('catModal')">✕</button></div><input id="catOld" type="hidden"><label>Kategori</label><select id="catName"></select><label>Budget per bulan</label><input id="catAmount" type="number" inputmode="numeric"><div class="actions"><button id="catDelete" class="btn danger hidden" onclick="deleteCat()">Hapus</button><button class="btn primary" onclick="saveCat()">Simpan</button></div></div></div>
+
+<div class="modal" id="goalModal"><div class="sheet"><div class="row"><h3>Goal</h3><button class="pill" onclick="closeM('goalModal')">✕</button></div><input id="goalId" type="hidden"><label>Nama goal</label><input id="goalName"><label>Target</label><input id="goalTarget" type="number"><label>Sudah terkumpul</label><input id="goalCurrent" type="number"><div class="actions"><button id="goalDelete" class="btn danger hidden" onclick="deleteGoal()">Hapus</button><button class="btn primary" onclick="saveGoal()">Simpan</button></div></div></div>
+
+<div class="modal" id="saveGoalModal"><div class="sheet"><div class="row"><h3>Tambah tabungan</h3><button class="pill" onclick="closeM('saveGoalModal')">✕</button></div><input id="saveGoalId" type="hidden"><label>Nominal</label><input id="saveGoalAmount" type="number"><label>Tanggal</label><input id="saveGoalDate" type="date"><div class="actions"><button class="btn primary" onclick="addSaving()">Tambahkan</button></div></div></div>
+
+<div class="modal" id="billModal"><div class="sheet"><div class="row"><h3>Tagihan</h3><button class="pill" onclick="closeM('billModal')">✕</button></div><input id="billId" type="hidden"><label>Nama</label><input id="billName"><label>Nominal</label><input id="billAmount" type="number"><label>Jatuh tempo</label><input id="billDate" type="date"><label>Status</label><select id="billPaid"><option value="false">Belum dibayar</option><option value="true">Sudah dibayar</option></select><div class="actions"><button id="billDelete" class="btn danger hidden" onclick="deleteBill()">Hapus</button><button class="btn primary" onclick="saveBill()">Simpan</button></div></div></div>
+
+<div class="modal" id="cameraModal"><div class="sheet camera-sheet">
+<div class="row"><div><div class="eyebrow">PLANORA CAMERA</div><h3>Ambil Foto</h3></div><button class="pill" onclick="closeLiveCamera()">✕</button></div>
+<div class="camera-frame"><video id="cameraVideo" autoplay playsinline muted></video><canvas id="cameraCanvas" class="hidden"></canvas><img id="cameraShot" class="hidden" alt="Hasil foto"></div>
+<div id="cameraStatus" class="sub camera-status">Izinkan akses kamera saat browser meminta izin.</div>
+<div class="camera-controls">
+ <button id="cameraFlipBtn" class="btn" onclick="flipCamera()">↻ Balik kamera</button>
+ <button id="cameraCaptureBtn" class="camera-shutter" onclick="captureCamera()" aria-label="Jepret foto"><span></span></button>
+ <button id="cameraRetakeBtn" class="btn hidden" onclick="retakeCamera()">Foto ulang</button>
+ <button id="cameraUseBtn" class="btn primary hidden" onclick="useCameraPhoto()">Pakai foto</button>
+</div>
+</div></div>
+<div class="modal" id="momentModal"><div class="sheet"><div class="row"><h3>Tambah Moment</h3><button class="pill" onclick="closeM('momentModal')">✕</button></div><label>Foto</label>
+<div class="photo-source-grid">
+ <button type="button" class="photo-source" onclick="openLiveCamera()"><span class="photo-source-icon">⌾</span><div><b>Ambil Foto</b><small>Buka kamera langsung</small></div></button>
+ <button type="button" class="photo-source" onclick="momentGallery.click()"><span class="photo-source-icon">▧</span><div><b>Pilih dari Galeri</b><small>Upload foto yang sudah ada</small></div></button>
+</div>
+<input id="momentGallery" class="hidden" type="file" accept="image/*" multiple onchange="setMomentPhotos(this)">
+<input id="momentPhoto" class="hidden" type="file" accept="image/*">
+<div id="momentPhotoPreview" class="moment-photo-preview hidden"><img id="momentPreviewImg"><div><b id="momentPreviewName">Foto dipilih</b><button type="button" class="mini-remove" onclick="clearMomentPhoto()">Ganti foto</button></div></div>
+<label>Caption</label><input id="momentCaption" placeholder="Apa yang ingin kamu ingat?">
+<div class="moment-quick-row">
+ <div class="moment-quick"><span class="sub">Mood</span><div id="momentMood" class="mood-pills"><button type="button" class="mood active" data-value="happy" onclick="pickMood(this)">☺</button><button type="button" class="mood" data-value="grateful" onclick="pickMood(this)">♡</button><button type="button" class="mood" data-value="proud" onclick="pickMood(this)">✦</button><button type="button" class="mood" data-value="peaceful" onclick="pickMood(this)">☘</button></div></div>
+</div>
+<label>Kategori</label><select id="momentKind" onchange="syncMomentMoney()"><option>Self Reward</option><option>Food & Drinks</option><option>Wellness</option><option>Hangout</option><option>Hobby</option><option>Achievement</option><option>No Spend</option></select>
+<div id="momentMoneyBox"><label>Nominal <span style="font-weight:500;color:var(--muted)">(opsional)</span></label><input id="momentAmount" type="number" inputmode="numeric" placeholder="Rp0">
+<div id="moneyFeelingWrap" class="money-feeling"><button type="button" class="feeling active" data-value="worth" onclick="pickFeeling(this)">Worth it ♡</button><button type="button" class="feeling" data-value="necessary" onclick="pickFeeling(this)">Necessary</button><button type="button" class="feeling" data-value="treat" onclick="pickFeeling(this)">Treat myself</button><button type="button" class="feeling" data-value="skip" onclick="pickFeeling(this)">Could skip</button></div></div>
+<button type="button" class="details-toggle" id="momentDetailsToggle" onclick="toggleMomentDetails()">＋ Add details</button>
+<div id="momentDetails" class="moment-details hidden"><div class="two-fields"><div><label>With</label><input id="momentWith" placeholder="Siapa?"></div></div>
+<div class="map-tag-box simple-location">
+<label>📍 Add location</label>
+<div id="locationSearchWrap" class="location-search-wrap">
+<input id="momentPlace" placeholder="Cari nama tempat..." autocomplete="off" oninput="handleLocationInput(this.value)" onfocus="handleLocationInput(this.value)">
+<div id="locationSuggestions" class="location-suggestions hidden"></div>
+</div>
+<input id="momentMapUrl" type="hidden" value="">
+<div id="selectedLocation" class="selected-location hidden"></div>
+<div class="sub" style="font-size:7px;margin-top:6px;color:#8a918b">Location search powered by Geoapify</div>
+</div>
+<div class="two-fields hidden-fix"></div><label>Little note</label><input id="momentNote" placeholder="Satu kalimat kecil..."></div>
+<div class="actions"><button class="btn primary" onclick="saveMoment()">Simpan Moment</button></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY='planora_clean_v1';
+let lang=localStorage.getItem('planora_language')||'id';
+
+const I18N={
+ id:{settings:'Pengaturan',language:'Bahasa',languageNote:'Pilih bahasa aplikasi.',available:'Uang tersedia',availableNote:'setelah pengeluaran, tagihan & goals',saved:'Tersimpan',savedNote:'sedang disisihkan di goals',safe:'AMAN DIBELANJAKAN',yourWeek:'MINGGU INI',lifeLately:'Life lately',recentTx:'Transaksi terbaru',moments:'Moments',transactions:'Transaksi',plan:'Plan',budget:'Budget',goals:'Goals',bills:'Tagihan',moneyStory:'Cerita uangmu'},
+ en:{settings:'Settings',language:'Language',languageNote:'Choose the app language.',available:'Available',availableNote:'after spending, bills & goals',saved:'Saved',savedNote:'currently set aside in goals',safe:'SAFE TO SPEND',yourWeek:'YOUR WEEK',lifeLately:'Life lately',recentTx:'Recent transactions',moments:'Moments',transactions:'Transactions',plan:'Plan',budget:'Budget',goals:'Goals',bills:'Bills',moneyStory:'Your money story'}
+};
+function applyLanguage(){
+ document.documentElement.lang=lang;languageSelect.value=lang;
+ document.querySelectorAll('[data-i18n]').forEach(el=>{let k=el.dataset.i18n;if(I18N[lang][k])el.textContent=I18N[lang][k]});
+ const labels=document.querySelectorAll('.nav-item span:last-child');
+ const n=lang==='id'?['Home','Moments','Plan','Wrapped']:['Home','Moments','Plan','Wrapped'];
+ labels.forEach((x,i)=>x.textContent=n[i]||x.textContent)
+}
+function setLanguage(v){lang=v;localStorage.setItem('planora_language',lang);applyLanguage();renderPeriodPicker();renderWrappedPicker();render();toastMsg(lang==='id'?'Bahasa diubah':'Language changed')}
+
+const expenseCats=['Makan & Minum','Transport','Belanja','Tagihan','Kesehatan','Hiburan','Pendidikan','Kecantikan','Keluarga','Donasi','Wellness','Self Reward','Lainnya'];
+const incomeCats=['Gaji','Bonus','Freelance','Hadiah','Investasi','Lainnya'];
+const empty=()=>({monthlyBudget:0,categoryBudgets:{},transactions:[],goals:[],bills:[],moments:[]});
+let data=load(),momentIndex=0;
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY));return valid(x)?x:empty()}catch(e){return empty()}}
+function valid(x){return x&&typeof x==='object'&&Array.isArray(x.transactions)&&Array.isArray(x.goals)&&Array.isArray(x.bills)&&Array.isArray(x.moments)&&x.categoryBudgets&&typeof x.categoryBudgets==='object'}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(data));render();return true}catch(err){console.error('storage error',err);toastMsg(lang==='id'?'Penyimpanan perangkat penuh. Hapus beberapa foto Moment lalu coba lagi.':'Device storage is full. Remove some Moment photos and try again.');return false}}
+function rp(n){return 'Rp'+Math.round(Number(n)||0).toLocaleString('id-ID')}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+let periodMode='month',selectedPeriod=new Date();
+function togglePeriodPicker(){periodPicker.classList.toggle('hidden');renderPeriodPicker()}
+function setPeriodMode(m){periodMode=m;renderPeriodPicker();render()}
+function shiftPeriod(d){selectedPeriod=periodMode==='month'?new Date(selectedPeriod.getFullYear(),selectedPeriod.getMonth()+d,1):new Date(selectedPeriod.getFullYear()+d,selectedPeriod.getMonth(),1);renderPeriodPicker();render()}
+function renderPeriodPicker(){
+ if(!document.getElementById('periodLabel'))return;
+ modeMonth.classList.toggle('active',periodMode==='month');modeYear.classList.toggle('active',periodMode==='year');
+ const names=lang==='id'?MONTHS_FULL_ID:MONTHS_FULL_EN,month=names[selectedPeriod.getMonth()];
+ periodLabel.textContent=periodMode==='month'?`${month} ${selectedPeriod.getFullYear()}`:`${selectedPeriod.getFullYear()}`;
+ moneyPeriodTitle.textContent=periodMode==='month'?`${month} ${selectedPeriod.getFullYear()}`:(lang==='id'?`Tahun ${selectedPeriod.getFullYear()}`:`Year ${selectedPeriod.getFullYear()}`)
+}
+function periodTx(){return data.transactions.filter(t=>{let d=new Date(t.date+'T00:00:00');return d.getFullYear()===selectedPeriod.getFullYear()&&(periodMode==='year'||d.getMonth()===selectedPeriod.getMonth())})}
+function monthTx(){let n=new Date();return data.transactions.filter(t=>{let d=new Date(t.date+'T00:00:00');return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear()})}
+function toastMsg(s){toast.textContent=s;toast.classList.add('show');clearTimeout(window.tt);window.tt=setTimeout(()=>toast.classList.remove('show'),1600)}
+function page(id){document.querySelectorAll('main').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.page===id));render()}
+function openM(id){document.getElementById(id).classList.add('open')}function closeM(id){document.getElementById(id).classList.remove('open')}
+function render(){
+ const tx=periodTx(),income=tx.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0),expense=tx.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
+ // Goals are earmarked money: current balance is the canonical saved amount.
+ const saved=data.goals.reduce((s,g)=>s+Math.max(0,Number(g.current)||0),0);
+ const unpaid=data.bills.filter(b=>!b.paid).reduce((s,b)=>s+(Number(b.amount)||0),0);
+ const availableRaw=income-expense-unpaid-saved;
+ const availableNow=Math.max(0,availableRaw);
+ available.textContent=rp(availableNow);document.getElementById('saved').textContent=rp(saved);
+ // Safe to spend respects BOTH remaining monthly budget and actual available money.
+ const budget=Math.max(0,Number(data.monthlyBudget)||0)*(periodMode==='year'?12:1);
+ const budgetRemaining=Math.max(0,budget-expense);
+ const safe=budget>0?Math.max(0,Math.min(availableNow,budgetRemaining)):0;
+ safeToSpend.textContent=rp(safe);
+ safeSpent.textContent='Terpakai '+rp(expense);
+ safeBudget.textContent='Budget '+rp(budget);
+ const usedPct=budget>0?Math.min(100,Math.round(expense/budget*100)):0;
+ safeSpendBar.style.width=usedPct+'%';
+ safeSpendNote.textContent=lang==='id'?(budget<=0?'Atur budget bulanan dulu':(expense>budget?'Budget bulan ini sudah terlewati':(safe===availableNow&&availableNow<budgetRemaining?'Dibatasi oleh uang yang benar-benar tersedia':'Sesuai sisa budget bulan ini'))):(budget<=0?'Set your monthly budget first':(expense>budget?'Monthly budget exceeded':(safe===availableNow&&availableNow<budgetRemaining?'Limited by your actual available money':'Based on your remaining monthly budget')));
+ monthlyBudget.value=data.monthlyBudget||'';renderTx();renderBudget();renderGoals();renderBills();renderMoments();renderReports();
+}
+function renderTx(){
+ const arr=[...data.transactions].sort((a,b)=>b.date.localeCompare(a.date));
+ const html=arr.length?arr.map(t=>`<div class="card tx" onclick="editTx('${t.id}')"><div class="row"><div><b>${esc(t.category)}</b><div class="sub">${esc(t.date)}${t.note?' · '+esc(t.note):''}</div></div><b class="amount ${t.type}">${t.type==='expense'?'−':'+'}${rp(t.amount)}</b></div></div>`).join(''):`<div class="card empty"><b>Belum ada transaksi</b><div class="sub">Tambah lewat tombol +.</div></div>`;
+ txList.innerHTML=html;recent.innerHTML=arr.slice(0,3).map(t=>`<div class="card tx" onclick="editTx('${t.id}')"><div class="row"><div><b>${esc(t.category)}</b><div class="sub">${esc(t.date)}</div></div><b class="amount ${t.type}">${t.type==='expense'?'−':'+'}${rp(t.amount)}</b></div></div>`).join('')||`<div class="card empty"><span class="sub">Belum ada transaksi bulan ini.</span></div>`;
+}
+function openAdd(){openM('addModal')}
+function openTx(type){closeM('addModal');txId.value='';txType.value=type;txHeading.textContent=type==='expense'?'Tambah pengeluaran':'Tambah pemasukan';txAmount.value='';txDate.value=new Date().toLocaleDateString('en-CA');txNote.value='';txDelete.classList.add('hidden');txCategory.innerHTML=(type==='expense'?expenseCats:incomeCats).map(c=>`<option>${c}</option>`).join('');openM('txModal')}
+function editTx(id){let t=data.transactions.find(x=>x.id===id);if(!t)return;txId.value=t.id;txType.value=t.type;txHeading.textContent='Edit transaksi';txAmount.value=t.amount;txDate.value=t.date;txNote.value=t.note||'';txCategory.innerHTML=(t.type==='expense'?expenseCats:incomeCats).map(c=>`<option ${c===t.category?'selected':''}>${c}</option>`).join('');txDelete.classList.remove('hidden');openM('txModal')}
+function saveTx(){let amount=Number(txAmount.value),date=txDate.value;if(amount<=0||!date)return toastMsg('Isi nominal dan tanggal');let id=txId.value,obj={id:id||uid(),type:txType.value,amount,date,category:txCategory.value,note:txNote.value.trim()};if(id){let i=data.transactions.findIndex(x=>x.id===id);if(i>=0)data.transactions[i]=obj}else data.transactions.push(obj);persist();closeM('txModal');toastMsg('Transaksi tersimpan')}
+function deleteTx(){let id=txId.value;data.transactions=data.transactions.filter(x=>x.id!==id);data.moments.forEach(m=>{if(m.transactionId===id){m.transactionId='';m.amount=0}});persist();closeM('txModal');toastMsg('Transaksi dihapus')}
+function saveMonthlyBudget(){let n=Number(monthlyBudget.value);if(n<0)return;data.monthlyBudget=n;persist();toastMsg('Budget tersimpan')}
+function renderBudget(){let allocated=Object.values(data.categoryBudgets).reduce((s,n)=>s+Number(n),0);sumBudget.textContent=rp(data.monthlyBudget);sumAllocated.textContent=rp(allocated);let u=data.monthlyBudget-allocated;sumUnallocated.textContent=(u<0?'-':'')+rp(Math.abs(u));sumUnallocated.classList.toggle('over',u<0);let tx=monthTx().filter(t=>t.type==='expense');catList.innerHTML=Object.entries(data.categoryBudgets).map(([c,b])=>{let matches=tx.filter(t=>t.category.trim().toLowerCase()===c.trim().toLowerCase()),spent=matches.reduce((s,t)=>s+t.amount,0),pct=b?Math.round(spent/b*100):0,left=b-spent;return `<div class="card" onclick="openCat('${esc(c)}')"><div class="row"><b>${esc(c)}</b><b>${rp(spent)} / ${rp(b)}</b></div><div class="progress"><i style="width:${Math.min(100,pct)}%"></i></div><div class="row sub"><span>${matches.length} transaksi · ${pct}% terpakai</span><b class="${left<0?'over':''}">${left>=0?'Sisa '+rp(left):'Lewat '+rp(-left)}</b></div></div>`}).join('')||`<div class="card empty"><span class="sub">Belum ada alokasi kategori.</span></div>`}
+function openCat(c=''){catOld.value=c;catName.innerHTML=expenseCats.map(x=>`<option ${x===c?'selected':''}>${x}</option>`).join('');catName.disabled=!!c;catAmount.value=c?data.categoryBudgets[c]:'';catDelete.classList.toggle('hidden',!c);openM('catModal')}
+function saveCat(){let c=catName.value,n=Number(catAmount.value);if(n<0)return;data.categoryBudgets[c]=n;persist();closeM('catModal');toastMsg('Budget kategori tersimpan')}
+function deleteCat(){delete data.categoryBudgets[catOld.value];persist();closeM('catModal')}
+function renderGoals(){goalList.innerHTML=data.goals.map(g=>{let pct=g.target?Math.round(g.current/g.target*100):0;return `<div class="card"><div class="row"><div><b>${esc(g.name)}</b><div class="sub">Tersimpan ${rp(g.current)} dari target ${rp(g.target)}</div></div><button class="pill" onclick="event.stopPropagation();openSaving('${g.id}')">+ Nabung</button></div><div class="goalbar"><i style="width:${Math.min(100,pct)}%"></i></div><div class="row" style="margin-top:9px"><span class="sub">${pct}%</span><button class="pill" onclick="openGoal('${g.id}')">Edit</button></div></div>`}).join('')||`<div class="card empty"><span class="sub">Belum ada goal.</span></div>`}
+function openGoal(id=''){let g=data.goals.find(x=>x.id===id);goalId.value=id;goalName.value=g?.name||'';goalTarget.value=g?.target||'';goalCurrent.value=g?.current||'';goalDelete.classList.toggle('hidden',!id);openM('goalModal')}
+function saveGoal(){let id=goalId.value,n=goalName.value.trim(),target=Number(goalTarget.value),current=Number(goalCurrent.value);if(!n||target<0||current<0)return;if(id){let g=data.goals.find(x=>x.id===id);Object.assign(g,{name:n,target,current})}else data.goals.push({id:uid(),name:n,target,current,history:[]});persist();closeM('goalModal')}
+function deleteGoal(){data.goals=data.goals.filter(x=>x.id!==goalId.value);persist();closeM('goalModal')}
+function openSaving(id){saveGoalId.value=id;saveGoalAmount.value='';saveGoalDate.value=new Date().toLocaleDateString('en-CA');openM('saveGoalModal')}
+function addSaving(){let g=data.goals.find(x=>x.id===saveGoalId.value),n=Number(saveGoalAmount.value);if(!g||n<=0||!saveGoalDate.value)return;g.current+=n;(g.history||(g.history=[])).push({id:uid(),amount:n,date:saveGoalDate.value});persist();closeM('saveGoalModal');toastMsg('Tabungan ditambahkan')}
+function renderBills(){billList.innerHTML=data.bills.map(b=>`<div class="card" onclick="openBill('${b.id}')"><div class="row"><div><b>${esc(b.name)}</b><div class="sub">Jatuh tempo ${esc(b.date)}</div></div><div style="text-align:right"><b>${rp(b.amount)}</b><div class="sub">${b.paid?'Sudah dibayar':'Belum dibayar'}</div></div></div></div>`).join('')||`<div class="card empty"><span class="sub">Belum ada tagihan.</span></div>`}
+function openBill(id=''){let b=data.bills.find(x=>x.id===id);billId.value=id;billName.value=b?.name||'';billAmount.value=b?.amount||'';billDate.value=b?.date||new Date().toLocaleDateString('en-CA');billPaid.value=String(b?.paid||false);billDelete.classList.toggle('hidden',!id);openM('billModal')}
+function saveBill(){let id=billId.value,n=billName.value.trim(),a=Number(billAmount.value),d=billDate.value;if(!n||a<0||!d)return;let o={id:id||uid(),name:n,amount:a,date:d,paid:billPaid.value==='true'};if(id){let i=data.bills.findIndex(x=>x.id===id);data.bills[i]=o}else data.bills.push(o);persist();closeM('billModal')}
+function deleteBill(){data.bills=data.bills.filter(x=>x.id!==billId.value);persist();closeM('billModal')}
+function momentExpenseCategory(kind){
+ const map={'Food & Drinks':'Makan & Minum','Wellness':'Wellness','Self Reward':'Self Reward','Hangout':'Hiburan','Hobby':'Hiburan'};
+ return map[kind]||'Lainnya'
+}
+function syncMomentMoney(){
+ const noSpend=momentKind.value==='No Spend';
+ momentMoneyBox.classList.toggle('hidden',noSpend);
+ if(noSpend)momentAmount.value=''
+}
+let selectedMomentPhotos=[],cameraStream=null,cameraFacing='environment',cameraBlob=null;
+function fileToDataURL(f){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(f)})}
+function renderSelectedMomentPhotos(){
+ const box=document.getElementById('momentPhotoPreview');
+ if(!selectedMomentPhotos.length){box.classList.add('hidden');box.innerHTML='';return}
+ box.classList.remove('hidden');
+ box.innerHTML=`<div class="composer-gallery count-${selectedMomentPhotos.length}">${selectedMomentPhotos.map((x,i)=>`<div class="composer-photo-item"><img src="${x.data}"><button type="button" onclick="removeMomentPhoto(${i})" aria-label="Hapus foto">×</button></div>`).join('')}</div><div class="composer-photo-foot"><b>${selectedMomentPhotos.length}/3 foto</b>${selectedMomentPhotos.length<3?`<button type="button" class="mini-remove" onclick="momentGallery.click()">＋ Tambah foto</button>`:''}</div>`;
+}
+function compressMomentImage(file){
+ return new Promise((resolve,reject)=>{
+  const reader=new FileReader();
+  reader.onerror=reject;
+  reader.onload=()=>{
+   const img=new Image();
+   img.onerror=reject;
+   img.onload=()=>{
+    const max=1280,scale=Math.min(1,max/Math.max(img.width,img.height));
+    const c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.width*scale));c.height=Math.max(1,Math.round(img.height*scale));
+    c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+    resolve(c.toDataURL('image/jpeg',.78));
+   };
+   img.src=reader.result;
+  };
+  reader.readAsDataURL(file);
+ })
+}
+async function setMomentPhotos(input){
+ try{
+  const files=[...(input.files||[])];
+  if(!files.length)return;
+  const remaining=Math.max(0,3-selectedMomentPhotos.length);
+  if(!remaining){toastMsg(lang==='id'?'Sudah maksimal 3 foto':'Maximum 3 photos reached');input.value='';return}
+  if(files.length>remaining)toastMsg(lang==='id'?`Maksimal 3 foto. ${remaining} foto lagi bisa ditambahkan.`:`Maximum 3 photos. You can add ${remaining} more.`);
+  for(const f of files.slice(0,remaining)){
+   if(!f.type.startsWith('image/'))continue;
+   const data=await compressMomentImage(f);
+   selectedMomentPhotos.push({data,name:f.name});
+  }
+  input.value='';renderSelectedMomentPhotos()
+ }catch(err){
+  console.error('photo select error',err);input.value='';
+  toastMsg(lang==='id'?'Foto belum bisa diproses. Coba foto lain.':'Could not process that photo. Try another one.')
+ }
+}
+function removeMomentPhoto(i){selectedMomentPhotos.splice(i,1);renderSelectedMomentPhotos()}
+function clearMomentPhoto(){selectedMomentPhotos=[];momentGallery.value='';momentPhoto.value='';renderSelectedMomentPhotos()}
+async function startCamera(){
+ stopCamera();cameraShot.classList.add('hidden');cameraVideo.classList.remove('hidden');cameraRetakeBtn.classList.add('hidden');cameraUseBtn.classList.add('hidden');cameraCaptureBtn.classList.remove('hidden');cameraFlipBtn.classList.remove('hidden');cameraBlob=null;
+ if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){cameraStatus.textContent='Browser ini tidak mendukung kamera langsung. Gunakan Pilih dari Galeri.';return}
+ try{
+  cameraStatus.textContent='Membuka kamera…';
+  cameraStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:cameraFacing}},audio:false});
+  cameraVideo.srcObject=cameraStream;await cameraVideo.play();cameraStatus.textContent='Siap. Arahkan kamera lalu tekan tombol jepret.';
+ }catch(e){cameraStatus.textContent='Kamera tidak bisa dibuka. Pastikan izin kamera diberikan dan situs dibuka melalui HTTPS/localhost.'}
+}
+function stopCamera(){if(cameraStream){cameraStream.getTracks().forEach(t=>t.stop());cameraStream=null}cameraVideo.srcObject=null}
+function openLiveCamera(){
+ document.body.classList.add('camera-open');
+ openM('cameraModal');
+ startCamera();
+}
+function closeLiveCamera(){
+ stopCamera();
+ closeM('cameraModal');
+ document.body.classList.remove('camera-open');
+ // Moment composer intentionally remains open underneath.
+}
+async function flipCamera(){cameraFacing=cameraFacing==='environment'?'user':'environment';await startCamera()}
+function captureCamera(){
+ if(!cameraVideo.videoWidth)return toastMsg('Kamera belum siap');
+ const max=1200,scale=Math.min(1,max/cameraVideo.videoWidth);
+ cameraCanvas.width=Math.round(cameraVideo.videoWidth*scale);cameraCanvas.height=Math.round(cameraVideo.videoHeight*scale);
+ cameraCanvas.getContext('2d').drawImage(cameraVideo,0,0,cameraCanvas.width,cameraCanvas.height);
+ cameraCanvas.toBlob(blob=>{
+  if(!blob)return toastMsg('Foto gagal diambil');
+  cameraBlob=blob;cameraShot.src=URL.createObjectURL(blob);cameraVideo.classList.add('hidden');cameraShot.classList.remove('hidden');
+  cameraCaptureBtn.classList.add('hidden');cameraFlipBtn.classList.add('hidden');cameraRetakeBtn.classList.remove('hidden');cameraUseBtn.classList.remove('hidden');cameraStatus.textContent='Foto siap. Pakai foto ini atau ambil ulang.';stopCamera()
+ },'image/jpeg',.88)
+}
+function retakeCamera(){startCamera()}
+async function useCameraPhoto(){
+ try{
+  if(!cameraBlob)return;
+  if(selectedMomentPhotos.length>=3){toastMsg(lang==='id'?'Sudah maksimal 3 foto':'Maximum 3 photos reached');closeLiveCamera();return}
+  const f=new File([cameraBlob],'planora-moment-'+Date.now()+'.jpg',{type:'image/jpeg'});
+  const dataUrl=await compressMomentImage(f);
+  selectedMomentPhotos.push({data:dataUrl,name:'Foto dari kamera'});
+  renderSelectedMomentPhotos();closeLiveCamera()
+ }catch(err){console.error('camera photo error',err);toastMsg(lang==='id'?'Foto kamera belum bisa diproses':'Could not process camera photo')}
+}
+function pickMood(btn){document.querySelectorAll('#momentMood .mood').forEach(x=>x.classList.remove('active'));btn.classList.add('active');selectedMomentMood=btn.dataset.value}
+function pickFeeling(btn){document.querySelectorAll('#moneyFeelingWrap .feeling').forEach(x=>x.classList.remove('active'));btn.classList.add('active');selectedMoneyFeeling=btn.dataset.value}
+function toggleMomentDetails(){const open=momentDetails.classList.toggle('hidden');momentDetailsToggle.textContent=open?'＋ Add details':'− Hide details'}
+function openMoment(){
+ closeM('addModal');clearMomentPhoto();momentCaption.value='';momentAmount.value='';
+ momentKind.value='Self Reward';
+ selectedMomentMood='happy';selectedMoneyFeeling='worth';
+ document.querySelectorAll('#momentMood .mood').forEach((x,i)=>x.classList.toggle('active',i===0));
+ document.querySelectorAll('#moneyFeelingWrap .feeling').forEach((x,i)=>x.classList.toggle('active',i===0));
+ momentWith.value='';momentPlace.value='';momentMapUrl.value='';momentNote.value='';if(window.selectedLocation){selectedLocation.classList.add('hidden');selectedLocation.innerHTML=''}if(window.locationSearchWrap)locationSearchWrap.classList.remove('hidden');if(window.locationSuggestions){locationSuggestions.classList.add('hidden');locationSuggestions.innerHTML=''};momentDetails.classList.add('hidden');momentDetailsToggle.textContent='＋ Add details';
+ syncMomentMoney();openM('momentModal')
+}
+function normalizeMapUrl(v){
+ if(!v)return '';
+ try{const u=new URL(v);const h=u.hostname.toLowerCase();return (h.includes('google.')||h==='maps.app.goo.gl'||h.endsWith('.google.com'))?u.href:''}catch(e){return ''}
+}
+// PLANORA LOCATION — paste your restricted Geoapify browser key here.
+// This key is intended for a browser app and should remain restricted to the Planora origin in Geoapify.
+const GEOAPIFY_API_KEY='02928738eb1a4cd4980e18976dd7ee4b';
+let locationSearchTimer=null,locationAbort=null,locationResults=[];
+
+function handleLocationInput(q){
+ const box=document.getElementById('locationSuggestions');if(!box)return;
+ clearTimeout(locationSearchTimer);
+ q=(q||'').trim();
+ if(q.length<2){box.classList.add('hidden');box.innerHTML='';return}
+ if(!GEOAPIFY_API_KEY||GEOAPIFY_API_KEY==='PASTE_YOUR_GEOAPIFY_KEY_HERE'){
+  box.innerHTML='<div class="location-empty">Tambahkan Geoapify API key di konfigurasi Planora.</div>';
+  box.classList.remove('hidden');return
+ }
+ box.innerHTML='<div class="location-loading"><span></span>Mencari lokasi...</div>';
+ box.classList.remove('hidden');
+ locationSearchTimer=setTimeout(()=>searchGeoapifyPlaces(q),420)
+}
+async function searchGeoapifyPlaces(q){
+ const box=document.getElementById('locationSuggestions');if(!box)return;
+ try{
+  if(locationAbort)locationAbort.abort();
+  locationAbort=new AbortController();
+  const url='https://api.geoapify.com/v1/geocode/autocomplete?text='+encodeURIComponent(q)+'&format=json&limit=6&lang=id&filter=countrycode:id&apiKey='+encodeURIComponent(GEOAPIFY_API_KEY);
+  const res=await fetch(url,{signal:locationAbort.signal});
+  if(!res.ok)throw new Error('Geoapify '+res.status);
+  const json=await res.json();
+  locationResults=(json.results||[]).map(x=>({
+   name:x.name||x.address_line1||x.formatted||q,
+   area:[x.city||x.county,x.state].filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i).join(', '),
+   formatted:x.formatted||'',
+   lat:x.lat,lon:x.lon,placeId:x.place_id||''
+  }));
+  box.innerHTML=locationResults.length?locationResults.map((x,i)=>`<button type="button" class="location-result" onclick="selectPlanoraLocation(${i})"><span class="pin">📍</span><span><b>${esc(x.name)}</b><small>${esc(x.area||x.formatted)}</small></span></button>`).join(''):`<button type="button" class="location-result use-typed" onclick="useTypedLocation()"><span class="pin">📍</span><span><b>Gunakan “${esc(q)}”</b><small>Simpan nama lokasi ini</small></span></button>`;
+ }catch(err){
+  if(err.name==='AbortError')return;
+  console.error('location search error',err);
+  box.innerHTML='<div class="location-empty">Lokasi belum bisa dicari. Coba lagi.</div>'
+ }
+}
+function selectPlanoraLocation(i){
+ const x=locationResults[i];if(!x)return;
+ const display=x.name+(x.area?' · '+x.area:'');
+ momentPlace.value=display;
+ momentMapUrl.value=(Number.isFinite(Number(x.lat))&&Number.isFinite(Number(x.lon)))?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(x.lat+','+x.lon)}`:'';
+ locationSuggestions.classList.add('hidden');
+ selectedLocation.innerHTML=`<span>📍 ${esc(x.name)}${x.area?`<small>${esc(x.area)}</small>`:''}</span><button type="button" onclick="clearPlanoraLocation()">×</button>`;
+ selectedLocation.classList.remove('hidden');locationSearchWrap.classList.add('hidden')
+}
+function useTypedLocation(){
+ const q=(momentPlace.value||'').trim();if(!q)return;
+ locationSuggestions.classList.add('hidden');momentMapUrl.value='';
+ selectedLocation.innerHTML=`<span>📍 ${esc(q)}<small>Lokasi manual</small></span><button type="button" onclick="clearPlanoraLocation()">×</button>`;
+ selectedLocation.classList.remove('hidden');locationSearchWrap.classList.add('hidden')
+}
+function clearPlanoraLocation(){
+ momentPlace.value='';momentMapUrl.value='';locationResults=[];
+ selectedLocation.classList.add('hidden');selectedLocation.innerHTML='';
+ locationSearchWrap.classList.remove('hidden');momentPlace.focus()
+}
+function openMomentMap(url){if(url)window.open(url,'_blank','noopener')}
+function saveMoment(){
+ try{
+  const caption=momentCaption.value.trim(),kind=momentKind.value;
+  const amount=kind==='No Spend'?0:Number(momentAmount.value||0);
+  if(!caption)return toastMsg(lang==='id'?'Isi caption dulu':'Add a caption first');
+  if(!Number.isFinite(amount)||amount<0)return toastMsg(lang==='id'?'Nominal tidak valid':'Invalid amount');
+
+  const now=new Date();
+  const localDate=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
+  const createdAt=now.toISOString();
+  const momentId=uid();
+  const images=(selectedMomentPhotos||[]).slice(0,3).map(x=>typeof x==='string'?x:x.data).filter(Boolean);
+  const img=images[0]||'';
+  let txId='';
+
+  if(amount>0){
+   txId=uid();
+   data.transactions.push({
+    id:txId,type:'expense',amount:amount,date:localDate,
+    category:momentExpenseCategory(kind),note:'Moment: '+caption,momentId:momentId
+   });
+  }
+
+  data.moments.push({
+   id:momentId,image:img,images:images,caption:caption,kind:kind,
+   date:localDate,createdAt:createdAt,amount:amount,transactionId:txId,
+   mood:selectedMomentMood||'happy',
+   moneyFeeling:amount>0?(selectedMoneyFeeling||'worth'):'',
+   withPerson:(document.getElementById('momentWith')?.value||'').trim(),
+   place:(document.getElementById('momentPlace')?.value||'').trim(),mapUrl:normalizeMapUrl((document.getElementById('momentMapUrl')?.value||'').trim()),
+   littleNote:(document.getElementById('momentNote')?.value||'').trim(),
+   favorite:false
+  });
+
+  if(!persist()){
+   data.moments=data.moments.filter(x=>x.id!==momentId);
+   if(txId)data.transactions=data.transactions.filter(x=>x.id!==txId);
+   return;
+  }
+  closeM('momentModal');
+  toastMsg(amount>0?(lang==='id'?'Moment & pengeluaran tersimpan':'Moment & expense saved'):(lang==='id'?'Moment tersimpan':'Moment saved'));
+ }catch(err){
+  console.error('saveMoment error',err);
+  toastMsg(lang==='id'?'Moment belum tersimpan. Coba lagi.':'Moment was not saved. Please try again.');
+ }
+}
+let timelineDate=new Date();
+let timelineMonth=timelineDate.getMonth(),timelineYear=timelineDate.getFullYear();
+const MONTHS_ID=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+const MONTHS_EN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTHS_FULL_ID=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const MONTHS_FULL_EN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function momentTimestamp(m){return m.createdAt?new Date(m.createdAt):new Date((m.date||'1970-01-01')+'T12:00:00')}
+function formatMomentDay(m){
+ const d=momentTimestamp(m),daysId=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'],daysEn=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+ return `${String(d.getDate()).padStart(2,'0')} ${(lang==='id'?MONTHS_ID:MONTHS_EN)[d.getMonth()].toUpperCase()} · ${(lang==='id'?daysId:daysEn)[d.getDay()]}`;
+}
+function renderTimelineControls(){
+ if(!document.getElementById('momentMonthStrip'))return;
+ momentYearBtn.textContent=timelineYear+'⌄';
+ const names=lang==='id'?MONTHS_ID:MONTHS_EN;
+ momentMonthStrip.innerHTML=names.map((m,i)=>`<button class="month-pill ${i===timelineMonth?'active':''}" onclick="selectTimelineMonth(${i})">${m}</button>`).join('');
+ requestAnimationFrame(()=>momentMonthStrip.querySelector('.active')?.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'}));
+}
+function selectTimelineMonth(m){timelineMonth=m;renderMoments()}
+function cycleMomentYear(){
+ const years=[...new Set(data.moments.map(x=>momentTimestamp(x).getFullYear()).concat([new Date().getFullYear()]))].sort((a,b)=>b-a);
+ let i=years.indexOf(timelineYear);timelineYear=years[(i+1)%years.length];renderMoments()
+}
+function monthMoments(){
+ return [...data.moments].filter(m=>{let d=momentTimestamp(m);return d.getFullYear()===timelineYear&&d.getMonth()===timelineMonth}).sort((a,b)=>momentTimestamp(b)-momentTimestamp(a))
+}
+function moodSymbol(v){return {happy:'☺',grateful:'♡',proud:'✦',peaceful:'☘'}[v]||'•'}
+function momentImages(m){return Array.isArray(m.images)&&m.images.length?m.images:(m.image?[m.image]:[])}
+function momentGalleryHTML(m,home=false){
+ const imgs=momentImages(m);if(!imgs.length)return `<div class="moment-placeholder">◎</div>`;
+ if(home)return `<img src="${imgs[0]}" alt="">`;
+ return `<div class="moment-gallery swipe-gallery" data-gallery><div class="swipe-track">${imgs.slice(0,3).map((src,i)=>`<div class="swipe-slide"><img src="${src}" alt="" loading="lazy"></div>`).join('')}</div>${imgs.length>1?`<div class="gallery-count">1/${Math.min(imgs.length,3)}</div><div class="gallery-dots">${imgs.slice(0,3).map((_,i)=>`<i class="${i===0?'active':''}"></i>`).join('')}</div>`:''}</div>`
+}
+function momentCard(m,i,active=false,vertical=false){
+ if(vertical)return `<article class="journal-entry">
+   <div class="journal-head"><div><div class="journal-date">${formatMomentDay(m)}</div><div class="journal-mood">${moodSymbol(m.mood)}</div></div><button class="favorite-btn ${m.favorite?'active':''}" onclick="toggleFavorite('${m.id}')" aria-label="Favorite">${m.favorite?'♥':'♡'}</button></div>
+   <div class="journal-gallery">${momentGalleryHTML(m,false)}</div>
+   <div class="journal-copy"><div class="journal-title">${esc(m.caption)}</div>${m.place?`<div class="caption-location ${m.mapUrl?'linked':''}" ${m.mapUrl?`onclick="openMomentMap('${esc(m.mapUrl)}')"`:''}>📍 ${esc(m.place)}${m.mapUrl?' ↗':''}</div>`:''}
+    <div class="journal-tags"><span>${esc(m.kind)}</span>${Number(m.amount||0)>0?`<span>${rp(m.amount)}</span><span>${feelingLabel(m.moneyFeeling)||'Worth it'}</span>`:`<span>${lang==='id'?'Tanpa pengeluaran':'No spend'}</span>`}</div>
+    ${m.withPerson?`<div class="journal-with">${lang==='id'?'Bersama':'With'} ${esc(m.withPerson)}</div>`:''}${m.littleNote?`<div class="journal-note">“${esc(m.littleNote)}”</div>`:''}
+   </div></article>`;
+ return `<article class="moment ${active?'active':''}"><div class="moment-photo">${momentGalleryHTML(m,true)}<div class="moment-chip">${esc(m.kind)}</div></div><div class="moment-copy"><div class="moment-date">${formatMomentDay(m)}</div><div class="moment-caption">${esc(m.caption)}</div><div class="moment-meta">${Number(m.amount||0)>0?`<b>${rp(m.amount)}</b><span> · ${feelingLabel(m.moneyFeeling)||''}</span>`:`<span>${lang==='id'?'tanpa pengeluaran':'no spend'}</span>`}</div></div></article>`
+}
+function feelingLabel(v){const x={worth:'Worth it',necessary:'Necessary',treat:'Treat myself',skip:'Could skip'};return x[v]||''}
+function toggleFavorite(id){let m=data.moments.find(x=>x.id===id);if(!m)return;m.favorite=!m.favorite;persist()}
+function renderMoments(){
+ const all=[...data.moments].sort((a,b)=>momentTimestamp(b)-momentTimestamp(a)),arr=all.slice(0,7);
+ momentIndex=Math.min(momentIndex,Math.max(0,arr.length-1));
+ homeMoments.innerHTML=arr.length?`<div class="moment-stage"><button class="arrow prev" onclick="moveMoment(-1)" ${momentIndex===0?'disabled':''}>‹</button><div class="carousel">${arr.map((m,i)=>momentCard(m,i,i===momentIndex,false)).join('')}</div><button class="arrow next" onclick="moveMoment(1)" ${momentIndex===arr.length-1?'disabled':''}>›</button></div><div class="dots">${arr.map((_,i)=>`<i class="dot ${i===momentIndex?'active':''}"></i>`).join('')}</div>`:`<div class="moment-empty"><b>${lang==='id'?'Belum ada Moment':'No Moments yet'}</b></div>`;
+ momentsAll.innerHTML=all.length?`<div class="life-journal">${all.map((m,i)=>momentCard(m,i,true,true)).join('')}</div>`:`<div class="timeline-empty"><span>✦</span><b>${lang==='id'?'Belum ada cerita':'No stories yet'}</b><div>${lang==='id'?'Moment kecilmu nanti akan tinggal di sini.':'Your little moments will live here.'}</div></div>`
+}
+function moveMoment(d){
+ const n=Math.min(7,data.moments.length),next=Math.max(0,Math.min(n-1,momentIndex+d));
+ if(next===momentIndex)return;momentIndex=next;
+ const c=document.querySelector('#homeMoments .carousel');if(!c){renderMoments();return}
+ const cards=[...c.querySelectorAll('.moment')];
+ cards.forEach((x,i)=>x.classList.toggle('active',i===momentIndex));
+ document.querySelectorAll('#homeMoments .dot').forEach((x,i)=>x.classList.toggle('active',i===momentIndex));
+ const a=cards[momentIndex];
+ if(a)c.scrollTo({left:a.offsetLeft-(c.clientWidth-a.clientWidth)/2,behavior:'smooth'});
+ const prev=document.querySelector('#homeMoments .arrow.prev'),nextBtn=document.querySelector('#homeMoments .arrow.next');
+ if(prev)prev.disabled=momentIndex===0;if(nextBtn)nextBtn.disabled=momentIndex===n-1;
+}
+let wrappedMode='month',wrappedPeriod=new Date();
+function toggleWrappedPicker(){wrappedPicker.classList.toggle('hidden');renderWrappedPicker()}
+function setWrappedMode(m){wrappedMode=m;renderWrappedPicker();renderReports()}
+function shiftWrapped(d){wrappedPeriod=wrappedMode==='month'?new Date(wrappedPeriod.getFullYear(),wrappedPeriod.getMonth()+d,1):new Date(wrappedPeriod.getFullYear()+d,wrappedPeriod.getMonth(),1);renderWrappedPicker();renderReports()}
+function wrappedTx(){return data.transactions.filter(t=>{let d=new Date(t.date+'T00:00:00');return d.getFullYear()===wrappedPeriod.getFullYear()&&(wrappedMode==='year'||d.getMonth()===wrappedPeriod.getMonth())})}
+function renderWrappedPicker(){
+ if(!document.getElementById('wrappedPeriodLabel'))return;
+ wrappedModeMonth.classList.toggle('active',wrappedMode==='month');wrappedModeYear.classList.toggle('active',wrappedMode==='year');
+ const names=lang==='id'?MONTHS_FULL_ID:MONTHS_FULL_EN,month=names[wrappedPeriod.getMonth()];
+ wrappedPeriodLabel.textContent=wrappedMode==='month'?`${month} ${wrappedPeriod.getFullYear()}`:`${wrappedPeriod.getFullYear()}`
+}
+function renderReports(){let tx=wrappedTx(),inc=tx.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0),exp=tx.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);repIncome.textContent=rp(inc);repExpense.textContent=rp(exp);let cats={};tx.filter(t=>t.type==='expense').forEach(t=>cats[t.category]=(cats[t.category]||0)+t.amount);reportCats.innerHTML=Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([c,n])=>`<div class="card"><div class="row"><b>${esc(c)}</b><b>${rp(n)}</b></div><div class="reportbar"><i style="width:${exp?Math.round(n/exp*100):0}%"></i></div></div>`).join('')||`<div class="card empty"><span class="sub">Belum ada pengeluaran bulan ini.</span></div>`}
+function clearTransactions(){data.transactions=[];data.moments.forEach(m=>{m.transactionId='';m.amount=0});persist();toastMsg('Semua transaksi dihapus')}
+function resetAll(){data=empty();persist();toastMsg('Planora kembali ke Rp0')}
+function backup(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='planora-backup.json';a.click();URL.revokeObjectURL(a.href)}
+function restoreBackup(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!valid(x))throw 0;data=x;persist();toastMsg('Backup dipulihkan')}catch(_){toastMsg('File backup tidak valid')}};r.readAsText(f)}
+
+
+let galleryScrollTimer=null;
+document.addEventListener('scroll',e=>{
+ const track=e.target.closest&&e.target.closest('.swipe-track');if(!track)return;
+ clearTimeout(galleryScrollTimer);
+ galleryScrollTimer=setTimeout(()=>{
+  const gallery=track.closest('[data-gallery]'),slides=[...track.children];if(!gallery||!slides.length)return;
+  const index=Math.max(0,Math.min(slides.length-1,Math.round(track.scrollLeft/Math.max(1,track.clientWidth))));
+  gallery.querySelectorAll('.gallery-dots i').forEach((d,i)=>d.classList.toggle('active',i===index));
+  const count=gallery.querySelector('.gallery-count');if(count)count.textContent=`${index+1}/${slides.length}`;
+ },60)
+},true);
+
+document.addEventListener('keydown',e=>{
+ if(e.key==='Escape'&&cameraModal.classList.contains('open')){
+   e.preventDefault();e.stopPropagation();closeLiveCamera();
+ }
+});
+
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
+</script></body></html>
