@@ -864,7 +864,7 @@ function handleLocationInput(q){
  clearTimeout(locationSearchTimer);
  q=(q||'').trim();
  if(q.length<2){box.classList.add('hidden');box.innerHTML='';return}
- if(!GEOAPIFY_API_KEY||GEOAPIFY_API_KEY==='02928738eb1a4cd4980e18976dd7ee4b'){
+ if(!GEOAPIFY_API_KEY||GEOAPIFY_API_KEY==='PASTE_YOUR_GEOAPIFY_KEY_HERE'){
   box.innerHTML='<div class="location-empty">Tambahkan Geoapify API key di konfigurasi Planora.</div>';
   box.classList.remove('hidden');return
  }
