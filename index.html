@@ -6,6 +6,8 @@
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
 <link rel="apple-touch-icon" href="./icon-192.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./config.js"></script>
 <style>
 :root{--bg:#f5f5f1;--card:#fff;--ink:#121713;--muted:#7d837d;--line:#dfe2dc;--accent:#ef6548;--green:#748c68}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;font-size:14px}
@@ -591,8 +593,11 @@ html,body,.app{background:#fff!important}
 .progress i.planora-near,.reportbar i.planora-near{background:#8fbe72!important}
 
 
+
+#planoraAccessGate{position:fixed;inset:0;z-index:99999;background:#fff;display:flex;align-items:center;justify-content:center;padding:24px}.access-card{width:min(430px,100%);text-align:center}.access-mark{width:70px;height:70px;border-radius:22px;background:#087A5B;color:#fff;display:grid;place-items:center;margin:0 auto 20px;font-size:24px;font-weight:900}.access-card h1{font-size:30px;margin:0;color:#17332b}.access-card p{color:#718078;line-height:1.55}.access-card input{width:100%;padding:15px 16px;border:1px solid #d8e2dd;border-radius:14px;text-align:center;text-transform:uppercase;font-weight:800;letter-spacing:.06em;margin:12px 0}.access-card button{width:100%;padding:14px;border:0;border-radius:14px;background:#087A5B;color:#fff;font-weight:800;cursor:pointer}.access-note{font-size:12px!important}.access-error{min-height:20px;color:#b42318!important;font-size:13px}.access-hidden{display:none!important}
 </style>
 </head><body>
+<div id="planoraAccessGate"><div class="access-card"><div class="access-mark">CH</div><h1>Welcome to Planora</h1><p>money, moments & little things.</p><input id="planoraAccessCode" autocomplete="off" placeholder="PLN-BUDGET-XXXX-XXXX"><button id="planoraActivateBtn">Activate Planora</button><p id="planoraAccessMsg" class="access-error"></p><p class="access-note">Your access code is included with your purchase.</p></div></div>
 <div id="planoraSplash" style="position:fixed;inset:0;z-index:9999;background:#fff;display:grid;place-items:center;transition:.35s">
  <div style="text-align:center">
   <svg class="planora-ch2" viewBox="0 0 64 64" aria-label="Planora">
@@ -1154,4 +1159,22 @@ document.addEventListener('keydown',e=>{
 
 applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1100);
-</script></body></html>
+</script>
+<script>
+(async function(){
+ const gate=document.getElementById('planoraAccessGate'), input=document.getElementById('planoraAccessCode'), btn=document.getElementById('planoraActivateBtn'), out=document.getElementById('planoraAccessMsg');
+ const cfg=window.PLANORA_CONFIG||{}; if(!cfg.url||!cfg.key){out.textContent='Planora Access belum terhubung.';return;}
+ const sb=supabase.createClient(cfg.url,cfg.key); const TOKEN_KEY='planora_device_token_v1', ACCESS_KEY='planora_access_code_v1';
+ let token=localStorage.getItem(TOKEN_KEY); if(!token){token=(crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random().toString(36).slice(2));localStorage.setItem(TOKEN_KEY,token)}
+ async function activate(code,silent){code=(code||'').trim().toUpperCase();if(!code){if(!silent)out.textContent='Masukkan access code kamu.';return false} if(!silent){btn.disabled=true;btn.textContent='Checking…';out.textContent='';}
+  const {data,error}=await sb.rpc('activate_planora',{p_access_code:code,p_device_token:token,p_device_name:(navigator.platform||'Device')});
+  if(!silent){btn.disabled=false;btn.textContent='Activate Planora';}
+  if(error){if(!silent)out.textContent='Tidak dapat memeriksa access code.';return false}
+  if(data&&data.success){localStorage.setItem(ACCESS_KEY,code);gate.classList.add('access-hidden');return true}
+  localStorage.removeItem(ACCESS_KEY);if(!silent)out.textContent=(data&&data.message)||'Access code tidak valid.';return false;
+ }
+ const saved=localStorage.getItem(ACCESS_KEY);if(saved){input.value=saved;await activate(saved,true)}
+ btn.addEventListener('click',()=>activate(input.value,false));input.addEventListener('keydown',e=>{if(e.key==='Enter')activate(input.value,false)});
+})();
+</script>
+</body></html>
