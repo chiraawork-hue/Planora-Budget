@@ -1,0 +1,13 @@
+{
+  "name": "Planora Admin",
+  "short_name": "Planora Admin",
+  "description": "Planora access management",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f8f6",
+  "theme_color": "#087A5B",
+  "icons": [
+    {"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
