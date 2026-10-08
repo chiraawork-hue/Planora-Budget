@@ -51,6 +51,9 @@ input,select,textarea{width:100%;border:1px solid var(--line);border-radius:14px
 .expense-add>span{color:var(--accent)}.income-add>span{color:#587552}
 @media(max-width:380px){.money-add-grid{grid-template-columns:1fr}.moment{flex-basis:80%}.carousel{padding-left:13%;padding-right:13%}}
 
+.journal-actions{display:flex;align-items:center;gap:9px}
+.moment-delete-btn{border:1px solid #e8d8d3;background:#fff9f7;color:#a54f43;border-radius:999px;padding:8px 12px;font:700 11px inherit;cursor:pointer;min-height:34px}
+.moment-delete-btn:hover{background:#fcebe7}
 /* V3 lifestyle Moments — softer, photo-first, side peek */
 .moment-stage{position:relative;margin:0 -18px;overflow:hidden;padding:5px 0 3px}
 .moment-stage .carousel{display:flex;align-items:center;gap:14px;overflow:hidden;padding:12px 15% 22px}
@@ -1093,7 +1096,7 @@ function momentGalleryHTML(m,home=false){
 }
 function momentCard(m,i,active=false,vertical=false){
  if(vertical)return `<article class="journal-entry">
-   <div class="journal-head"><div><div class="journal-date">${formatMomentDay(m)}</div><div class="journal-mood">${moodSymbol(m.mood)}</div></div><button class="favorite-btn ${m.favorite?'active':''}" onclick="toggleFavorite('${m.id}')" aria-label="Favorite">${m.favorite?'♥':'♡'}</button></div>
+   <div class="journal-head"><div><div class="journal-date">${formatMomentDay(m)}</div><div class="journal-mood">${moodSymbol(m.mood)}</div></div><div class="journal-actions"><button class="moment-delete-btn" onclick="deleteMoment('${m.id}')" aria-label="Hapus Moment" title="Hapus Moment">Hapus</button><button class="favorite-btn ${m.favorite?'active':''}" onclick="toggleFavorite('${m.id}')" aria-label="Favorite">${m.favorite?'♥':'♡'}</button></div></div>
    <div class="journal-gallery">${momentGalleryHTML(m,false)}</div>
    <div class="journal-copy"><div class="journal-title">${esc(m.caption)}</div>${m.place?`<div class="caption-location ${m.mapUrl?'linked':''}" ${m.mapUrl?`onclick="openMomentMap('${esc(m.mapUrl)}')"`:''}>📍 ${esc(m.place)}${m.mapUrl?' ↗':''}</div>`:''}
     <div class="journal-tags"><span>${esc(m.kind)}</span>${Number(m.amount||0)>0?`<span>${rp(m.amount)}</span><span>${feelingLabel(m.moneyFeeling)||'Worth it'}</span>`:`<span>${lang==='id'?'Tanpa pengeluaran':'No spend'}</span>`}</div>
@@ -1102,6 +1105,15 @@ function momentCard(m,i,active=false,vertical=false){
  return `<article class="moment ${active?'active':''}"><div class="moment-photo">${momentGalleryHTML(m,true)}<div class="moment-chip">${esc(m.kind)}</div></div><div class="moment-copy"><div class="moment-date">${formatMomentDay(m)}</div><div class="moment-caption">${esc(m.caption)}</div><div class="moment-meta">${Number(m.amount||0)>0?`<b>${rp(m.amount)}</b><span> · ${feelingLabel(m.moneyFeeling)||''}</span>`:`<span>${lang==='id'?'tanpa pengeluaran':'no spend'}</span>`}</div></div></article>`
 }
 function feelingLabel(v){const x={worth:'Worth it',necessary:'Necessary',treat:'Treat myself',skip:'Could skip'};return x[v]||''}
+function deleteMoment(id){
+ const m=data.moments.find(x=>String(x.id)===String(id));if(!m)return;
+ const message=lang==='id'?'Hapus Moment ini? Foto dan ceritanya akan dihapus, tetapi transaksi keuangan yang terhubung tetap tersimpan.':'Delete this Moment? Its photos and story will be removed, but any linked financial transaction will remain.';
+ if(!window.confirm(message))return;
+ const before=data.moments;
+ data.moments=before.filter(x=>String(x.id)!==String(id));
+ if(!persist()){data.moments=before;render();return}
+ toastMsg(lang==='id'?'Moment berhasil dihapus':'Moment deleted');
+}
 function toggleFavorite(id){let m=data.moments.find(x=>x.id===id);if(!m)return;m.favorite=!m.favorite;persist()}
 function renderMoments(){
  const all=[...data.moments].sort((a,b)=>momentTimestamp(b)-momentTimestamp(a)),arr=all.slice(0,7);
