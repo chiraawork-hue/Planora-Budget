@@ -1053,6 +1053,25 @@ header .brand-lockup .planora-ch2{flex:none}
  #home .money-card,#home .money-card.dark{padding:12px 10px!important}
  #home .home-actions-line button{font-size:9px!important}
 }
+
+/* Splash wordmark is real responsive text, never a clipped image */
+#planoraSplash .splash-lockup{display:flex!important;align-items:center!important;justify-content:center!important;gap:clamp(7px,2vw,16px)!important;width:min(86vw,470px)!important;max-width:470px!important}
+#planoraSplash .splash-mark{flex:0 0 31%!important;width:31%!important;max-width:145px!important;min-width:0!important}
+#planoraSplash .splash-mark img{display:block!important;width:100%!important;height:auto!important;max-height:150px!important;object-fit:contain!important}
+#planoraSplash .splash-wordmark{flex:1 1 auto!important;width:auto!important;min-width:0!important;max-width:none!important;margin:0!important;overflow:visible!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:flex-start!important;gap:0!important;line-height:.99!important;letter-spacing:-.055em!important;white-space:nowrap!important;font-family:Inter,ui-rounded,system-ui,sans-serif!important}
+#planoraSplash .splash-wordmark strong{display:block!important;font-size:clamp(27px,7.5vw,60px)!important;font-weight:850!important;line-height:1.02!important;letter-spacing:-.06em!important;color:#063b2a!important}
+#planoraSplash .splash-wordmark span{display:block!important;font-size:clamp(26px,7.25vw,57px)!important;font-weight:800!important;line-height:1.02!important;letter-spacing:-.06em!important;color:#4b9d69!important}
+@media(max-width:520px){
+ #planoraSplash .splash-lockup{width:min(89vw,350px)!important;gap:8px!important}
+ #planoraSplash .splash-mark{flex:0 0 29%!important;width:29%!important;max-width:103px!important}
+ #planoraSplash .splash-wordmark strong{font-size:clamp(25px,7.2vw,40px)!important}
+ #planoraSplash .splash-wordmark span{font-size:clamp(24px,7vw,39px)!important}
+}
+@media(max-width:350px){
+ #planoraSplash .splash-lockup{width:92vw!important;gap:5px!important}
+ #planoraSplash .splash-wordmark strong{font-size:clamp(23px,7vw,28px)!important}
+ #planoraSplash .splash-wordmark span{font-size:clamp(22px,6.8vw,27px)!important}
+}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1077,7 +1096,7 @@ header .brand-lockup .planora-ch2{flex:none}
 <path d="M48 21c1-6 5-9 10-9-1 6-4 10-10 11z" fill="#D6B66F"/>
 </svg></div><div class="onboarding-count" id="onboardCount">01 / 06</div><h2 id="onboardTitle">Welcome to Planora Budget</h2><p id="onboardDescription">Kelola keuangan dan momen kecilmu dalam satu tempat.</p><div class="onboarding-dots" id="onboardDots"></div></div><div class="onboarding-actions"><button type="button" id="onboardBack" onclick="movePlanoraOnboarding(-1)">Kembali</button><button type="button" id="onboardNext" onclick="movePlanoraOnboarding(1)">Lanjut →</button></div></div></div>
 <div id="planoraDeleteConfirm" class="planora-confirm-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="planoraConfirmTitle"><div class="planora-confirm-card"><div class="planora-confirm-symbol">×</div><h2 id="planoraConfirmTitle">Hapus transaksi ini?</h2><p id="planoraConfirmDescription">Transaksi akan dihapus dari catatan dan saldo serta ringkasan keuangan akan diperbarui.</p><div class="planora-confirm-actions"><button type="button" onclick="closePlanoraDeleteConfirm()">Batal</button><button type="button" class="confirm-danger" onclick="approvePlanoraDeleteConfirm()">Ya, hapus</button></div></div></div>
-<div id="planoraSplash" role="status" aria-label="Memuat Planora Budget"><div class="splash-lockup"><div class="splash-mark"><img src="./planora-budget-ch-approved.webp" alt="CH" onerror="this.onerror=null;this.src='./icon.svg'"></div><div class="splash-wordmark"><img src="./planora-budget-wordmark-approved.webp" alt="Planora Budget" onerror="this.style.display='none';this.parentElement.textContent='Planora Budget'"></div></div></div>
+<div id="planoraSplash" role="status" aria-label="Memuat Planora Budget"><div class="splash-lockup"><div class="splash-mark"><img src="./planora-budget-ch-approved.webp" alt="CH" onerror="this.onerror=null;this.src='./icon.svg'"></div><div class="splash-wordmark" aria-label="Planora Budget"><strong>Planora</strong><span>Budget</span></div></div></div>
 <div class="app">
 <header><div class="brand-lockup"><svg class="planora-ch2" viewBox="0 0 64 64" aria-label="Planora">
 <path d="M42 12C24 6 10 17 10 32s13 25 30 20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
@@ -2226,7 +2245,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=58').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=59').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
