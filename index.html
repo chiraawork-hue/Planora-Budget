@@ -1131,6 +1131,20 @@ header .brand-lockup .planora-ch2{flex:none}
 #home .home-actions-line button span{font-weight:700!important}
 #home .money-card.dark{border-top-color:#1686cc!important}
 #home .money-card:not(.dark){border-top-color:#e6a000!important}
+
+/* Water budget: rising fill shows spent share, not remaining allowance */
+#home #safeWaterCard{position:relative!important;isolation:isolate;overflow:hidden!important;min-height:185px!important;background:#fff!important;transition:border-color .3s ease!important}
+#home #safeWaterCard .safe-water-fill{position:absolute;z-index:0;left:0;right:0;bottom:0;height:0;background:linear-gradient(180deg,rgba(0,171,136,.13),rgba(0,171,136,.25));pointer-events:none;transition:height 850ms cubic-bezier(.22,.7,.3,1)}
+#home #safeWaterCard .safe-water-wave{position:absolute;left:-10%;width:120%;height:16px;top:-8px;background:rgba(0,171,136,.17);border-radius:50%;animation:safeWaterDrift 5s ease-in-out infinite alternate}
+#home #safeWaterCard>.safe-top,#home #safeWaterCard>.safe-note,#home #safeWaterCard>.safe-progress,#home #safeWaterCard>.safe-foot{position:relative;z-index:1}
+#home #safeWaterCard .safe-progress{background:rgba(210,225,218,.85)!important}
+#home #safeWaterCard.safe-water-high .safe-water-fill{background:linear-gradient(180deg,rgba(15,151,197,.19),rgba(15,151,197,.32))}
+#home #safeWaterCard.safe-water-high .safe-water-wave{background:rgba(15,151,197,.21)}
+#home #safeWaterCard.safe-water-full .safe-water-fill{background:linear-gradient(180deg,rgba(229,125,47,.19),rgba(229,125,47,.35))}
+#home #safeWaterCard.safe-water-full .safe-water-wave{background:rgba(229,125,47,.21)}
+@keyframes safeWaterDrift{from{transform:translateX(-2%) scaleY(.75)}to{transform:translateX(2%) scaleY(1.15)}}
+@media(prefers-reduced-motion:reduce){#home #safeWaterCard .safe-water-fill{transition:none!important}#home #safeWaterCard .safe-water-wave{animation:none!important}}
+@media(max-width:520px){#home #safeWaterCard{min-height:165px!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1164,7 +1178,8 @@ header .brand-lockup .planora-ch2{flex:none}
 </svg><div class="brand-wordmark"><div class="brand">Planora <span>Budget</span></div><div class="sub">money, moments & little things.</div></div></div><button class="iconbtn" onclick="page('settings')">⚙</button></header>
 
 <main id="home" class="active"><div class="home-checkin-header"><div class="home-checkin-heading"><div class="eyebrow">Your money, in harmony.</div><div class="home-checkin-sub">Keuanganmu, lebih tertata.</div></div><div class="home-period-selectors"><div class="period-boxes" id="homeBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="homeMonthBtn" onclick="openPeriodBox('home','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="homeYearBtn" onclick="openPeriodBox('home','year')">Tahun</button></div></div><label class="home-period-field"><span>BULAN</span><select id="homeMonthSelect" aria-label="Pilih bulan" onchange="setHomePeriodMonth(this.value)"></select></label><label class="home-period-field home-year-field"><span>TAHUN</span><select id="homeYearSelect" aria-label="Pilih tahun" onchange="setHomePeriodYear(this.value)"></select></label></div></div>
-<div class="safe-card">
+<div class="safe-card" id="safeWaterCard">
+ <div class="safe-water-fill" id="safeWaterFill" aria-hidden="true"><div class="safe-water-wave"></div></div>
  <div class="safe-top"><div><div class="safe-label" data-i18n="safe">AMAN DIBELANJAKAN</div><b id="safeToSpend">Rp0</b></div><div class="safe-leaf">⌁</div></div>
  <div class="safe-note" id="safeSpendNote">Sesuai sisa budget bulan ini</div>
  <div class="safe-progress"><i id="safeSpendBar"></i></div>
@@ -1689,6 +1704,8 @@ function render(){
  safeBudget.textContent='Budget '+rp(budget);
  const usedPct=budget>0?Math.min(100,Math.round(expense/budget*100)):0;
  safeSpendBar.style.width=usedPct+'%';
+ const waterFill=document.getElementById('safeWaterFill');if(waterFill)waterFill.style.height=usedPct+'%';
+ const waterCard=document.getElementById('safeWaterCard');if(waterCard){waterCard.classList.toggle('safe-water-high',usedPct>=75);waterCard.classList.toggle('safe-water-full',usedPct>=100);waterCard.setAttribute('aria-label','Budget terpakai '+usedPct+' persen')}
  safeSpendNote.textContent=lang==='id'?(budget<=0?'Atur budget bulanan dulu':(expense>budget?'Budget bulan ini sudah terlewati':(safe===availableNow&&availableNow<budgetRemaining?'Dibatasi oleh uang yang benar-benar tersedia':'Sesuai sisa budget bulan ini'))):(budget<=0?'Set your monthly budget first':(expense>budget?'Monthly budget exceeded':(safe===availableNow&&availableNow<budgetRemaining?'Limited by your actual available money':'Based on your remaining monthly budget')));
  monthlyBudget.value=data.monthlyBudget||'';renderTx();renderWallets();renderBudget();renderGoals();renderBills();renderMoments();renderReports();
 }
@@ -2304,7 +2321,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=61').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=62').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
