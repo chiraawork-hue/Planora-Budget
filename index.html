@@ -899,6 +899,7 @@ header .brand-lockup .planora-ch2{flex:none}
 @keyframes splitShade{from{opacity:0}to{opacity:1}}@keyframes splitAppear{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.split-wizard,.split-wizard-card{animation:none!important}}
 .split-avatar-choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:10px 0}.split-avatar-choice{display:flex;flex-direction:column;align-items:center;gap:5px;border:1.5px solid transparent;border-radius:16px;padding:10px 3px;background:#f5f8f5;cursor:pointer;min-width:0}.split-avatar-choice.is-selected{border-color:#0a986b;background:#eaf8ef}.split-avatar-face{width:49px;height:49px;border-radius:50%;background:#fce9d6;display:grid;place-items:center;font-size:28px}.split-avatar-choice:nth-child(4n+2) .split-avatar-face{background:#e8e9ff}.split-avatar-choice:nth-child(4n+3) .split-avatar-face{background:#fbe6ed}.split-avatar-choice:nth-child(4n+4) .split-avatar-face{background:#e0f3eb}.split-avatar-name{font-size:11px;font-weight:700;overflow:hidden;max-width:100%;text-overflow:ellipsis;white-space:nowrap}.split-avatar-tick{color:#0a986b;font-size:13px}.split-avatar-share{color:#0b815d!important;font-weight:650}.split-avatar-edit{border:0;background:#f7e9d6;border-radius:50%;width:42px;height:42px;flex:0 0 42px;font-size:24px;cursor:pointer}.split-avatar-picker{border:1px solid #dfe9e1;background:#fafdfa;border-radius:16px;padding:13px;margin-bottom:13px}.split-avatar-picker-head{display:flex;justify-content:space-between;align-items:center}.split-avatar-picker-head button{background:none;border:0;font-size:21px}.split-avatar-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:12px}.split-avatar-grid button{background:#f0f6f1;border:0;border-radius:12px;padding:7px 0;font-size:23px}.split-result-avatar{font-size:23px!important;flex:0 0 auto!important}.split-result-detail summary span:nth-child(2){flex:1!important}@media(max-width:390px){.split-avatar-choices{grid-template-columns:repeat(3,minmax(0,1fr))}.split-avatar-grid{grid-template-columns:repeat(6,1fr)}}
+.split-hidden-data{display:none!important}.split-start-panel{margin-top:16px}.split-start-panel .split-primary{margin-bottom:0}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -954,14 +955,12 @@ header .brand-lockup .planora-ch2{flex:none}
 <div class="split-top"><button class="split-back" onclick="page('home')">← Home</button><div class="eyebrow">SHARE THE MOMENT</div><h1>Split Bill</h1><p>Bagi tagihan bersama, tanpa ribet.</p></div>
 <div class="split-modes"><button id="splitPhotoTab" class="selected" onclick="splitMode('photo')">▧ Foto Struk</button><button id="splitManualTab" onclick="splitMode('manual')">✎ Input Manual</button></div>
 <div id="splitPhotoPanel" class="split-panel"><label class="split-upload">📷<strong>Unggah foto struk</strong><small>JPG, PNG, atau foto dari kamera</small><input type="file" accept="image/*" capture="environment" onchange="splitPhotoSelected(this)"></label><img id="splitPreview" alt="Foto struk yang dipilih" hidden><p class="split-hint">Foto struk bisa dilihat di sini. Pembacaan otomatis belum aktif; masukkan atau koreksi item di bawah agar pembagian tetap akurat.</p></div>
-<div class="split-panel"><div class="split-row"><h2>Rincian tagihan</h2><button onclick="splitAddItem()">+ Item</button></div><div id="splitItems"></div><div class="split-charges">
+<div class="split-panel split-start-panel"><div class="split-row"><h2>Mulai bagi tagihan</h2></div><p class="split-hint">Pilih foto struk atau input manual. Rincian menu, teman, dan hasil pembagian akan ditampilkan bertahap.</p><button class="split-primary" onclick="splitOpenStep('review')">Lanjut ke Rincian Tagihan →</button></div>
+<div class="split-hidden-data" aria-hidden="true"><div id="splitItems"></div><div id="splitPeople"></div><div id="splitResult"></div><div class="split-charges">
 <label>PPN <span><input id="splitTax" type="number" min="0" step="any" value="0" oninput="splitCalculate()"><select id="splitTaxUnit" onchange="splitCalculate()"><option value="percent">%</option><option value="amount">Rp</option></select></span></label>
 <label>Biaya layanan <span><input id="splitService" type="number" min="0" step="any" value="0" oninput="splitCalculate()"><select id="splitServiceUnit" onchange="splitCalculate()"><option value="percent">%</option><option value="amount">Rp</option></select></span></label>
 <label>Diskon <span><input id="splitDiscount" type="number" min="0" step="any" value="0" oninput="splitCalculate()"><select id="splitDiscountUnit" onchange="splitCalculate()"><option value="amount">Rp</option><option value="percent">%</option></select></span></label>
 </div><p class="split-hint">Persentase dihitung dari subtotal item. Biaya dan diskon dibagi proporsional sesuai bagian masing-masing.</p></div>
-<button class="split-primary" onclick="splitOpenStep('review')">Lanjut — Periksa Struk →</button>
-<div class="split-panel"><div class="split-row"><h2>Teman yang ikut</h2><button onclick="splitAddPerson()">+ Orang</button></div><div id="splitPeople"></div><p class="split-hint">Pilih siapa yang menikmati setiap item. Biaya tambahan dibagi proporsional berdasarkan subtotal masing-masing.</p></div>
-<div class="split-panel"><h2>Hasil pembagian</h2><div id="splitResult"></div></div>
 </main>
 <div id="splitWizard" class="split-wizard" hidden role="dialog" aria-modal="true" aria-labelledby="splitWizardTitle"><div class="split-wizard-card">
 <div class="split-wizard-top"><span id="splitWizardStep">STEP 1 / 3</span><button type="button" onclick="splitCloseStep()" aria-label="Tutup">×</button></div>
@@ -1951,7 +1950,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=43').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=44').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
