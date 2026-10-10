@@ -993,7 +993,7 @@ header .brand-lockup .planora-ch2{flex:none}
 <main id="splitbill" class="split-page">
 <div class="split-top"><button class="split-back" onclick="page('home')">← Home</button><div class="eyebrow">SHARE THE MOMENT</div><h1>Split Bill</h1><p>Bagi tagihan bersama, tanpa ribet.</p></div>
 <div class="split-modes"><button id="splitPhotoTab" class="selected" onclick="splitMode('photo')">▧ Foto Struk</button><button id="splitManualTab" onclick="splitMode('manual')">✎ Input Manual</button></div>
-<div id="splitPhotoPanel" class="split-panel"><div class="split-photo-actions"><button type="button" class="split-photo-action" onclick="splitOpenCamera()"><span class="split-photo-icon">📸</span><strong>Ambil Foto</strong><small>Foto struk langsung</small></button><button type="button" class="split-photo-action" onclick="document.getElementById('splitGalleryInput').click()"><span class="split-photo-icon">🖼️</span><strong>Pilih dari Galeri</strong><small>Gunakan foto tersimpan</small></button></div><input id="splitCameraInput" class="split-file-hidden" type="file" accept="image/*" capture="environment" onchange="splitPhotoSelected(this)"><input id="splitGalleryInput" class="split-file-hidden" type="file" accept="image/*" onchange="splitPhotoSelected(this)"><div id="splitCameraOverlay" class="split-camera-overlay" hidden><div class="split-camera-card"><div class="split-camera-head"><strong>Foto Struk</strong><button onclick="splitCloseCamera()" aria-label="Tutup kamera">×</button></div><video id="splitCameraVideo" autoplay playsinline muted></video><p id="splitCameraHelp" class="split-hint">Arahkan kamera ke struk, pastikan tulisan terlihat jelas.</p><button id="splitCameraShoot" class="split-primary" onclick="splitCaptureCamera()">📸 Ambil Foto</button><button class="split-camera-fallback" onclick="splitCloseCamera();document.getElementById('splitCameraInput').click()">Gunakan kamera bawaan HP</button></div></div><div id="splitPhotoRetake" hidden><button type="button" onclick="document.getElementById('splitCameraInput').click()">↻ Foto ulang</button><button type="button" onclick="document.getElementById('splitGalleryInput').click()">Ganti dari galeri</button></div><img id="splitPreview" alt="Foto struk yang dipilih" hidden><p class="split-hint">Foto struk bisa dilihat di sini. Pembacaan otomatis belum aktif; masukkan atau koreksi item di bawah agar pembagian tetap akurat.</p></div>
+<div id="splitPhotoPanel" class="split-panel"><div class="split-photo-actions"><button type="button" class="split-photo-action" onclick="splitOpenCamera()"><span class="split-photo-icon">📸</span><strong>Ambil Foto</strong><small>Foto struk langsung</small></button><button type="button" class="split-photo-action" onclick="document.getElementById('splitGalleryInput').click()"><span class="split-photo-icon">🖼️</span><strong>Pilih dari Galeri</strong><small>Gunakan foto tersimpan</small></button></div><input id="splitCameraInput" class="split-file-hidden" type="file" accept="image/*" capture="environment" onchange="splitPhotoSelected(this)"><input id="splitGalleryInput" class="split-file-hidden" type="file" accept="image/*" onchange="splitPhotoSelected(this)"><div id="splitCameraOverlay" class="split-camera-overlay" hidden><div class="split-camera-card"><div class="split-camera-head"><strong>Foto Struk</strong><button onclick="splitCloseCamera()" aria-label="Tutup kamera">×</button></div><video id="splitCameraVideo" autoplay playsinline muted></video><p id="splitCameraHelp" class="split-hint">Arahkan kamera ke struk, pastikan tulisan terlihat jelas.</p><button id="splitCameraShoot" class="split-primary" onclick="splitCaptureCamera()">📸 Ambil Foto</button><button class="split-camera-fallback" onclick="splitCloseCamera();document.getElementById('splitCameraInput').click()">Gunakan kamera bawaan HP</button></div></div><div id="splitPhotoRetake" hidden><button type="button" onclick="document.getElementById('splitCameraInput').click()">↻ Foto ulang</button><button type="button" onclick="document.getElementById('splitGalleryInput').click()">Ganti dari galeri</button></div><img id="splitPreview" alt="Foto struk yang dipilih" hidden><p id="splitOcrStatus" class="split-hint" role="status" aria-live="polite">Foto akan dibaca otomatis setelah dipilih.</p><p class="split-hint">Foto struk bisa dilihat di sini. Pembacaan otomatis belum aktif; masukkan atau koreksi item di bawah agar pembagian tetap akurat.</p></div>
 <div class="split-panel split-start-panel"><div class="split-row"><h2>Mulai bagi tagihan</h2></div><p class="split-hint">Pilih foto struk atau input manual. Rincian menu, teman, dan hasil pembagian akan ditampilkan bertahap.</p><button class="split-primary" onclick="splitOpenStep('review')">Lanjut ke Rincian Tagihan →</button></div>
 <div class="split-hidden-data" aria-hidden="true"><div id="splitItems"></div><div id="splitPeople"></div><div id="splitResult"></div><div class="split-charges">
 <label>PPN <span><input id="splitTax" type="number" min="0" step="any" value="0" oninput="splitCalculate()"><select id="splitTaxUnit" onchange="splitCalculate()"><option value="percent">%</option><option value="amount">Rp</option></select></span></label>
@@ -1276,7 +1276,66 @@ function splitCaptureCamera(){
  const canvas=document.createElement('canvas');canvas.width=video.videoWidth;canvas.height=video.videoHeight;canvas.getContext('2d').drawImage(video,0,0);
  canvas.toBlob(blob=>{if(!blob)return;splitCloseCamera();splitShowPhoto(blob)},'image/jpeg',.92);
 }
-function splitShowPhoto(file){const im=document.getElementById('splitPreview');if(im.dataset.url)URL.revokeObjectURL(im.dataset.url);const url=URL.createObjectURL(file);im.src=url;im.dataset.url=url;im.hidden=false;document.getElementById('splitPhotoRetake').hidden=false;splitOpenStep('review')}
+
+let splitOcrLoading=null;
+function splitLoadOcr(){
+ if(window.Tesseract)return Promise.resolve(window.Tesseract);
+ if(splitOcrLoading)return splitOcrLoading;
+ splitOcrLoading=new Promise((resolve,reject)=>{
+  const script=document.createElement('script');script.src='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+  script.onload=()=>window.Tesseract?resolve(window.Tesseract):reject(new Error('OCR tidak tersedia'));
+  script.onerror=()=>reject(new Error('Tidak dapat mengunduh pembaca struk'));
+  document.head.appendChild(script);
+ }).catch(e=>{splitOcrLoading=null;throw e});
+ return splitOcrLoading;
+}
+function splitParseMoney(value){
+ let v=String(value||'').replace(/[^0-9.,]/g,'');if(!v)return NaN;
+ if(/[,\.]\d{2}$/.test(v))v=v.slice(0,-3);
+ return Number(v.replace(/[^0-9]/g,''));
+}
+function splitParseReceipt(raw){
+ const lines=String(raw||'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+ const items=[],fees={tax:null,service:null,discount:null};let total=null;
+ const amountAtEnd=/^(.*?)\s+(?:Rp\.?\s*)?([\d][\d.,]*)\s*$/i;
+ for(const line of lines){
+  const clean=line.replace(/[|]/g,' ').replace(/\s{2,}/g,' ').trim();
+  const match=clean.match(amountAtEnd);if(!match)continue;
+  const name=match[1].trim(),amount=splitParseMoney(match[2]);
+  if(!name||!Number.isFinite(amount)||amount<=0||amount>100000000)continue;
+  if(/^(total|grand total|total bayar|amount due|jumlah bayar|net total|tagihan)/i.test(name)){total=amount;continue}
+  if(/(sub\s*total|subtotal|tunai|cash|change|kembali|payment|bayar|debit|credit|visa|mastercard|qris|saldo)/i.test(name))continue;
+  if(/(ppn|pb1|pajak|tax|vat)/i.test(name)){fees.tax=amount;continue}
+  if(/(service|layanan|svc|serv\.?\s*charge)/i.test(name)){fees.service=amount;continue}
+  if(/(discount|diskon|promo|potongan|voucher)/i.test(name)){fees.discount=amount;continue}
+  if(/(alamat|telp|phone|receipt|invoice|order|tanggal|date|time|kasir|cashier|table|meja|nomor|no\.|www|instagram|terima kasih)/i.test(name))continue;
+  const qtyMatch=name.match(/^(\d{1,2})\s*[xX]\s+(.+)$/);
+  const qty=qtyMatch?Number(qtyMatch[1]):1;
+  const label=(qtyMatch?qtyMatch[2]:name).replace(/^\W+|\W+$/g,'').trim();
+  if(label.length<2||!/[a-zA-Z]/.test(label)||items.length>=35)continue;
+  items.push({name:qty>1?qty+'× '+label:label,price:amount,people:[0,1]});
+ }
+ return {items,fees,total};
+}
+function splitOcrStatus(message){const el=document.getElementById('splitOcrStatus');if(el)el.textContent=message}
+async function splitReadReceipt(file){
+ splitOcrStatus('Menyiapkan pembaca struk…');
+ try{
+  const T=await splitLoadOcr();
+  splitOcrStatus('Membaca tulisan pada struk…');
+  const result=await T.recognize(file,'eng',{logger:m=>{if(m.status==='recognizing text')splitOcrStatus('Membaca struk… '+Math.round((m.progress||0)*100)+'%')}});
+  const parsed=splitParseReceipt(result?.data?.text);
+  if(parsed.items.length){
+   splitItemsData=parsed.items;
+   for(const [key,val] of Object.entries(parsed.fees)){if(val!==null){const input=document.getElementById('split'+key[0].toUpperCase()+key.slice(1));const unit=document.getElementById('split'+key[0].toUpperCase()+key.slice(1)+'Unit');if(input&&unit){input.value=val;unit.value='amount'}}}
+   splitRender();
+   splitOcrStatus('Ditemukan '+parsed.items.length+' item. Periksa kembali nama, harga, pajak, dan diskon.');
+  }else splitOcrStatus('Menu belum terbaca jelas. Isi atau koreksi manual di pop-up.');
+  splitOpenStep('review');
+ }catch(e){splitOcrStatus('Pembacaan otomatis belum berhasil. Coba foto lebih jelas atau input manual.');splitOpenStep('review')}
+}
+
+function splitShowPhoto(file){const im=document.getElementById('splitPreview');if(im.dataset.url)URL.revokeObjectURL(im.dataset.url);const url=URL.createObjectURL(file);im.src=url;im.dataset.url=url;im.hidden=false;document.getElementById('splitPhotoRetake').hidden=false;splitReadReceipt(file)}
 function splitPhotoSelected(el){const f=el.files?.[0];if(!f)return;splitShowPhoto(f);el.value=''}
 function splitAddItem(){splitItemsData.push({name:'Item '+(splitItemsData.length+1),price:0,people:[0]});splitRender()}
 function splitAddPerson(){splitPersons.push('Teman '+splitPersons.length);splitAvatars.push(splitAvatarOptions[(splitPersons.length-1)%splitAvatarOptions.length]);splitRender()}
@@ -1309,7 +1368,7 @@ function splitDrawWizard(){
  const stage=splitWizardStage,step=stage==='review'?1:stage==='friends'?2:3;
  document.getElementById('splitWizardStep').textContent='STEP '+step+' / 3';
  document.getElementById('splitWizardTitle').textContent=stage==='review'?'Ada menu yang ingin diedit?':stage==='friends'?'Siapa saja yang ikut?':'Hasil Split Bill';
- document.getElementById('splitWizardSub').textContent=stage==='review'?'Periksa nama, harga, PPN, layanan, dan diskon sebelum disimpan.':stage==='friends'?'Masukkan nama teman, lalu pilih siapa yang memesan setiap item.':'Ketuk nama untuk melihat rincian tagihan masing-masing.';
+ document.getElementById('splitWizardSub').textContent=stage==='review'?'Hasil pembacaan struk perlu dicek. Periksa nama, harga, PPN, layanan, dan diskon sebelum disimpan.':stage==='friends'?'Masukkan nama teman, lalu pilih siapa yang memesan setiap item.':'Ketuk nama untuk melihat rincian tagihan masing-masing.';
  document.getElementById('splitWizardBack').textContent=step===1?'Tutup':'Kembali';
  document.getElementById('splitWizardNext').textContent=step===1?'Simpan & Lanjut →':step===2?'Lihat Hasil →':'Selesai';
  const body=document.getElementById('splitWizardBody');
@@ -2006,7 +2065,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=49').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=50').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
