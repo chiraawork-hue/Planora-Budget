@@ -779,7 +779,7 @@ body{background:#f8f9fb;color:#111318}.card,.money-card,.sheet,.tx-filter{backgr
 <div class="sub" style="font-size:7px;margin-top:6px;color:#8a918b">Location search powered by Geoapify</div>
 </div>
 <div class="two-fields hidden-fix"></div><label>Little note</label><input id="momentNote" placeholder="Satu kalimat kecil..."></div>
-<div class="actions"><button class="btn primary" onclick="saveMoment()">Simpan Moment</button></div></div></div>
+<div class="actions"><button class="btn primary" id="momentSaveButton" onclick="saveMoment()">Simpan Moment</button></div></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1092,7 +1092,9 @@ async function useCameraPhoto(){
 function pickMood(btn){document.querySelectorAll('#momentMood .mood').forEach(x=>x.classList.remove('active'));btn.classList.add('active');selectedMomentMood=btn.dataset.value}
 function pickFeeling(btn){document.querySelectorAll('#moneyFeelingWrap .feeling').forEach(x=>x.classList.remove('active'));btn.classList.add('active');selectedMoneyFeeling=btn.dataset.value}
 function toggleMomentDetails(){const open=momentDetails.classList.toggle('hidden');momentDetailsToggle.textContent=open?'＋ Add details':'− Hide details'}
+let editingMomentId=null;
 function openMoment(){
+ editingMomentId=null;document.getElementById('momentSaveButton').textContent='Simpan Moment';
  closeM('addModal');clearMomentPhoto();momentCaption.value='';momentAmount.value='';
  momentKind.value='Self Reward';
  selectedMomentMood='happy';selectedMoneyFeeling='worth';
@@ -1100,6 +1102,28 @@ function openMoment(){
  document.querySelectorAll('#moneyFeelingWrap .feeling').forEach((x,i)=>x.classList.toggle('active',i===0));
  momentWith.value='';momentPlace.value='';momentMapUrl.value='';momentNote.value='';if(window.selectedLocation){selectedLocation.classList.add('hidden');selectedLocation.innerHTML=''}if(window.locationSearchWrap)locationSearchWrap.classList.remove('hidden');if(window.locationSuggestions){locationSuggestions.classList.add('hidden');locationSuggestions.innerHTML=''};momentDetails.classList.add('hidden');momentDetailsToggle.textContent='＋ Add details';
  syncMomentMoney();openM('momentModal')
+}
+function editMoment(id){
+ const m=data.moments.find(x=>String(x.id)===String(id));if(!m)return;
+ openMoment();editingMomentId=m.id;
+ document.getElementById('momentSaveButton').textContent='Simpan Perubahan';
+ momentCaption.value=m.caption||'';momentKind.value=m.kind||'Self Reward';momentAmount.value=Number(m.amount||0)||'';
+ selectedMomentPhotos=momentImages(m).slice(0,3).map((data,i)=>({data,name:'Foto '+(i+1)}));renderSelectedMomentPhotos();
+ selectedMomentMood=m.mood||'happy';selectedMoneyFeeling=m.moneyFeeling||'worth';
+ document.querySelectorAll('#momentMood .mood').forEach(x=>x.classList.toggle('active',x.dataset.value===selectedMomentMood));
+ document.querySelectorAll('#moneyFeelingWrap .feeling').forEach(x=>x.classList.toggle('active',x.dataset.value===selectedMoneyFeeling));
+ momentWith.value=m.withPerson||'';momentPlace.value=m.place||'';momentMapUrl.value=m.mapUrl||'';momentNote.value=m.littleNote||'';
+ if(m.withPerson||m.place||m.mapUrl||m.littleNote){momentDetails.classList.remove('hidden');momentDetailsToggle.textContent='− Hide details'}
+ syncMomentMoney();
+}
+function removeTransactionById(id){
+ const t=data.transactions.find(x=>String(x.id)===String(id));if(!t)return;
+ if(!window.confirm('Hapus transaksi ini? Saldo dan ringkasan keuangan akan diperbarui.'))return;
+ const oldTx=data.transactions,oldMoments=data.moments.map(m=>({...m}));
+ data.transactions=oldTx.filter(x=>String(x.id)!==String(id));
+ data.moments.forEach(m=>{if(String(m.transactionId)===String(id)){m.transactionId='';m.amount=0}});
+ if(!persist()){data.transactions=oldTx;data.moments=oldMoments;render();return}
+ toastMsg('Transaksi dihapus');
 }
 function normalizeMapUrl(v){
  if(!v)return '';
@@ -1168,49 +1192,27 @@ function clearPlanoraLocation(){
 function openMomentMap(url){if(url)window.open(url,'_blank','noopener')}
 function saveMoment(){
  try{
-  const caption=momentCaption.value.trim(),kind=momentKind.value;
-  const amount=kind==='No Spend'?0:Number(momentAmount.value||0);
-  if(!caption)return toastMsg(lang==='id'?'Isi caption dulu':'Add a caption first');
-  if(!Number.isFinite(amount)||amount<0)return toastMsg(lang==='id'?'Nominal tidak valid':'Invalid amount');
-
-  const now=new Date();
-  const localDate=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
-  const createdAt=now.toISOString();
-  const momentId=uid();
-  const images=(selectedMomentPhotos||[]).slice(0,3).map(x=>typeof x==='string'?x:x.data).filter(Boolean);
-  const img=images[0]||'';
-  let txId='';
-
-  if(amount>0){
-   txId=uid();
-   data.transactions.push({
-    id:txId,type:'expense',amount:amount,date:localDate,
-    category:momentExpenseCategory(kind),note:'Moment: '+caption,momentId:momentId,walletId:'legacy'
-   });
-  }
-
-  data.moments.push({
-   id:momentId,image:img,images:images,caption:caption,kind:kind,
-   date:localDate,createdAt:createdAt,amount:amount,transactionId:txId,
-   mood:selectedMomentMood||'happy',
-   moneyFeeling:amount>0?(selectedMoneyFeeling||'worth'):'',
-   withPerson:(document.getElementById('momentWith')?.value||'').trim(),
-   place:(document.getElementById('momentPlace')?.value||'').trim(),mapUrl:normalizeMapUrl((document.getElementById('momentMapUrl')?.value||'').trim()),
-   littleNote:(document.getElementById('momentNote')?.value||'').trim(),
-   favorite:false
-  });
-
-  if(!persist()){
-   data.moments=data.moments.filter(x=>x.id!==momentId);
-   if(txId)data.transactions=data.transactions.filter(x=>x.id!==txId);
-   return;
-  }
-  closeM('momentModal');
-  toastMsg(amount>0?(lang==='id'?'Moment & pengeluaran tersimpan':'Moment & expense saved'):(lang==='id'?'Moment tersimpan':'Moment saved'));
- }catch(err){
-  console.error('saveMoment error',err);
-  toastMsg(lang==='id'?'Moment belum tersimpan. Coba lagi.':'Moment was not saved. Please try again.');
+ const caption=momentCaption.value.trim(),kind=momentKind.value,amount=kind==='No Spend'?0:Number(momentAmount.value||0);
+ if(!caption)return toastMsg('Isi caption dulu');
+ if(!Number.isFinite(amount)||amount<0)return toastMsg('Nominal tidak valid');
+ const oldMoments=data.moments,oldTransactions=data.transactions;
+ const existing=editingMomentId?data.moments.find(m=>String(m.id)===String(editingMomentId)):null;
+ const now=new Date(),localDate=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
+ const id=existing?existing.id:uid(),date=existing?(existing.date||localDate):localDate;
+ const images=selectedMomentPhotos.slice(0,3).map(x=>typeof x==='string'?x:x.data).filter(Boolean);
+ let txId=existing?(existing.transactionId||''):'';
+ data.transactions=data.transactions.map(t=>({...t}));
+ if(txId){
+   const tx=data.transactions.find(t=>String(t.id)===String(txId));
+   if(tx){if(amount>0){tx.amount=amount;tx.category=momentExpenseCategory(kind);tx.note='Moment: '+caption}else{data.transactions=data.transactions.filter(t=>String(t.id)!==String(txId));txId=''}}
+   else txId='';
  }
+ if(amount>0&&!txId){txId=uid();data.transactions.push({id:txId,type:'expense',amount,date,category:momentExpenseCategory(kind),note:'Moment: '+caption,momentId:id,walletId:'legacy'})}
+ const record={...(existing||{}),id,image:images[0]||'',images,caption,kind,date,createdAt:existing?.createdAt||now.toISOString(),amount,transactionId:txId,mood:selectedMomentMood||'happy',moneyFeeling:amount>0?(selectedMoneyFeeling||'worth'):'',withPerson:momentWith.value.trim(),place:momentPlace.value.trim(),mapUrl:normalizeMapUrl(momentMapUrl.value.trim()),littleNote:momentNote.value.trim(),favorite:existing?.favorite||false};
+ data.moments=existing?data.moments.map(m=>String(m.id)===String(id)?record:m):[...data.moments,record];
+ if(!persist()){data.moments=oldMoments;data.transactions=oldTransactions;render();return}
+ editingMomentId=null;closeM('momentModal');toastMsg(existing?'Moment diperbarui':'Moment tersimpan');
+ }catch(err){console.error('saveMoment error',err);toastMsg('Moment belum tersimpan. Coba lagi.')}
 }
 let timelineDate=new Date();
 let timelineMonth=timelineDate.getMonth(),timelineYear=timelineDate.getFullYear();
