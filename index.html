@@ -1491,6 +1491,9 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 /* V93 — smooth scrollable period picker shared by Home, Transaction and Wrapped */
 .period-box-popup.period-box-popup-floating{position:fixed!important;z-index:99999!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;touch-action:pan-y;box-sizing:border-box;background:#fff;border:1px solid #dfe5df;border-radius:15px;box-shadow:0 16px 40px #142b2029;padding:7px;gap:4px}
 .period-box-popup-floating button{min-height:38px;touch-action:manipulation}.period-box-popup-floating button.chosen{background:#e6f7ef;color:#087a5b;font-weight:800}
+
+/* V94 — unrestricted simple year input across all period selectors */
+.period-box-popup.period-year-popup{display:block!important;max-height:none!important;width:min(265px,calc(100vw - 24px))!important;padding:13px!important;overflow:visible!important}.period-year-label{display:block;font-size:11px;font-weight:700;color:#546b5b;margin-bottom:8px}.period-year-form{display:flex;align-items:center;gap:8px}.period-year-form input{min-width:0;flex:1;width:100%;height:40px;padding:8px 10px;border:1px solid #dce4dc;border-radius:10px;background:#fff;color:#1b3024;font-size:16px}.period-year-form button{flex:0 0 auto;background:#167a57;color:#fff;border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1697,7 +1700,7 @@ function togglePeriodPicker(){periodPicker.classList.toggle('hidden');renderPeri
 function setPeriodMode(m){periodMode=m;renderPeriodPicker();render()}
 function shiftPeriod(d){selectedPeriod=periodMode==='month'?new Date(selectedPeriod.getFullYear(),selectedPeriod.getMonth()+d,1):new Date(selectedPeriod.getFullYear()+d,selectedPeriod.getMonth(),1);renderPeriodPicker();render()}
 function setHomePeriodMonth(value){const month=Number(value);if(!Number.isInteger(month)||month<0||month>11)return;selectedPeriod=new Date(selectedPeriod.getFullYear(),month,1);periodMode='month';renderPeriodPicker();render()}
-function setHomePeriodYear(value){const year=Number(value);if(!Number.isInteger(year)||year<2000||year>2100)return;selectedPeriod=new Date(year,selectedPeriod.getMonth(),1);periodMode='month';renderPeriodPicker();render()}
+function setHomePeriodYear(value){const year=Number(value);if(!Number.isInteger(year)||year<1||year>9999)return;selectedPeriod=new Date(year,selectedPeriod.getMonth(),1);periodMode='month';renderPeriodPicker();render()}
 function renderPeriodPicker(){
  const monthSelect=document.getElementById('homeMonthSelect'),yearSelect=document.getElementById('homeYearSelect');
  if(!monthSelect||!yearSelect)return;
@@ -1733,7 +1736,14 @@ function openPeriodBox(prefix,kind){
  const popup=document.createElement('div');popup.id='periodBoxPopup';popup.className='period-box-popup period-box-popup-floating';popup.dataset.prefix=prefix;popup.dataset.kind=kind;
  const d=periodBoxDate(prefix),current=d.getFullYear();
  const names=lang==='en'?MONTHS_FULL_EN:MONTHS_FULL_ID;
- const values=kind==='month'?names.map((name,i)=>({label:name,value:i})):Array.from({length:31},(_,i)=>({label:String(current-15+i),value:current-15+i}));
+ const values=kind==='month'?names.map((name,i)=>({label:name,value:i})):[];
+ if(kind==='year'){
+  popup.classList.add('period-year-popup');
+  popup.innerHTML='<label class="period-year-label" for="periodYearInput">'+(lang==='en'?'Enter a year':'Masukkan tahun')+'</label><form id="periodYearForm" class="period-year-form"><input id="periodYearInput" type="number" inputmode="numeric" pattern="[0-9]*" min="1" max="9999" step="1" required value="'+current+'" aria-label="'+(lang==='en'?'Year':'Tahun')+'"><button type="submit">'+(lang==='en'?'Apply':'Pilih')+'</button></form>';
+  popup.querySelector('form').addEventListener('submit',e=>{e.preventDefault();const input=popup.querySelector('input');const year=Number(input.value);if(!Number.isInteger(year)||year<1||year>9999){input.setCustomValidity(lang==='en'?'Enter a valid year':'Masukkan tahun yang valid');input.reportValidity();return}input.setCustomValidity('');choosePeriodBox(prefix,'year',year);closePeriodBox()});
+ }else{
+  popup.innerHTML=values.map(o=>'<button type="button" class="'+(d.getMonth()===o.value?'chosen':'')+'" data-value="'+o.value+'">'+o.label+'</button>').join('');
+ }
  popup.innerHTML=values.map(o=>'<button type="button" class="'+((kind==='month'?d.getMonth():current)===o.value?'chosen':'')+'" data-value="'+o.value+'">'+o.label+'</button>').join('');
  popup.addEventListener('click',e=>{const btn=e.target.closest('button[data-value]');if(!btn)return;choosePeriodBox(prefix,kind,Number(btn.dataset.value));closePeriodBox()});
  document.body.appendChild(popup);positionPeriodBox();
