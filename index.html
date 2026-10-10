@@ -1306,7 +1306,7 @@ header .brand-lockup .planora-ch2{flex:none}
 #home .home-clean-section>span{font-size:10px!important;font-weight:750!important;letter-spacing:.06em!important}
 #home .home-moment-action b,#home .split-home-entry strong{font-weight:700!important}
 @media(max-width:520px){#home .home-checkin-heading .eyebrow{font-size:20px!important}#home .home-checkin-sub{font-size:10px!important}}
-</style>
+#home #safeSpendNote,#home #safeSpent{display:none!important}#home .safe-foot{justify-content:flex-end!important;margin-top:10px!important}</style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
 <div class="access-brand"><svg class="planora-ch2" aria-label="Planora Budget" viewBox="0 0 64 64">
@@ -1342,9 +1342,9 @@ header .brand-lockup .planora-ch2{flex:none}
 <div class="safe-card" id="safeWaterCard">
  <div class="safe-water-fill" id="safeWaterFill" aria-hidden="true"><div class="safe-water-wave"></div></div>
  <div class="safe-top"><div><div class="safe-label" data-i18n="safe">AMAN DIBELANJAKAN</div><b id="safeToSpend">Rp0</b></div><div class="safe-leaf">⌁</div></div>
- <div class="safe-note" id="safeSpendNote">Sesuai sisa budget bulan ini</div>
+ <div class="safe-note" id="safeSpendNote" hidden aria-hidden="true"></div>
  <div class="safe-progress" hidden aria-hidden="true"><i id="safeSpendBar"></i></div>
- <div class="safe-foot"><span id="safeSpent">Terpakai Rp0</span><span id="safeBudget">Budget Rp0</span></div>
+ <div class="safe-foot"><span id="safeSpent" hidden aria-hidden="true"></span><span id="safeBudget">Budget Rp0</span></div>
 </div>
 <div class="home-clean-section"><span>OVERVIEW</span><button type="button" onclick="page('wallets')">Lihat akun →</button></div><div class="money-strip">
  <div class="money-card dark"><small data-i18n="available">Uang tersedia</small><b id="available">Rp0</b><div class="note" data-i18n="availableNote">saldo akun di luar alokasi Goals</div></div>
@@ -2476,7 +2476,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=71').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=72').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
