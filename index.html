@@ -839,6 +839,17 @@ header .brand-lockup .planora-ch2{flex:none}
 @keyframes planoraLogoEnter{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
 @keyframes planoraWordEnter{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
 @media(prefers-reduced-motion:reduce){#planoraSplash .splash-mark,#planoraSplash .splash-wordmark{animation:none!important}}
+
+/* Exact user-provided brand artwork and smooth logo-to-wordmark reveal */
+#planoraSplash{z-index:100001!important;background:#fff!important;display:grid!important;place-items:center!important}
+#planoraSplash .splash-lockup{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:0!important;width:min(92vw,510px)!important;padding:0!important}
+#planoraSplash .splash-mark{position:relative!important;z-index:2!important;display:block!important;width:39%!important;height:auto!important;flex:0 0 39%!important;animation:planoraOriginalLogoIn .65s ease-out both!important}
+#planoraSplash .splash-mark img{display:block!important;width:100%!important;height:auto!important;object-fit:contain!important}
+#planoraSplash .splash-wordmark{display:block!important;flex:1!important;min-width:0!important;overflow:hidden!important;white-space:normal!important;animation:planoraOriginalTextReveal 1s cubic-bezier(.2,.7,.2,1) .4s both!important}
+#planoraSplash .splash-wordmark img{display:block!important;width:100%!important;height:auto!important;object-fit:contain!important}
+@keyframes planoraOriginalLogoIn{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:scale(1)}}
+@keyframes planoraOriginalTextReveal{from{opacity:0;clip-path:inset(0 100% 0 0);transform:translateX(-24px)}to{opacity:1;clip-path:inset(0 0 0 0);transform:translateX(0)}}
+@media(prefers-reduced-motion:reduce){#planoraSplash .splash-mark,#planoraSplash .splash-wordmark{animation:none!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -863,13 +874,7 @@ header .brand-lockup .planora-ch2{flex:none}
 <path d="M48 21c1-6 5-9 10-9-1 6-4 10-10 11z" fill="#D6B66F"/>
 </svg></div><div class="onboarding-count" id="onboardCount">01 / 06</div><h2 id="onboardTitle">Welcome to Planora Budget</h2><p id="onboardDescription">Kelola keuangan dan momen kecilmu dalam satu tempat.</p><div class="onboarding-dots" id="onboardDots"></div></div><div class="onboarding-actions"><button type="button" id="onboardBack" onclick="movePlanoraOnboarding(-1)">Kembali</button><button type="button" id="onboardNext" onclick="movePlanoraOnboarding(1)">Lanjut →</button></div></div></div>
 <div id="planoraDeleteConfirm" class="planora-confirm-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="planoraConfirmTitle"><div class="planora-confirm-card"><div class="planora-confirm-symbol">×</div><h2 id="planoraConfirmTitle">Hapus transaksi ini?</h2><p id="planoraConfirmDescription">Transaksi akan dihapus dari catatan dan saldo serta ringkasan keuangan akan diperbarui.</p><div class="planora-confirm-actions"><button type="button" onclick="closePlanoraDeleteConfirm()">Batal</button><button type="button" class="confirm-danger" onclick="approvePlanoraDeleteConfirm()">Ya, hapus</button></div></div></div>
-<div id="planoraSplash" role="status" aria-label="Memuat Planora Budget"><div class="splash-lockup"><div class="splash-mark"><svg class="planora-ch2" aria-label="Planora Budget" viewBox="0 0 64 64">
-<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#174E3B"/><stop offset=".55" stop-color="#237C59"/><stop offset="1" stop-color="#79AE79"/></linearGradient><linearGradient id="l" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#246B4C"/><stop offset="1" stop-color="#88BC86"/></linearGradient></defs>
-<rect width="64" height="64" rx="15" fill="#FCFCF8"/>
-<path d="M47 15C37 6 21 9 13 20 4 32 9 48 22 54c7 3 14 2 20-1" fill="none" stroke="url(#g)" stroke-width="7.5" stroke-linecap="round"/>
-<path d="M31 15v36M31 36c4-8 9-11 15-10 8 1 10 8 10 15v10" fill="none" stroke="url(#l)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M48 21c1-6 5-9 10-9-1 6-4 10-10 11z" fill="#D6B66F"/>
-</svg></div><div class="splash-wordmark"><strong>Planora <span>Budget</span></strong></div></div></div>
+<div id="planoraSplash" role="status" aria-label="Memuat Planora Budget"><div class="splash-lockup"><div class="splash-mark"><img src="./planora-budget-original-symbol.webp" alt="Logo CH Planora Budget"></div><div class="splash-wordmark"><img src="./planora-budget-original-wordmark.webp" alt="Planora Budget"></div></div></div>
 <div class="app">
 <header><div class="brand-lockup"><svg class="planora-ch2" viewBox="0 0 64 64" aria-label="Planora">
 <path d="M42 12C24 6 10 17 10 32s13 25 30 20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
@@ -1780,7 +1785,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=34').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=35').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1450);
 </script>
 <script>
