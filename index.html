@@ -938,6 +938,7 @@ header .brand-lockup .planora-ch2{flex:none}
 .split-photo-action:first-child{background:#eaf4ff!important;border-color:#c9dff7!important;color:#1a568a!important}
 .split-photo-action:first-child .split-photo-icon{background:#d4e9ff!important}
 .split-camera-overlay[hidden]{display:none!important}.split-camera-overlay{position:fixed;inset:0;z-index:100030;background:#0a1723cc;display:grid;place-items:center;padding:15px}.split-camera-card{width:min(540px,100%);background:#fff;border-radius:22px;padding:16px}.split-camera-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;color:#173d65}.split-camera-head button{border:0;background:#edf3fa;border-radius:50%;font-size:24px;width:34px;height:34px}.split-camera-card video{display:block;width:100%;max-height:65vh;object-fit:contain;background:#152536;border-radius:14px}.split-camera-card .split-primary{background:#236da8}.split-camera-card .split-primary:disabled{opacity:.5}.split-camera-fallback{display:block;margin:8px auto;background:none;border:0;color:#236da8;text-decoration:underline;cursor:pointer}
+.bill-color-calendar .bill-day.day-paid{background:#daf7e6!important;border:1px solid #8edbb0!important;color:#087445!important;font-weight:700!important}.bill-color-calendar .bill-day.day-paid .bill-dots i{background:#0aaf6c!important}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -2005,7 +2006,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=47').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=48').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
