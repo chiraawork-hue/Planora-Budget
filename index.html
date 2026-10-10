@@ -817,6 +817,14 @@ header .brand-lockup .planora-ch2{flex:none}
 .onboarding-content.intro-enter-left{opacity:0;transform:translateX(-18px)}
 .onboarding-art{transition:background .3s ease}
 @media(prefers-reduced-motion:reduce){.onboarding-content{transition:none!important}}
+
+/* Onboarding logo from the same asset as the app; pure fade transitions */
+.onboarding-art .onboard-brand-logo{width:90px;height:90px;object-fit:contain;display:block}
+.onboarding-art:has(.onboard-brand-logo){background:transparent}
+.onboarding-content{opacity:1;transform:none!important;transition:opacity .38s ease-in-out!important}
+.onboarding-content.intro-fade-out{opacity:0}
+.onboarding-content.intro-fade-in{opacity:0}
+@media(prefers-reduced-motion:reduce){.onboarding-content{transition:none!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate"><div class="access-card">
@@ -1092,7 +1100,8 @@ let planoraIntroBusy=false;
 function renderPlanoraOnboarding(){
  const x=planoraSlides[planoraIntroIndex],overlay=document.getElementById('planoraOnboarding');if(!overlay)return;
  const iconBox=document.getElementById('onboardIcon');
- if(planoraIntroIndex===0){iconBox.innerHTML="<svg class=\"planora-ch2\" aria-label=\"Planora Budget\" viewBox=\"0 0 64 64\">\n<defs><linearGradient id=\"g\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop stop-color=\"#174E3B\"/><stop offset=\".55\" stop-color=\"#237C59\"/><stop offset=\"1\" stop-color=\"#79AE79\"/></linearGradient><linearGradient id=\"l\" x1=\"0\" y1=\"1\" x2=\"1\" y2=\"0\"><stop stop-color=\"#246B4C\"/><stop offset=\"1\" stop-color=\"#88BC86\"/></linearGradient></defs>\n<rect width=\"64\" height=\"64\" rx=\"15\" fill=\"#FCFCF8\"/>\n<path d=\"M47 15C37 6 21 9 13 20 4 32 9 48 22 54c7 3 14 2 20-1\" fill=\"none\" stroke=\"url(#g)\" stroke-width=\"7.5\" stroke-linecap=\"round\"/>\n<path d=\"M31 15v36M31 36c4-8 9-11 15-10 8 1 10 8 10 15v10\" fill=\"none\" stroke=\"url(#l)\" stroke-width=\"7.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path d=\"M48 21c1-6 5-9 10-9-1 6-4 10-10 11z\" fill=\"#D6B66F\"/>\n</svg>"}else{iconBox.innerHTML=planoraIntroSvg(planoraIntroIndex)}
+ if(planoraIntroIndex===0){iconBox.innerHTML='<img class="onboard-brand-logo" src="./icon.svg?v=32" alt="Logo Planora Budget">'}
+ else{iconBox.innerHTML=planoraIntroSvg(planoraIntroIndex)}
  document.getElementById('onboardTitle').textContent=x.title;
  document.getElementById('onboardDescription').textContent=x.description;
  document.getElementById('onboardCount').textContent=String(planoraIntroIndex+1).padStart(2,'0')+' / '+String(planoraSlides.length).padStart(2,'0');
@@ -1106,20 +1115,21 @@ function movePlanoraOnboarding(n){
  if(planoraIntroBusy)return;
  if(planoraIntroIndex+n>=planoraSlides.length){finishPlanoraOnboarding();return}
  const next=Math.max(0,planoraIntroIndex+n);if(next===planoraIntroIndex)return;
- const card=document.querySelector('.onboarding-card');
- const body=card?.querySelector('.onboarding-content');
+ const body=document.querySelector('.onboarding-content');
  if(!body){planoraIntroIndex=next;renderPlanoraOnboarding();return}
+ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){planoraIntroIndex=next;renderPlanoraOnboarding();return}
  planoraIntroBusy=true;
- body.classList.add(n>0?'intro-exit-left':'intro-exit-right');
+ body.classList.add('intro-fade-out');
  setTimeout(()=>{
-  planoraIntroIndex=next;renderPlanoraOnboarding();
-  body.classList.remove('intro-exit-left','intro-exit-right');
-  body.classList.add(n>0?'intro-enter-right':'intro-enter-left');
+  planoraIntroIndex=next;
+  renderPlanoraOnboarding();
+  body.classList.remove('intro-fade-out');
+  body.classList.add('intro-fade-in');
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
-   body.classList.remove('intro-enter-right','intro-enter-left');
-   setTimeout(()=>{planoraIntroBusy=false},320);
+   body.classList.remove('intro-fade-in');
+   setTimeout(()=>{planoraIntroBusy=false},380);
   }));
- },210);
+ },260);
 }
 function maybeShowPlanoraIntro(){if(!localStorage.getItem(PLANORA_INTRO_KEY))startPlanoraOnboarding()}
 
@@ -1756,7 +1766,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=28').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=32').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1100);
 </script>
 <script>
