@@ -941,6 +941,13 @@ header .brand-lockup .planora-ch2{flex:none}
 .bill-color-calendar .bill-day.day-paid{background:#daf7e6!important;border:1px solid #8edbb0!important;color:#087445!important;font-weight:700!important}.bill-color-calendar .bill-day.day-paid .bill-dots i{background:#0aaf6c!important}
 .split-ocr-debug{margin:12px 0;border:1px solid #dce8f4;border-radius:12px;padding:10px;color:#23577b;font-size:12px}.split-ocr-debug textarea{width:100%;box-sizing:border-box;margin:9px 0;border:1px solid #dce8f4;border-radius:9px;padding:9px;font:12px monospace}.split-ocr-debug button{border:1px solid #c8ddf0;background:#f0f7ff;border-radius:9px;padding:9px;color:#23577b}
 .split-top{position:relative}.split-cancel{position:absolute;right:0;top:0;border:1px solid #e6c8cd;background:#fff6f7;color:#aa4051;border-radius:11px;padding:9px 14px;font-weight:700;cursor:pointer}.split-exit-modal[hidden]{display:none!important}.split-exit-modal{position:fixed;inset:0;z-index:100060;background:#172a3880;display:grid;place-items:center;padding:18px}.split-exit-card{width:min(410px,100%);border-radius:23px;background:white;padding:28px 22px;text-align:center;box-shadow:0 20px 70px #12253638}.split-exit-symbol{display:grid;place-items:center;background:#edf5ff;border-radius:50%;width:60px;height:60px;font-size:30px;margin:0 auto 13px}.split-exit-card h2{font-size:21px;margin:8px 0;color:#1b334a}.split-exit-card p{font-size:13px;line-height:1.65;color:#6b7b89}.split-exit-actions{display:grid;gap:10px;margin-top:20px}.split-exit-actions button{padding:13px;border-radius:12px;font-weight:750;cursor:pointer}.split-exit-actions button:first-child{border:1px solid #f2cfd3;background:#fff5f5;color:#b04454}.split-exit-actions button:last-child{border:0;background:#226ca9;color:white}
+/* Moment: centered, focused composer with essential fields only */
+#momentModal{align-items:center!important;justify-content:center!important;padding:16px!important;box-sizing:border-box}
+#momentModal .sheet{width:min(460px,100%)!important;max-height:min(88dvh,760px)!important;overflow-y:auto!important;overscroll-behavior:contain;border-radius:23px!important;margin:0!important;box-sizing:border-box;box-shadow:0 22px 80px #10283b30!important}
+#momentModal .moment-optional-field,#momentModal #momentDetails{display:none!important}
+#momentModal .photo-source-grid{gap:9px}
+#momentModal .photo-source{border-radius:13px}
+@media(max-width:480px){#momentModal{padding:13px!important}#momentModal .sheet{max-height:86dvh!important;border-radius:21px!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1094,13 +1101,13 @@ header .brand-lockup .planora-ch2{flex:none}
 <input id="momentPhoto" class="hidden" type="file" accept="image/*">
 <div id="momentPhotoPreview" class="moment-photo-preview hidden"><img id="momentPreviewImg"><div><b id="momentPreviewName">Foto dipilih</b><button type="button" class="mini-remove" onclick="clearMomentPhoto()">Ganti foto</button></div></div>
 <label>Caption</label><input id="momentCaption" placeholder="Apa yang ingin kamu ingat?">
-<div class="moment-quick-row">
+<div class="moment-quick-row moment-optional-field">
  <div class="moment-quick"><span class="sub">Mood</span><div id="momentMood" class="mood-pills"><button type="button" class="mood active" data-value="happy" onclick="pickMood(this)">☺</button><button type="button" class="mood" data-value="grateful" onclick="pickMood(this)">♡</button><button type="button" class="mood" data-value="proud" onclick="pickMood(this)">✦</button><button type="button" class="mood" data-value="peaceful" onclick="pickMood(this)">☘</button></div></div>
 </div>
 <label>Kategori</label><select id="momentKind" onchange="syncMomentMoney()"><option>Self Reward</option><option>Food & Drinks</option><option>Wellness</option><option>Hangout</option><option>Hobby</option><option>Achievement</option><option>No Spend</option></select>
 <div id="momentMoneyBox"><label>Nominal <span style="font-weight:500;color:var(--muted)">(opsional)</span></label><input id="momentAmount" type="number" inputmode="numeric" placeholder="Rp0">
-<div id="moneyFeelingWrap" class="money-feeling"><button type="button" class="feeling active" data-value="worth" onclick="pickFeeling(this)">Worth it ♡</button><button type="button" class="feeling" data-value="necessary" onclick="pickFeeling(this)">Necessary</button><button type="button" class="feeling" data-value="treat" onclick="pickFeeling(this)">Treat myself</button><button type="button" class="feeling" data-value="skip" onclick="pickFeeling(this)">Could skip</button></div></div>
-<button type="button" class="details-toggle" id="momentDetailsToggle" onclick="toggleMomentDetails()">＋ Add details</button>
+<div id="moneyFeelingWrap" class="money-feeling moment-optional-field"><button type="button" class="feeling active" data-value="worth" onclick="pickFeeling(this)">Worth it ♡</button><button type="button" class="feeling" data-value="necessary" onclick="pickFeeling(this)">Necessary</button><button type="button" class="feeling" data-value="treat" onclick="pickFeeling(this)">Treat myself</button><button type="button" class="feeling" data-value="skip" onclick="pickFeeling(this)">Could skip</button></div></div>
+<button type="button" class="details-toggle moment-optional-field" id="momentDetailsToggle" onclick="toggleMomentDetails()">＋ Add details</button>
 <div id="momentDetails" class="moment-details hidden"><div class="two-fields"><div><label>With</label><input id="momentWith" placeholder="Siapa?"></div></div>
 <div class="map-tag-box simple-location">
 <label>📍 Add location</label>
@@ -2116,7 +2123,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=54').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=55').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
