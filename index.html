@@ -1145,6 +1145,16 @@ header .brand-lockup .planora-ch2{flex:none}
 @keyframes safeWaterDrift{from{transform:translateX(-2%) scaleY(.75)}to{transform:translateX(2%) scaleY(1.15)}}
 @media(prefers-reduced-motion:reduce){#home #safeWaterCard .safe-water-fill{transition:none!important}#home #safeWaterCard .safe-water-wave{animation:none!important}}
 @media(max-width:520px){#home #safeWaterCard{min-height:165px!important}}
+/* V63 — vivid water, not pastel; text stays crisp and legible */
+#home #safeWaterCard .safe-water-fill{background:linear-gradient(180deg,rgba(0,199,132,.80),rgba(0,168,111,.92))!important}
+#home #safeWaterCard .safe-water-wave{background:rgba(0,228,150,.94)!important}
+#home #safeWaterCard.safe-water-high .safe-water-fill{background:linear-gradient(180deg,rgba(0,174,242,.82),rgba(0,122,223,.94))!important}
+#home #safeWaterCard.safe-water-high .safe-water-wave{background:rgba(0,199,255,.96)!important}
+#home #safeWaterCard.safe-water-full .safe-water-fill{background:linear-gradient(180deg,rgba(255,159,34,.85),rgba(244,113,20,.95))!important}
+#home #safeWaterCard.safe-water-full .safe-water-wave{background:rgba(255,186,55,.97)!important}
+#home #safeWaterCard>.safe-top,#home #safeWaterCard>.safe-note,#home #safeWaterCard>.safe-progress,#home #safeWaterCard>.safe-foot{z-index:2}
+#home #safeWaterCard .safe-water-fill{opacity:.86!important}
+#home #safeWaterCard .safe-top,#home #safeWaterCard .safe-note,#home #safeWaterCard .safe-foot{filter:drop-shadow(0 1px 1px rgba(255,255,255,.9))}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -2321,7 +2331,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=62').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=63').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
