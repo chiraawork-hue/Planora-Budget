@@ -925,6 +925,19 @@ header .brand-lockup .planora-ch2{flex:none}
 .split-result-detail:nth-of-type(4n+4) .split-result-avatar{background:#ccefe4}
 @media(max-width:390px){.split-avatar-face{width:57px!important;height:57px!important;font-size:29px!important}}
 .split-photo-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}.split-photo-action{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:150px;border:1.5px solid #d7e8de;border-radius:18px;background:#f5fbf7;cursor:pointer;color:#174e3a;padding:15px}.split-photo-action:nth-child(2){background:#f8f6fc;border-color:#e5def0}.split-photo-action strong{font-size:14px}.split-photo-action small{font-size:11px;color:#75877d}.split-photo-icon{display:grid;place-items:center;width:55px;height:55px;border-radius:50%;background:#dff3e7;font-size:27px}.split-photo-action:nth-child(2) .split-photo-icon{background:#eee3fb}.split-file-hidden{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}#splitPhotoRetake[hidden]{display:none!important}#splitPhotoRetake{display:flex;gap:10px;margin:12px 0;flex-wrap:wrap}#splitPhotoRetake button{border:1px solid #cfe4d6;border-radius:10px;background:#fff;color:#087a5b;padding:10px 12px;font-weight:650;cursor:pointer}@media(max-width:360px){.split-photo-actions{grid-template-columns:1fr}}
+
+/* Refined blue calendar instead of lavender gradient */
+.bill-color-calendar{background:#f4f8fd!important;border:1px solid #d8e5f3!important;box-shadow:none!important}
+.bill-color-calendar .row>b{color:#173d65!important;font-weight:750}
+.bill-color-calendar .row .pill{background:#fff!important;color:#245d91!important;border:1px solid #dbe7f3!important}
+.bill-color-calendar .bill-calendar-grid>small{color:#788da4!important}
+.bill-color-calendar .bill-day{background:#fff!important;border:1px solid #e8eef5!important;color:#203c56!important}
+.bill-color-calendar .bill-day.day-due{background:#ffe4e7!important;border-color:#ffb7c0!important;color:#b4233a!important}
+.bill-color-calendar .bill-day.day-paid{background:#e2f1ff!important;border-color:#b8d8f5!important;color:#155d9c!important}
+.bill-color-calendar .bill-day.day-paid .bill-dots i{background:#2474b5!important}
+.split-photo-action:first-child{background:#eaf4ff!important;border-color:#c9dff7!important;color:#1a568a!important}
+.split-photo-action:first-child .split-photo-icon{background:#d4e9ff!important}
+.split-camera-overlay[hidden]{display:none!important}.split-camera-overlay{position:fixed;inset:0;z-index:100030;background:#0a1723cc;display:grid;place-items:center;padding:15px}.split-camera-card{width:min(540px,100%);background:#fff;border-radius:22px;padding:16px}.split-camera-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;color:#173d65}.split-camera-head button{border:0;background:#edf3fa;border-radius:50%;font-size:24px;width:34px;height:34px}.split-camera-card video{display:block;width:100%;max-height:65vh;object-fit:contain;background:#152536;border-radius:14px}.split-camera-card .split-primary{background:#236da8}.split-camera-card .split-primary:disabled{opacity:.5}.split-camera-fallback{display:block;margin:8px auto;background:none;border:0;color:#236da8;text-decoration:underline;cursor:pointer}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -979,7 +992,7 @@ header .brand-lockup .planora-ch2{flex:none}
 <main id="splitbill" class="split-page">
 <div class="split-top"><button class="split-back" onclick="page('home')">← Home</button><div class="eyebrow">SHARE THE MOMENT</div><h1>Split Bill</h1><p>Bagi tagihan bersama, tanpa ribet.</p></div>
 <div class="split-modes"><button id="splitPhotoTab" class="selected" onclick="splitMode('photo')">▧ Foto Struk</button><button id="splitManualTab" onclick="splitMode('manual')">✎ Input Manual</button></div>
-<div id="splitPhotoPanel" class="split-panel"><div class="split-photo-actions"><button type="button" class="split-photo-action" onclick="document.getElementById('splitCameraInput').click()"><span class="split-photo-icon">📸</span><strong>Ambil Foto</strong><small>Foto struk langsung</small></button><button type="button" class="split-photo-action" onclick="document.getElementById('splitGalleryInput').click()"><span class="split-photo-icon">🖼️</span><strong>Pilih dari Galeri</strong><small>Gunakan foto tersimpan</small></button></div><input id="splitCameraInput" class="split-file-hidden" type="file" accept="image/*" capture="environment" onchange="splitPhotoSelected(this)"><input id="splitGalleryInput" class="split-file-hidden" type="file" accept="image/*" onchange="splitPhotoSelected(this)"><div id="splitPhotoRetake" hidden><button type="button" onclick="document.getElementById('splitCameraInput').click()">↻ Foto ulang</button><button type="button" onclick="document.getElementById('splitGalleryInput').click()">Ganti dari galeri</button></div><img id="splitPreview" alt="Foto struk yang dipilih" hidden><p class="split-hint">Foto struk bisa dilihat di sini. Pembacaan otomatis belum aktif; masukkan atau koreksi item di bawah agar pembagian tetap akurat.</p></div>
+<div id="splitPhotoPanel" class="split-panel"><div class="split-photo-actions"><button type="button" class="split-photo-action" onclick="splitOpenCamera()"><span class="split-photo-icon">📸</span><strong>Ambil Foto</strong><small>Foto struk langsung</small></button><button type="button" class="split-photo-action" onclick="document.getElementById('splitGalleryInput').click()"><span class="split-photo-icon">🖼️</span><strong>Pilih dari Galeri</strong><small>Gunakan foto tersimpan</small></button></div><input id="splitCameraInput" class="split-file-hidden" type="file" accept="image/*" capture="environment" onchange="splitPhotoSelected(this)"><input id="splitGalleryInput" class="split-file-hidden" type="file" accept="image/*" onchange="splitPhotoSelected(this)"><div id="splitCameraOverlay" class="split-camera-overlay" hidden><div class="split-camera-card"><div class="split-camera-head"><strong>Foto Struk</strong><button onclick="splitCloseCamera()" aria-label="Tutup kamera">×</button></div><video id="splitCameraVideo" autoplay playsinline muted></video><p id="splitCameraHelp" class="split-hint">Arahkan kamera ke struk, pastikan tulisan terlihat jelas.</p><button id="splitCameraShoot" class="split-primary" onclick="splitCaptureCamera()">📸 Ambil Foto</button><button class="split-camera-fallback" onclick="splitCloseCamera();document.getElementById('splitCameraInput').click()">Gunakan kamera bawaan HP</button></div></div><div id="splitPhotoRetake" hidden><button type="button" onclick="document.getElementById('splitCameraInput').click()">↻ Foto ulang</button><button type="button" onclick="document.getElementById('splitGalleryInput').click()">Ganti dari galeri</button></div><img id="splitPreview" alt="Foto struk yang dipilih" hidden><p class="split-hint">Foto struk bisa dilihat di sini. Pembacaan otomatis belum aktif; masukkan atau koreksi item di bawah agar pembagian tetap akurat.</p></div>
 <div class="split-panel split-start-panel"><div class="split-row"><h2>Mulai bagi tagihan</h2></div><p class="split-hint">Pilih foto struk atau input manual. Rincian menu, teman, dan hasil pembagian akan ditampilkan bertahap.</p><button class="split-primary" onclick="splitOpenStep('review')">Lanjut ke Rincian Tagihan →</button></div>
 <div class="split-hidden-data" aria-hidden="true"><div id="splitItems"></div><div id="splitPeople"></div><div id="splitResult"></div><div class="split-charges">
 <label>PPN <span><input id="splitTax" type="number" min="0" step="any" value="0" oninput="splitCalculate()"><select id="splitTaxUnit" onchange="splitCalculate()"><option value="percent">%</option><option value="amount">Rp</option></select></span></label>
@@ -1246,7 +1259,24 @@ function maybeShowPlanoraIntro(){if(!localStorage.getItem(PLANORA_INTRO_KEY))sta
 let splitAvatars=['🐱','🐼'],splitAvatarOptions=['🐱','🐼','🐰','🦊','🐻','🐸','🐨','🐯','🐶','🐧','🦄','🐣','🍓','🌻','🍒','⭐'];let splitPersons=['Aku','Teman 1'],splitItemsData=[{name:'Item 1',price:0,people:[0,1]}];
 function openSplitBill(){page('splitbill');splitRender()}
 function splitMode(mode){document.getElementById('splitPhotoPanel').hidden=mode!=='photo';document.getElementById('splitPhotoTab').classList.toggle('selected',mode==='photo');document.getElementById('splitManualTab').classList.toggle('selected',mode==='manual')}
-function splitPhotoSelected(el){const f=el.files?.[0];if(!f)return;const im=document.getElementById('splitPreview');if(im.dataset.url)URL.revokeObjectURL(im.dataset.url);const url=URL.createObjectURL(f);im.src=url;im.dataset.url=url;im.hidden=false;document.getElementById('splitPhotoRetake').hidden=false;splitOpenStep('review')}
+let splitCameraStream=null;
+async function splitOpenCamera(){
+ const overlay=document.getElementById('splitCameraOverlay'),video=document.getElementById('splitCameraVideo'),help=document.getElementById('splitCameraHelp');
+ overlay.hidden=false;help.textContent='Menghubungkan kamera…';document.getElementById('splitCameraShoot').disabled=true;
+ if(!navigator.mediaDevices?.getUserMedia){help.textContent='Browser ini tidak mendukung kamera langsung. Gunakan kamera bawaan HP.';return}
+ try{
+  splitCameraStream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}});
+  video.srcObject=splitCameraStream;await video.play();help.textContent='Arahkan kamera ke struk, lalu ambil foto.';document.getElementById('splitCameraShoot').disabled=false;
+ }catch(e){help.textContent='Kamera tidak dapat dibuka. Periksa izin kamera atau gunakan kamera bawaan HP.'}
+}
+function splitCloseCamera(){if(splitCameraStream){splitCameraStream.getTracks().forEach(t=>t.stop());splitCameraStream=null}const video=document.getElementById('splitCameraVideo');if(video)video.srcObject=null;document.getElementById('splitCameraOverlay').hidden=true}
+function splitCaptureCamera(){
+ const video=document.getElementById('splitCameraVideo');if(!video.videoWidth){toastMsg('Kamera belum siap');return}
+ const canvas=document.createElement('canvas');canvas.width=video.videoWidth;canvas.height=video.videoHeight;canvas.getContext('2d').drawImage(video,0,0);
+ canvas.toBlob(blob=>{if(!blob)return;splitCloseCamera();splitShowPhoto(blob)},'image/jpeg',.92);
+}
+function splitShowPhoto(file){const im=document.getElementById('splitPreview');if(im.dataset.url)URL.revokeObjectURL(im.dataset.url);const url=URL.createObjectURL(file);im.src=url;im.dataset.url=url;im.hidden=false;document.getElementById('splitPhotoRetake').hidden=false;splitOpenStep('review')}
+function splitPhotoSelected(el){const f=el.files?.[0];if(!f)return;splitShowPhoto(f);el.value=''}
 function splitAddItem(){splitItemsData.push({name:'Item '+(splitItemsData.length+1),price:0,people:[0]});splitRender()}
 function splitAddPerson(){splitPersons.push('Teman '+splitPersons.length);splitAvatars.push(splitAvatarOptions[(splitPersons.length-1)%splitAvatarOptions.length]);splitRender()}
 function splitSetItem(i,k,v){splitItemsData[i][k]=v;splitCalculate()}
@@ -1975,7 +2005,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=46').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=47').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
