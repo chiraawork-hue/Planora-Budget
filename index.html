@@ -1387,6 +1387,29 @@ header .brand-lockup .planora-ch2{flex:none}
 #home .home-period-selectors .period-box button{width:100%!important;text-align:left!important;font-size:12px!important;font-weight:650!important;line-height:1.2!important;color:#111827!important;border:0!important;text-decoration:none!important;background:transparent!important}
 #home .home-period-selectors .period-box>span{display:none!important}
 @media(max-width:520px){#home .home-checkin-header{align-items:center!important}#home .home-period-selectors{align-self:center!important}#home .home-period-selectors .period-boxes{gap:5px!important}#home .home-period-selectors .period-box{height:34px!important;min-height:34px!important;padding:0 7px!important;border:1px solid #dce2eb!important;border-radius:10px!important}#home .home-period-selectors .period-box:first-child{min-width:73px!important}#home .home-period-selectors .period-box:last-child{min-width:53px!important}#home .home-period-selectors .period-box button{font-size:10px!important}}
+
+/* V82: precise first-line alignment and Wrapped-style period controls */
+#home .home-checkin-header{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:start!important;column-gap:12px!important;margin-top:3px!important}
+#home .home-checkin-heading{min-width:0!important;align-self:start!important}
+#home .home-checkin-heading .eyebrow{margin:0!important;line-height:1.25!important}
+#home .home-period-selectors{align-self:start!important;justify-self:end!important;margin:0!important;padding:0!important;transform:none!important}
+#home .home-period-selectors .period-boxes{display:flex!important;align-items:flex-start!important;gap:9px!important;margin:0!important;padding:0!important}
+#home .home-period-selectors .period-box{box-sizing:border-box!important;height:38px!important;min-height:38px!important;padding:0!important;margin:0!important;border:1px solid #dce2eb!important;border-radius:12px!important;background:#fff!important;box-shadow:none!important;display:flex!important;align-items:center!important}
+#home .home-period-selectors .period-box:first-child{width:118px!important;min-width:0!important}
+#home .home-period-selectors .period-box:last-child{width:85px!important;min-width:0!important}
+#home .home-period-selectors .period-box button{display:block!important;box-sizing:border-box!important;width:100%!important;padding:0 13px!important;text-align:left!important;font-size:12px!important;font-weight:650!important;line-height:36px!important;border:0!important;white-space:nowrap!important}
+#home .home-period-selectors .period-box>span{display:none!important}
+@media(max-width:650px){
+ #home .home-checkin-header{column-gap:7px!important}
+ #home .home-checkin-heading .eyebrow{font-size:clamp(15px,4vw,19px)!important;line-height:32px!important;white-space:nowrap!important}
+ #home .home-period-selectors .period-boxes{gap:5px!important}
+ #home .home-period-selectors .period-box{height:32px!important;min-height:32px!important;border-radius:10px!important}
+ #home .home-period-selectors .period-box:first-child{width:78px!important}
+ #home .home-period-selectors .period-box:last-child{width:55px!important}
+ #home .home-period-selectors .period-box button{padding:0 7px!important;font-size:10px!important;line-height:30px!important}
+ #home .home-checkin-sub{font-size:10px!important}
+}
+@media(max-width:350px){#home .home-checkin-heading .eyebrow{font-size:14px!important}#home .home-period-selectors .period-box:first-child{width:69px!important}#home .home-period-selectors .period-box:last-child{width:49px!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -2557,7 +2580,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=81').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=82').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
