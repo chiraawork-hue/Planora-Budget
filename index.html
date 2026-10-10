@@ -1205,6 +1205,82 @@ header .brand-lockup .planora-ch2{flex:none}
  #home .period-boxes{gap:12px!important}
  #home .period-box button{font-size:11px!important}
 }
+
+/* V69: compact responsive layout across Planora pages */
+@media(max-width:650px){
+ #wallets,#transactions,#growth,#plan{font-size:12px!important}
+ #wallets .eyebrow,#transactions .eyebrow,#growth .eyebrow,#plan .eyebrow{font-size:9px!important;margin-bottom:3px!important;letter-spacing:.08em!important}
+ #wallets .title,#transactions .title,#growth .title,#plan .title{font-size:21px!important;line-height:1.2!important;letter-spacing:-.03em!important;margin:0 0 3px!important}
+ #wallets .sub,#transactions .sub,#growth .sub,#plan .sub{font-size:10px!important;line-height:1.4!important}
+ #wallets .wallets-top,#growth .wallets-top{display:flex!important;align-items:center!important;gap:8px!important;justify-content:space-between!important;margin:3px 0 12px!important}
+ #wallets .wallets-top .pill{flex:none!important;width:34px!important;height:34px!important;display:grid!important;place-items:center!important;padding:0!important;border-radius:11px!important;font-size:20px!important}
+ #wallets .wallet-add-label{display:none!important}
+ #wallets .wallet-wealth-card{padding:15px!important;border-radius:17px!important;margin-bottom:11px!important}
+ #wallets .wallet-wealth-card>span{font-size:10px!important}
+ #wallets .wallet-wealth-card>strong{font-size:clamp(21px,5.5vw,29px)!important;line-height:1.25!important;letter-spacing:-.04em!important;overflow-wrap:anywhere!important}
+ #wallets .wallet-wealth-breakdown{gap:8px!important;margin:9px 0!important}
+ #wallets .wallet-wealth-breakdown>div{padding:10px!important;border-radius:11px!important}
+ #wallets .wallet-wealth-breakdown b{font-size:clamp(12px,3.2vw,16px)!important;overflow-wrap:anywhere!important}
+ #wallets .wallet-goal-reserved{padding:9px 10px!important;font-size:11px!important}
+ #wallets .wallet-wealth-card>small{font-size:10px!important;line-height:1.4!important}
+ #wallets .wallet-distribution-heading{margin-top:12px!important;font-size:11px!important}
+ #wallets .wallet-distribution-legend{font-size:9px!important;gap:7px!important}
+ #wallets .wallet-card-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+ #wallets .wallet-account-card{min-width:0!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:5px!important;padding:11px!important;border:1px solid #e5ebe8!important;border-radius:13px!important}
+ #wallets .wallet-account-icon{width:29px!important;height:29px!important;flex:none!important;font-size:14px!important}
+ #wallets .wallet-account-content{min-width:0!important;width:100%!important}
+ #wallets .wallet-account-content span{display:block!important;font-size:11px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+ #wallets .wallet-account-content strong{display:block!important;font-size:clamp(12px,3.2vw,16px)!important;line-height:1.25!important;overflow-wrap:anywhere!important}
+ #wallets .wallet-account-content small{display:block!important;font-size:9px!important;line-height:1.35!important;overflow-wrap:anywhere!important}
+ #wallets .wallet-account-card>span:last-child{display:none!important}
+ #wallets .wallet-transfer-heading{margin:16px 0 8px!important;gap:8px!important}
+ #wallets .wallet-transfer-heading h2{font-size:14px!important}
+ #wallets .wallet-transfer-heading .pill{font-size:11px!important;padding:8px!important}
+ #transactions .tx-hero{position:relative!important;display:block!important;padding-top:25px!important;margin:0 0 10px!important;min-height:0!important}
+ #transactions .tx-hero>.period-boxes{position:absolute!important;top:0!important;right:0!important;display:flex!important;gap:13px!important;margin:0!important}
+ #transactions .tx-hero .period-box{border:0!important;background:transparent!important;padding:0!important;box-shadow:none!important}
+ #transactions .tx-hero .period-box>span{display:none!important}
+ #transactions .tx-hero .period-box button{border:0!important;border-bottom:1px solid #aab8b0!important;background:transparent!important;border-radius:0!important;padding:1px 0 3px!important;min-width:0!important;height:auto!important;font-size:11px!important}
+ #transactions .tx-income-summary,#transactions .tx-spending-card{padding:12px!important;margin:9px 0!important;border-radius:13px!important}
+ #transactions .tx-income-summary-head{gap:8px!important}
+ #transactions .tx-income-summary-head b,#transactions .tx-chart-head h2,#transactions .tx-history-title h2{font-size:14px!important}
+ #transactions .tx-income-total strong{font-size:clamp(15px,4vw,20px)!important;overflow-wrap:anywhere!important}
+ #transactions .tx-income-breakdown{gap:7px!important}
+ #transactions .tx-history-title{margin:12px 0 7px!important}
+ #transactions .tx-filter{padding:9px!important;gap:7px!important}
+ #growth>.title,#plan>.title{margin:2px 0 3px!important}
+ #growth .plan-tabs,#plan .plan-tabs{margin:12px 0!important;gap:7px!important}
+ #growth .plan-tab,#plan .plan-tab{padding:9px 11px!important;font-size:12px!important}
+ #growth .section-head,#plan .section-head{margin:12px 0 8px!important;gap:8px!important}
+ #growth .section-head h2,#plan .section-head h2,#growth .wallets-top h2{font-size:15px!important;line-height:1.25!important}
+ #growth .goal-overview{padding:12px!important;margin:8px 0 12px!important}
+ #growth .goal-overview-head h3{font-size:16px!important}
+ #growth .goal-overview-donut{width:90px!important;height:90px!important}
+ #growth .goal-overview-donut>div{width:64px!important;height:64px!important}
+ #growth .goal-overview-donut b{font-size:18px!important}
+ #growth .goal-overview-stats{gap:8px!important;margin-top:10px!important}
+ #growth .goal-overview-stats>div{padding:10px!important}
+ #growth .goal-overview-stats b{font-size:13px!important}
+ #plan #planBudget>.card,#plan #planBills>.card{padding:12px!important}
+ #plan .summary{padding:11px!important;gap:8px!important}
+ #plan .summary b{font-size:clamp(12px,3.4vw,17px)!important;overflow-wrap:anywhere!important}
+ #plan #catList{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;align-items:stretch!important}
+ #plan #catList .plan-category-card{min-width:0!important;margin:0!important;padding:11px!important;border-radius:13px!important}
+ #plan #catList .plan-category-top{gap:6px!important;flex-wrap:wrap!important}
+ #plan #catList .plan-category-icon{width:28px!important;height:28px!important;flex:none!important}
+ #plan #catList b,#plan #catList strong{font-size:12px!important;overflow-wrap:anywhere!important}
+ #plan #catList small,#plan #catList .sub{font-size:10px!important;line-height:1.35!important}
+ #plan #planBills .section-head h2{font-size:15px!important}
+ #plan #planBills .bill-list-heading{margin-top:12px!important;gap:7px!important}
+ #plan #planBills .bill-list-heading b{font-size:13px!important}
+ #plan #planBills .bill-list-heading small{font-size:10px!important}
+ #plan #billList .bill-item{padding:11px!important;gap:7px!important;margin-bottom:8px!important;border-radius:12px!important}
+ #plan #billList .bill-item b,#plan #billList .bill-item strong{font-size:12px!important}
+ #plan #billList .bill-item .sub{font-size:10px!important}
+ #plan #billList .bill-item-actions{gap:6px!important}
+ #plan #billList .bill-item-actions button{padding:6px 9px!important;font-size:10px!important}
+ #plan #planBills .bill-color-calendar{font-size:11px!important}
+}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1273,7 +1349,7 @@ header .brand-lockup .planora-ch2{flex:none}
 <div id="splitExitModal" class="split-exit-modal" hidden role="dialog" aria-modal="true" aria-labelledby="splitExitTitle"><div class="split-exit-card"><div class="split-exit-symbol">🧾</div><h2 id="splitExitTitle">Batalkan Split Bill?</h2><p>Split Bill yang sedang kamu kerjakan akan dihapus jika kamu keluar. Mau lanjut mengerjakannya?</p><div class="split-exit-actions"><button type="button" onclick="splitDiscardAndExit()">Hapus Split Bill</button><button type="button" onclick="splitKeepWorking()">Lanjutkan Split Bill</button></div></div></div>
 <main id="transactions" class="transactions-redesign"><div class="eyebrow">YOUR FINANCIAL ACTIVITY</div><div class="tx-hero"><div><h1 class="title">Transaction</h1><p class="sub">Kelola pemasukan dan pengeluaran di sini.</p></div><div class="period-boxes" id="txBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="txMonthBtn" onclick="openPeriodBox('tx','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="txYearBtn" onclick="openPeriodBox('tx','year')">Tahun</button></div></div></div><div class="card tx-income-summary"><div class="tx-income-summary-head"><div><b>Income Summary</b><div class="sub">Rincian pemasukan berdasarkan sumber</div></div><div class="tx-income-total"><span>Total pemasukan</span><strong id="txIncomeSummary">Rp0</strong></div></div><div id="txIncomeBreakdown" class="tx-income-breakdown"></div></div><div class="card tx-spending-card"><div class="tx-chart-head"><div><h2>Where My Money Goes</h2><div class="sub">Persentase pengeluaran per kategori</div></div><input id="txChartMonth" type="month" onchange="syncTxMonth(this.value)" aria-label="Pilih bulan pengeluaran" class="period-native-hidden"></div><div id="txCategoryChart"></div></div><div class="tx-history-title"><h2>Riwayat Pengeluaran</h2><div class="sub">Detail pengeluaran berdasarkan kategori</div></div><div class="card tx-filter tx-filter-redesign"><input id="txSearch" aria-label="Cari transaksi" placeholder="⌕  Cari deskripsi, kategori, atau akun..." oninput="renderTx()"><select id="txSort" onchange="renderTx()" aria-label="Urutan transaksi"><option value="newest">Terbaru</option><option value="oldest">Terlama</option><option value="largest">Terbesar</option></select></div><div id="txList"></div><button type="button" class="tx-floating-add" onclick="openAdd()" aria-label="Tambah transaksi" title="Tambah transaksi">+</button></main>
 
-<main id="wallets" class="wallets-redesign"><div class="eyebrow">YOUR MONEY</div><div class="wallets-top"><div><h1 class="title">Account</h1><p class="sub">Pantau saldo rekening dan dompetmu di satu tempat.</p></div><button class="pill" onclick="openWalletModal()">＋ Tambah Akun</button></div><div id="walletSummary"></div><div class="wallet-transfer-heading"><div><h2>Transfer Antar Akun</h2><div class="sub">Pindahkan saldo tanpa mengubah total uangmu.</div></div><button class="pill" onclick="openTransferModal()">↗ Transfer</button></div><div id="walletTransferHistory"></div></main>
+<main id="wallets" class="wallets-redesign"><div class="eyebrow">YOUR MONEY</div><div class="wallets-top"><div><h1 class="title">Account</h1><p class="sub">Pantau saldo rekening dan dompetmu di satu tempat.</p></div><button class="pill" onclick="openWalletModal()" aria-label="Tambah akun" title="Tambah akun">＋ <span class="wallet-add-label">Tambah Akun</span></button></div><div id="walletSummary"></div><div class="wallet-transfer-heading"><div><h2>Transfer Antar Akun</h2><div class="sub">Pindahkan saldo tanpa mengubah total uangmu.</div></div><button class="pill" onclick="openTransferModal()">↗ Transfer</button></div><div id="walletTransferHistory"></div></main>
 
 <main id="growth" class="growth-page"><div class="eyebrow">YOUR FUTURE</div><h1 class="title">My Growth</h1><p class="sub">Tabungan impian dan catatan asetmu, di satu tempat.</p><div class="plan-tabs" role="tablist" aria-label="Menu My Growth"><button type="button" class="plan-tab active" id="growthTabAssets" role="tab" aria-selected="true" aria-controls="growthAssets" onclick="selectGrowthTab('assets')">◇ My Assets</button><button type="button" class="plan-tab" id="growthTabGoals" role="tab" aria-selected="false" aria-controls="growthGoals" onclick="selectGrowthTab('goals')">◎ Goals</button></div><div id="growthGoals" role="tabpanel" aria-labelledby="growthTabGoals" hidden><section id="growthGoalsPanel" class="plan-tab-panel" role="tabpanel" aria-labelledby="growthTabGoals">
 <div class="section-head"><h2 data-i18n="goals">Goals</h2><button class="pill" onclick="openGoal()">+ Goal</button></div><div class="goal-life-copy">Sedikit demi sedikit, untuk sesuatu yang kamu tunggu-tunggu.</div><div id="goalOverview"></div><div id="goalList"></div>
@@ -2381,7 +2457,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=68').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=69').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
