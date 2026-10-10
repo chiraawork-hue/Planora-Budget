@@ -1116,6 +1116,21 @@ header .brand-lockup .planora-ch2{flex:none}
 #home .home-moment-action b{color:#263b30!important}
 #home .home-moment-action .moment-plus{background:#fff!important;color:#00a86b!important;border:1px solid #00a86b!important}
 #home #homeMoments{margin-top:4px!important}
+
+/* Planora Home typography refinement — restrained black-first hierarchy */
+#home,#home button,#home input,#home select{font-family:Arial,"Helvetica Neue",Helvetica,system-ui,sans-serif!important}
+#home .home-checkin-heading .eyebrow{font-family:Arial,"Helvetica Neue",Helvetica,system-ui,sans-serif!important;font-size:clamp(18px,3.7vw,23px)!important;font-weight:700!important;letter-spacing:-.035em!important;color:#171b19!important}
+#home .home-checkin-sub{color:#5e6863!important;font-size:12px!important}
+#home .safe-label,#home .money-card small,#home .money-card.dark small,#home .home-clean-section>span{font-weight:600!important;letter-spacing:.035em!important;color:#535c57!important}
+#home #safeToSpend{color:#171b19!important;font-family:Arial,"Helvetica Neue",Helvetica,system-ui,sans-serif!important;font-weight:750!important;letter-spacing:-.025em!important}
+#home .money-card b,#home .money-card.dark b{color:#171b19!important;font-family:Arial,"Helvetica Neue",Helvetica,system-ui,sans-serif!important;font-weight:750!important;letter-spacing:-.02em!important}
+#home .safe-note,#home .safe-foot,#home .money-card .note{color:#626c65!important}
+#home .money-card,#home .money-card.dark{background:#fff!important;border-color:#e3e8e4!important}
+#home .home-actions-line button,#home .split-home-entry strong,#home .home-moment-action b{color:#171b19!important;font-weight:650!important}
+#home .home-clean-section button,#home .period-box button{color:#171b19!important}
+#home .home-actions-line button span{font-weight:700!important}
+#home .money-card.dark{border-top-color:#1686cc!important}
+#home .money-card:not(.dark){border-top-color:#e6a000!important}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -2289,7 +2304,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=60').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=61').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
