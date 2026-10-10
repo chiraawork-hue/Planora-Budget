@@ -1072,6 +1072,50 @@ header .brand-lockup .planora-ch2{flex:none}
  #planoraSplash .splash-wordmark strong{font-size:clamp(23px,7vw,28px)!important}
  #planoraSplash .splash-wordmark span{font-size:clamp(22px,6.8vw,27px)!important}
 }
+
+/* Planora Modern Minimal: color is for numbers, strokes, and signals only */
+#home{--pl-ink:#172b25;--pl-muted:#78837e;--pl-accent:#00a86b}
+#home .home-checkin-heading .eyebrow{color:#18362c!important;font-size:clamp(17px,3.8vw,23px)!important;font-weight:800!important}
+#home .home-checkin-sub{color:#808c86!important}
+#home .period-box{background:#fff!important;border:1px solid #e4e9e6!important;border-radius:10px!important}
+#home .period-box>span{color:#8a948f!important}
+#home .period-box button{color:#263c33!important}
+#home .safe-card{background:#fff!important;color:#1c3228!important;border:1px solid #e1e8e3!important;border-left:4px solid #00a86b!important;border-radius:15px!important;padding:17px 18px!important;box-shadow:none!important;margin-bottom:14px!important}
+#home .safe-label{color:#64766c!important;font-size:10px!important;letter-spacing:.09em!important}
+#home #safeToSpend{color:#00a86b!important;font-weight:850!important;font-size:clamp(25px,5.5vw,33px)!important}
+#home .safe-note,#home .safe-foot{color:#6b7972!important}
+#home .safe-leaf{color:#00a86b!important}
+#home .safe-progress{background:#e9eeeb!important;height:5px!important}
+#home .safe-progress i{background:#00ae74!important}
+#home .home-clean-section{margin:16px 0 8px!important}
+#home .home-clean-section>span{color:#737f79!important}
+#home .home-clean-section button{color:#007f58!important}
+#home .money-strip{gap:9px!important}
+#home .money-card,#home .money-card.dark{background:#fff!important;border:1px solid #e5ebe7!important;border-radius:14px!important;padding:14px 13px!important;box-shadow:none!important}
+#home .money-card.dark{border-top:3px solid #1488d4!important}
+#home .money-card:not(.dark){border-top:3px solid #e6a000!important}
+#home .money-card small,#home .money-card.dark small{color:#77847c!important}
+#home .money-card b,#home .money-card.dark b{color:#153c2d!important;font-weight:800!important}
+#home .money-card.dark b{color:#087cc4!important}
+#home .money-card:not(.dark) b{color:#b37b00!important}
+#home .money-card .note{color:#87938c!important}
+#home .home-actions-line{gap:8px!important}
+#home .home-actions-line button,#home .home-actions-line button:nth-child(1),#home .home-actions-line button:nth-child(2),#home .home-actions-line button:nth-child(3){background:#fff!important;border:1px solid #e2e9e4!important;border-radius:12px!important;color:#283a30!important;min-height:53px!important;box-shadow:none!important}
+#home .home-actions-line button:nth-child(1){border-bottom:2px solid #00a86b!important}
+#home .home-actions-line button:nth-child(2){border-bottom:2px solid #8855c9!important}
+#home .home-actions-line button:nth-child(3){border-bottom:2px solid #ee9c24!important}
+#home .home-actions-line button:nth-child(1) span{color:#00a86b!important}
+#home .home-actions-line button:nth-child(2) span{color:#8855c9!important}
+#home .home-actions-line button:nth-child(3) span{color:#ee9c24!important}
+#home .split-home-entry{background:#fff!important;border:1px solid #e3eae6!important;border-left:3px solid #1686cc!important;border-radius:13px!important;color:#263d32!important;padding:12px!important}
+#home .split-entry-icon{background:transparent!important;color:#1686cc!important;width:30px!important;height:32px!important}
+#home .split-home-entry strong{color:#21382c!important}
+#home .split-home-entry small{color:#79877f!important}
+#home .split-arrow{color:#1686cc!important}
+#home .home-moment-action{background:#fff!important;border-top:1px solid #e6ebe8!important}
+#home .home-moment-action b{color:#263b30!important}
+#home .home-moment-action .moment-plus{background:#fff!important;color:#00a86b!important;border:1px solid #00a86b!important}
+#home #homeMoments{margin-top:4px!important}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -2245,7 +2289,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=59').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=60').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
