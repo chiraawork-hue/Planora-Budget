@@ -1368,13 +1368,14 @@ async function splitSharpenReceipt(canvas){
  ctx.putImageData(dst,0,0);return canvas;
 }
 async function splitReadReceipt(file){
+ const run=++splitOcrRun;
  splitOcrStatus('Memperjelas foto struk…');
  try{
   const T=await splitLoadOcr();
   let source=file;try{source=await splitPreprocessReceipt(file);source=await splitSharpenReceipt(source)}catch(e){source=file}
   splitOcrStatus('Membaca tulisan pada struk…');
   const result=await T.recognize(source,'eng',{logger:m=>{if(m.status==='recognizing text')splitOcrStatus('Membaca struk… '+Math.round((m.progress||0)*100)+'%')}});
-  const raw=result?.data?.text||'';document.getElementById('splitOcrRaw').value=raw;const parsed=splitParseReceipt(raw);
+  if(run!==splitOcrRun)return;const raw=result?.data?.text||'';document.getElementById('splitOcrRaw').value=raw;const parsed=splitParseReceipt(raw);
   if(parsed.items.length){
    splitItemsData=parsed.items;
    for(const [key,val] of Object.entries(parsed.fees)){if(val!==null){const input=document.getElementById('split'+key[0].toUpperCase()+key.slice(1));const unit=document.getElementById('split'+key[0].toUpperCase()+key.slice(1)+'Unit');if(input&&unit){input.value=val;unit.value='amount'}}}
@@ -1382,7 +1383,7 @@ async function splitReadReceipt(file){
    splitOcrStatus('Ditemukan '+parsed.items.length+' item. Periksa kembali nama, harga, pajak, dan diskon.');
   }else splitOcrStatus('Tulisan belum terbaca cukup jelas. Coba foto lebih dekat atau isi manual.');
   splitOpenStep('review');
- }catch(e){splitOcrStatus('Pembacaan otomatis belum berhasil. Coba foto lebih dekat atau input manual.');splitOpenStep('review')}
+ }catch(e){if(run!==splitOcrRun)return;splitOcrStatus('Pembacaan otomatis belum berhasil. Coba foto lebih dekat atau input manual.');splitOpenStep('review')}
 }
 
 function splitShowPhoto(file){splitHasStarted=true;const im=document.getElementById('splitPreview');if(im.dataset.url)URL.revokeObjectURL(im.dataset.url);const url=URL.createObjectURL(file);im.src=url;im.dataset.url=url;im.hidden=false;document.getElementById('splitPhotoRetake').hidden=false;splitReadReceipt(file)}
