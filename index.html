@@ -1516,7 +1516,7 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 <path d="M47 15C37 6 21 9 13 20 4 32 9 48 22 54c7 3 14 2 20-1" fill="none" stroke="url(#g)" stroke-width="7.5" stroke-linecap="round"/>
 <path d="M31 15v36M31 36c4-8 9-11 15-10 8 1 10 8 10 15v10" fill="none" stroke="url(#l)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M48 21c1-6 5-9 10-9-1 6-4 10-10 11z" fill="#D6B66F"/>
-</svg></div><div class="onboarding-count" id="onboardCount">01 / 06</div><h2 id="onboardTitle">Welcome to Planora Budget</h2><p id="onboardDescription">Kelola keuangan dan momen kecilmu dalam satu tempat.</p><div class="onboarding-dots" id="onboardDots"></div></div><div class="onboarding-actions"><button type="button" id="onboardBack" onclick="movePlanoraOnboarding(-1)">Kembali</button><button type="button" id="onboardNext" onclick="movePlanoraOnboarding(1)">Lanjut →</button></div></div></div>
+</svg></div><div class="onboarding-count" id="onboardCount">01 / 09</div><h2 id="onboardTitle">Welcome to Planora Budget</h2><p id="onboardDescription">Kelola keuangan dan momen kecilmu dalam satu tempat.</p><div class="onboarding-dots" id="onboardDots"></div></div><div class="onboarding-actions"><button type="button" id="onboardBack" onclick="movePlanoraOnboarding(-1)">Kembali</button><button type="button" id="onboardNext" onclick="movePlanoraOnboarding(1)">Lanjut →</button></div></div></div>
 <div id="planoraDeleteConfirm" class="planora-confirm-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="planoraConfirmTitle"><div class="planora-confirm-card"><div class="planora-confirm-symbol">×</div><h2 id="planoraConfirmTitle">Hapus transaksi ini?</h2><p id="planoraConfirmDescription">Transaksi akan dihapus dari catatan dan saldo serta ringkasan keuangan akan diperbarui.</p><div class="planora-confirm-actions"><button type="button" onclick="closePlanoraDeleteConfirm()">Batal</button><button type="button" class="confirm-danger" onclick="approvePlanoraDeleteConfirm()">Ya, hapus</button></div></div></div>
 <div id="planoraSplash" role="status" aria-label="Memuat Planora Budget"><div class="splash-lockup"><div class="splash-mark"><img src="./planora-budget-ch-approved.webp" alt="CH" onerror="this.onerror=null;this.src='./icon.svg'"></div><div class="splash-wordmark" aria-label="Planora Budget"><strong>Planora</strong><span>Budget</span></div></div></div>
 <div class="app">
@@ -1760,21 +1760,27 @@ function toastMsg(s){toast.textContent=s;toast.classList.add('show');clearTimeou
 
 const PLANORA_INTRO_KEY='planora_budget_intro_seen_v1';
 const planoraSlides=[
- {icon:'✦',title:'Welcome to Planora Budget',description:'Ruang personal untuk mengelola uang, rencana, dan momen-momen kecilmu.'},
- {icon:'⌂',title:'Home — Your money at a glance',description:'Lihat ringkasan saldo, budget yang aman digunakan, tagihan, dan Life Lately dalam satu layar.'},
- {icon:'▤',title:'Budget & Transaction',description:'Atur budget bulanan, catat pemasukan dan pengeluaran, lalu lihat ringkasan berdasarkan bulan.'},
- {icon:'▣',title:'Account — All in one place',description:'Pantau rekening, dompet, dan perpindahan uang antar akun dengan lebih rapi.'},
- {icon:'✧',title:'Growth — Your future',description:'Catat aset yang kamu miliki dan tabung sedikit demi sedikit untuk mencapai Goals.'},
- {icon:'◷',title:'Wrapped & little moments',description:'Lihat perjalanan keuanganmu dan simpan cerita kecil yang ingin kamu kenang.'}
+ {icon:'✦',title:'Welcome to Planora Budget',description:'Money, moments & little things. Mulai dari mencatat uangmu, lalu bangun kebiasaan finansial yang lebih terarah.'},
+ {icon:'▣',title:'1. Account — Catat sumber uang',description:'Mulai di Account. Tambahkan rekening bank, e-wallet, atau uang tunai beserta saldo awal. Ini fondasi agar catatan transaksimu lebih akurat.'},
+ {icon:'▤',title:'2. Transaction — Catat aktivitas',description:'Catat pemasukan dan pengeluaran lewat tombol +. Pilih kategori, akun sumber dana, nominal, dan tanggal. Riwayat serta grafik akan terisi otomatis.'},
+ {icon:'⌂',title:'3. Home — Lihat ringkasan',description:'Pantau uang tersedia, batas aman belanja, dan Monthly Financial Insight. Kamu juga bisa transfer antar akun, cek tagihan, Split Bill, serta menyimpan Life Lately.'},
+ {icon:'◷',title:'4. Growth — Goals & My Asset',description:'Sisihkan uang untuk Goals dan catat aset seperti emas, reksa dana, saham, atau mata uang asing. Jumlah aset dan modal pembelian adalah dua hal berbeda.'},
+ {icon:'▤',title:'5. Budget — Atur rencana',description:'Tetapkan budget bulanan dan alokasi per kategori. Di bagian Bills, catat tagihan serta tandai yang sudah dibayar agar lebih mudah dipantau.'},
+ {icon:'✧',title:'6. Wrapped — Lihat perjalananmu',description:'Jelajahi rangkuman pemasukan, pengeluaran, dan kebiasaan keuangan dari periode yang dipilih. Semakin rutin mencatat, semakin bermakna rangkumannya.'},
+ {icon:'◷',title:'7. Settings — Amankan datamu',description:'Planora menyimpan data keuangan secara lokal di browser. Gunakan Settings → Data & Backup untuk menyimpan cadangan, terutama sebelum mengganti perangkat.'},
+ {icon:'✦',title:'Siap mulai perjalananmu?',description:'Langkah pertama: buka Account dan tambahkan sumber dana. Setelah itu, catat transaksi pertamamu. Kamu bisa membuka panduan ini lagi kapan saja melalui Settings.'}
 ];
 let planoraIntroIndex=0;
 const planoraIntroPaths=[
  '',
- '<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',
- '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m-13 5 2 2 4-4"/>',
  '<rect x="3" y="6" width="18" height="15" rx="3"/><path d="M3 10h18M6 6V4h12"/><circle cx="17" cy="15" r="1"/>',
+ '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m-13 5 2 2 4-4"/>',
+ '<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',
  '<path d="M4 20h16M6 17v-5m6 5V8m6 9V4"/><path d="m5 8 5-4 4 2 5-4"/>',
- '<path d="M4 18V6m0 12h16M7 15l4-4 3 2 5-7"/>'
+ '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m-13 5 2 2 4-4"/>',
+ '<path d="M4 18V6m0 12h16M7 15l4-4 3 2 5-7"/>',
+ '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 10h8M8 14h6"/>',
+ ''
 ];
 function planoraIntroSvg(i){return '<svg viewBox="0 0 24 24" fill="none" stroke="#087a5b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+planoraIntroPaths[i]+'</svg>'}
 let planoraIntroBusy=false;
@@ -1782,19 +1788,19 @@ function renderPlanoraOnboarding(){
  const x=planoraSlides[planoraIntroIndex],overlay=document.getElementById('planoraOnboarding');if(!overlay)return;
  const iconBox=document.getElementById('onboardIcon');
  if(planoraIntroIndex===0){iconBox.innerHTML='<img class="onboard-brand-logo" src="./icon.svg?v=32" alt="Logo Planora Budget">'}
- else{iconBox.innerHTML=planoraIntroSvg(planoraIntroIndex)}
+ else if(planoraIntroIndex===planoraSlides.length-1){iconBox.innerHTML='<span aria-hidden="true">✓</span>'}else{iconBox.innerHTML=planoraIntroSvg(planoraIntroIndex)}
  document.getElementById('onboardTitle').textContent=x.title;
  document.getElementById('onboardDescription').textContent=x.description;
  document.getElementById('onboardCount').textContent=String(planoraIntroIndex+1).padStart(2,'0')+' / '+String(planoraSlides.length).padStart(2,'0');
  document.getElementById('onboardDots').innerHTML=planoraSlides.map((_,i)=>'<span class="'+(i===planoraIntroIndex?'active':'')+'"></span>').join('');
  document.getElementById('onboardBack').disabled=planoraIntroIndex===0;
- document.getElementById('onboardNext').textContent=planoraIntroIndex===planoraSlides.length-1?'Mulai Planora →':'Lanjut →';
+ document.getElementById('onboardNext').textContent=planoraIntroIndex===planoraSlides.length-1?'Buka Account →':'Lanjut →';
 }
-function startPlanoraOnboarding(){planoraIntroIndex=0;const overlay=document.getElementById('planoraOnboarding');overlay.hidden=false;renderPlanoraOnboarding()}
+function startPlanoraOnboarding(){planoraIntroBusy=false;planoraIntroIndex=0;const overlay=document.getElementById('planoraOnboarding');overlay.hidden=false;renderPlanoraOnboarding()}
 function finishPlanoraOnboarding(){localStorage.setItem(PLANORA_INTRO_KEY,'1');document.getElementById('planoraOnboarding').hidden=true}
 function movePlanoraOnboarding(n){
  if(planoraIntroBusy)return;
- if(planoraIntroIndex+n>=planoraSlides.length){finishPlanoraOnboarding();return}
+ if(planoraIntroIndex+n>=planoraSlides.length){finishPlanoraOnboarding();page('wallets');return}
  const next=Math.max(0,planoraIntroIndex+n);if(next===planoraIntroIndex)return;
  const body=document.querySelector('.onboarding-content');
  if(!body){planoraIntroIndex=next;renderPlanoraOnboarding();return}
