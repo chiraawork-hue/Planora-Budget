@@ -1323,6 +1323,19 @@ header .brand-lockup .planora-ch2{flex:none}
 @keyframes planoraBoatSink{0%{transform:translate(-50%,0) rotate(-4deg);opacity:1}30%{transform:translate(-50%,6px) rotate(12deg);opacity:1}70%{transform:translate(-50%,31px) rotate(26deg);opacity:.65}100%{transform:translate(-50%,62px) rotate(34deg);opacity:0}}
 #home .safe-card:not(.safe-boat-sinking) .safe-little-boat{opacity:1!important;transition:opacity .5s ease!important}
 @media(prefers-reduced-motion:reduce){#home .safe-card.safe-boat-sinking .safe-little-boat{animation:none!important;transform:translate(-50%,62px) rotate(34deg)!important;opacity:0!important;transition:none!important}}
+
+/* V75 — delicate bubbles rising through the ocean fill */
+#home .safe-bubbles{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:2}
+#home .safe-bubbles i{position:absolute;bottom:-12px;display:block;width:7px;height:7px;border:1.4px solid rgba(255,255,255,.7);border-radius:50%;background:rgba(255,255,255,.14);box-shadow:inset 1px 1px 2px rgba(255,255,255,.25);animation:planoraBubbleRise 4.5s linear infinite;opacity:0}
+#home .safe-bubbles i:nth-child(1){left:12%;width:5px;height:5px;animation-delay:0s;animation-duration:3.9s}
+#home .safe-bubbles i:nth-child(2){left:27%;width:9px;height:9px;animation-delay:-2.4s;animation-duration:5.2s}
+#home .safe-bubbles i:nth-child(3){left:43%;width:4px;height:4px;animation-delay:-1.2s;animation-duration:3.5s}
+#home .safe-bubbles i:nth-child(4){left:58%;width:8px;height:8px;animation-delay:-3.3s;animation-duration:4.7s}
+#home .safe-bubbles i:nth-child(5){left:73%;width:5px;height:5px;animation-delay:-.8s;animation-duration:4.2s}
+#home .safe-bubbles i:nth-child(6){left:85%;width:10px;height:10px;animation-delay:-2s;animation-duration:5.4s}
+#home .safe-bubbles i:nth-child(7){left:94%;width:4px;height:4px;animation-delay:-3.8s;animation-duration:3.7s}
+@keyframes planoraBubbleRise{0%{transform:translate3d(0,0,0) scale(.7);opacity:0}18%{opacity:.65}75%{opacity:.5}100%{transform:translate3d(11px,-145px,0) scale(1.15);opacity:0}}
+@media(prefers-reduced-motion:reduce){#home .safe-bubbles i{animation:none!important;opacity:.2!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1357,7 +1370,7 @@ header .brand-lockup .planora-ch2{flex:none}
 
 <main id="home" class="active"><div class="home-checkin-header"><div class="home-checkin-heading"><div class="eyebrow">Your money, in harmony.</div><div class="home-checkin-sub">Keuanganmu, lebih tertata.</div></div><div class="home-period-selectors"><div class="period-boxes" id="homeBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="homeMonthBtn" onclick="openPeriodBox('home','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="homeYearBtn" onclick="openPeriodBox('home','year')">Tahun</button></div></div><label class="home-period-field"><span>BULAN</span><select id="homeMonthSelect" aria-label="Pilih bulan" onchange="setHomePeriodMonth(this.value)"></select></label><label class="home-period-field home-year-field"><span>TAHUN</span><select id="homeYearSelect" aria-label="Pilih tahun" onchange="setHomePeriodYear(this.value)"></select></label></div></div>
 <div class="safe-card" id="safeWaterCard">
- <div class="safe-water-fill" id="safeWaterFill" aria-hidden="true"><div class="safe-water-wave"></div><div class="safe-little-boat"><svg viewBox="0 0 64 52" aria-hidden="true"><path d="M32 3v27" stroke="#334155" stroke-width="2.8" stroke-linecap="round"/><path d="M29 7 9 29h20Z" fill="#fffdf5" stroke="#d8e4eb" stroke-width="1.2"/><path d="m35 10 15 19H35Z" fill="#ffdc82" stroke="#e9b54c" stroke-width="1.2"/><path d="M5 32h54l-9 13H16Z" fill="#b85d40"/><path d="M13 36h39" stroke="#f9d1ad" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+ <div class="safe-water-fill" id="safeWaterFill" aria-hidden="true"><div class="safe-water-wave"></div><div class="safe-bubbles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="safe-little-boat"><svg viewBox="0 0 64 52" aria-hidden="true"><path d="M32 3v27" stroke="#334155" stroke-width="2.8" stroke-linecap="round"/><path d="M29 7 9 29h20Z" fill="#fffdf5" stroke="#d8e4eb" stroke-width="1.2"/><path d="m35 10 15 19H35Z" fill="#ffdc82" stroke="#e9b54c" stroke-width="1.2"/><path d="M5 32h54l-9 13H16Z" fill="#b85d40"/><path d="M13 36h39" stroke="#f9d1ad" stroke-width="2" stroke-linecap="round"/></svg></div></div>
  <div class="safe-top"><div><div class="safe-label" data-i18n="safe">AMAN DIBELANJAKAN</div><b id="safeToSpend">Rp0</b></div><div class="safe-leaf">⌁</div></div>
  <div class="safe-note" id="safeSpendNote" hidden aria-hidden="true"></div>
  <div class="safe-progress" hidden aria-hidden="true"><i id="safeSpendBar"></i></div>
@@ -2493,7 +2506,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=74').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=75').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
