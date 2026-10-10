@@ -1376,6 +1376,17 @@ header .brand-lockup .planora-ch2{flex:none}
 #home .home-floating-add{position:fixed;right:20px;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:35;width:54px;height:54px;border:0;border-radius:50%;background:#087f60;color:#fff;font-family:Inter,system-ui,sans-serif;font-size:32px;font-weight:350;line-height:1;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 18px #075f483d;cursor:pointer}
 #home .home-floating-add:active{transform:scale(.95)}
 @media(min-width:800px){#home .home-floating-add{right:max(24px,calc((100vw - 800px)/2 + 18px))}}
+
+/* V81: Home month/year same bordered box appearance as Wrapped screenshot */
+#home .home-checkin-header{align-items:center!important}
+#home .home-period-selectors{align-self:center!important}
+#home .home-period-selectors .period-boxes{display:flex!important;gap:9px!important;height:auto!important}
+#home .home-period-selectors .period-box{display:flex!important;align-items:center!important;justify-content:flex-start!important;height:40px!important;min-height:40px!important;padding:0 13px!important;border:1px solid #dce2eb!important;border-radius:13px!important;background:#fff!important;box-shadow:none!important}
+#home .home-period-selectors .period-box:first-child{min-width:115px!important}
+#home .home-period-selectors .period-box:last-child{min-width:84px!important}
+#home .home-period-selectors .period-box button{width:100%!important;text-align:left!important;font-size:12px!important;font-weight:650!important;line-height:1.2!important;color:#111827!important;border:0!important;text-decoration:none!important;background:transparent!important}
+#home .home-period-selectors .period-box>span{display:none!important}
+@media(max-width:520px){#home .home-checkin-header{align-items:center!important}#home .home-period-selectors{align-self:center!important}#home .home-period-selectors .period-boxes{gap:5px!important}#home .home-period-selectors .period-box{height:34px!important;min-height:34px!important;padding:0 7px!important;border:1px solid #dce2eb!important;border-radius:10px!important}#home .home-period-selectors .period-box:first-child{min-width:73px!important}#home .home-period-selectors .period-box:last-child{min-width:53px!important}#home .home-period-selectors .period-box button{font-size:10px!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -2546,7 +2557,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=80').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=81').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
