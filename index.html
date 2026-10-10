@@ -1317,6 +1317,12 @@ header .brand-lockup .planora-ch2{flex:none}
 #home .safe-top,#home .safe-foot{position:relative!important;z-index:5!important}
 @media(max-width:520px){#home .safe-little-boat{left:79%;width:42px;height:37px;top:-37px}}
 @media(prefers-reduced-motion:reduce){#home .safe-little-boat{animation:none!important;transform:translateX(-50%)!important}}
+
+/* V74 — boat sinks only when spending exceeds the monthly budget */
+#home .safe-card.safe-boat-sinking .safe-little-boat{animation:planoraBoatSink 3.5s ease-in forwards!important;opacity:0!important;transform:translate(-50%,62px) rotate(34deg)!important;transition:transform 3.5s ease-in,opacity 3.5s ease-in!important}
+@keyframes planoraBoatSink{0%{transform:translate(-50%,0) rotate(-4deg);opacity:1}30%{transform:translate(-50%,6px) rotate(12deg);opacity:1}70%{transform:translate(-50%,31px) rotate(26deg);opacity:.65}100%{transform:translate(-50%,62px) rotate(34deg);opacity:0}}
+#home .safe-card:not(.safe-boat-sinking) .safe-little-boat{opacity:1!important;transition:opacity .5s ease!important}
+@media(prefers-reduced-motion:reduce){#home .safe-card.safe-boat-sinking .safe-little-boat{animation:none!important;transform:translate(-50%,62px) rotate(34deg)!important;opacity:0!important;transition:none!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1877,7 +1883,7 @@ function render(){
  const usedPct=budget>0?Math.min(100,Math.round(expense/budget*100)):0;
  safeSpendBar.style.width=usedPct+'%';
  const waterFill=document.getElementById('safeWaterFill');if(waterFill)waterFill.style.height=usedPct+'%';
- const waterCard=document.getElementById('safeWaterCard');if(waterCard){waterCard.classList.toggle('safe-water-high',usedPct>=75);waterCard.classList.toggle('safe-water-full',usedPct>=100);waterCard.setAttribute('aria-label','Budget terpakai '+usedPct+' persen')}
+ const waterCard=document.getElementById('safeWaterCard');if(waterCard){waterCard.classList.toggle('safe-water-high',usedPct>=75);waterCard.classList.toggle('safe-water-full',usedPct>=100);waterCard.classList.toggle('safe-boat-sinking',budget>0&&expense>budget);waterCard.setAttribute('aria-label','Budget terpakai '+usedPct+' persen')}
  safeSpendNote.textContent=lang==='id'?(budget<=0?'Atur budget bulanan dulu':(expense>budget?'Budget bulan ini sudah terlewati':(safe===availableNow&&availableNow<budgetRemaining?'Dibatasi oleh uang yang benar-benar tersedia':'Sesuai sisa budget bulan ini'))):(budget<=0?'Set your monthly budget first':(expense>budget?'Monthly budget exceeded':(safe===availableNow&&availableNow<budgetRemaining?'Limited by your actual available money':'Based on your remaining monthly budget')));
  monthlyBudget.value=data.monthlyBudget||'';renderTx();renderWallets();renderBudget();renderGoals();renderBills();renderMoments();renderReports();
 }
@@ -2487,7 +2493,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=73').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=74').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
