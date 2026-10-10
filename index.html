@@ -884,6 +884,7 @@ header .brand-lockup .planora-ch2{flex:none}
 .split-row label{font-size:12px;display:grid;gap:7px;width:100%}.split-row input,.split-item-head input,.split-person input{border:1px solid #e0e9e2;border-radius:11px;padding:10px;min-width:0;width:100%;font:inherit}
 .split-item{border-top:1px solid #eef0ee;padding:13px 0}.split-item-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(95px,.6fr) 36px;gap:8px}.split-picks{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.split-picks label{border-radius:99px;background:#f1f7f3;padding:7px 9px;font-size:11px}
 .split-person{display:flex;gap:8px;margin:9px 0}.split-total,.split-result-row{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #edf1ed}.split-total strong{color:#087a5b}.split-copy{background:#087a5b;color:white;border:0;border-radius:13px;padding:13px;width:100%;font-weight:700;margin-top:15px}
+.split-charges{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.split-charges label{font-size:12px;font-weight:650;color:#405449;display:grid;gap:8px}.split-charges label span{display:flex;gap:4px}.split-charges input{width:100%;min-width:0;border:1px solid #e0e9e2;border-radius:10px;padding:9px;font:inherit}.split-charges select{width:66px;border:1px solid #e0e9e2;border-radius:10px;background:#fff;padding:8px;font:inherit}@media(max-width:500px){.split-charges{grid-template-columns:1fr}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -939,7 +940,11 @@ header .brand-lockup .planora-ch2{flex:none}
 <div class="split-top"><button class="split-back" onclick="page('home')">← Home</button><div class="eyebrow">SHARE THE MOMENT</div><h1>Split Bill</h1><p>Bagi tagihan bersama, tanpa ribet.</p></div>
 <div class="split-modes"><button id="splitPhotoTab" class="selected" onclick="splitMode('photo')">▧ Foto Struk</button><button id="splitManualTab" onclick="splitMode('manual')">✎ Input Manual</button></div>
 <div id="splitPhotoPanel" class="split-panel"><label class="split-upload">📷<strong>Unggah foto struk</strong><small>JPG, PNG, atau foto dari kamera</small><input type="file" accept="image/*" capture="environment" onchange="splitPhotoSelected(this)"></label><img id="splitPreview" alt="Foto struk yang dipilih" hidden><p class="split-hint">Foto struk bisa dilihat di sini. Pembacaan otomatis belum aktif; masukkan atau koreksi item di bawah agar pembagian tetap akurat.</p></div>
-<div class="split-panel"><div class="split-row"><h2>Rincian tagihan</h2><button onclick="splitAddItem()">+ Item</button></div><div id="splitItems"></div><div class="split-row"><label>Pajak / service / biaya lain (Rp)<input id="splitExtra" type="number" min="0" value="0" oninput="splitCalculate()"></label></div></div>
+<div class="split-panel"><div class="split-row"><h2>Rincian tagihan</h2><button onclick="splitAddItem()">+ Item</button></div><div id="splitItems"></div><div class="split-charges">
+<label>PPN <span><input id="splitTax" type="number" min="0" step="any" value="0" oninput="splitCalculate()"><select id="splitTaxUnit" onchange="splitCalculate()"><option value="percent">%</option><option value="amount">Rp</option></select></span></label>
+<label>Biaya layanan <span><input id="splitService" type="number" min="0" step="any" value="0" oninput="splitCalculate()"><select id="splitServiceUnit" onchange="splitCalculate()"><option value="percent">%</option><option value="amount">Rp</option></select></span></label>
+<label>Diskon <span><input id="splitDiscount" type="number" min="0" step="any" value="0" oninput="splitCalculate()"><select id="splitDiscountUnit" onchange="splitCalculate()"><option value="amount">Rp</option><option value="percent">%</option></select></span></label>
+</div><p class="split-hint">Persentase dihitung dari subtotal item. Biaya dan diskon dibagi proporsional sesuai bagian masing-masing.</p></div>
 <div class="split-panel"><div class="split-row"><h2>Teman yang ikut</h2><button onclick="splitAddPerson()">+ Orang</button></div><div id="splitPeople"></div><p class="split-hint">Pilih siapa yang menikmati setiap item. Biaya tambahan dibagi proporsional berdasarkan subtotal masing-masing.</p></div>
 <div class="split-panel"><h2>Hasil pembagian</h2><div id="splitResult"></div></div>
 </main>
@@ -1210,22 +1215,39 @@ function splitRender(){
  document.getElementById('splitItems').innerHTML=splitItemsData.map((it,i)=>'<div class="split-item"><div class="split-item-head"><input aria-label="Nama item" value="'+esc(it.name)+'" oninput="splitSetItem('+i+',\'name\',this.value)"><input aria-label="Harga item" type="number" min="0" value="'+it.price+'" oninput="splitSetItem('+i+',\'price\',this.value)"><button onclick="splitRemoveItem('+i+')">×</button></div><div class="split-picks">'+splitPersons.map((p,j)=>'<label><input type="checkbox" '+(it.people.includes(j)?'checked':'')+' onchange="splitTogglePerson('+i+','+j+',this.checked)"> '+esc(p)+'</label>').join('')+'</div></div>').join('');
  splitCalculate();
 }
-function splitCalculate(){
+function splitCompute(){
+ const subtotal=splitItemsData.reduce((a,it)=>a+Math.max(0,Number(it.price)||0),0);
+ const charge=(id,unit)=>{const n=Math.max(0,Number(document.getElementById(id)?.value)||0);return document.getElementById(unit)?.value==='percent'?subtotal*n/100:n};
+ const tax=charge('splitTax','splitTaxUnit'),service=charge('splitService','splitServiceUnit');
+ const discount=Math.min(subtotal+tax+service,charge('splitDiscount','splitDiscountUnit'));
+ const total=Math.max(0,Math.round(subtotal+tax+service-discount));
  const base=splitPersons.map(()=>0);
- splitItemsData.forEach(it=>{const price=Math.max(0,Number(it.price)||0);if(!it.people.length)return;it.people.forEach(j=>{if(base[j]!==undefined)base[j]+=price/it.people.length})});
- const subtotal=splitItemsData.reduce((a,x)=>a+Math.max(0,Number(x.price)||0),0);
- const extra=Math.max(0,Number(document.getElementById('splitExtra').value)||0);
- const assigned=base.reduce((a,b)=>a+b,0);
- const total=subtotal+extra;
- const fmt=n=>'Rp'+Math.round(n).toLocaleString('id-ID');
- const result=document.getElementById('splitResult');
- result.innerHTML='<div class="split-total">Total tagihan <strong>'+fmt(total)+'</strong></div>'+splitPersons.map((p,j)=>'<div class="split-result-row"><span>'+String(p).replace(/[&<>]/g,'')+'</span><strong>'+fmt(base[j]+(assigned?extra*base[j]/assigned:extra/splitPersons.length))+'</strong></div>').join('')+(assigned<subtotal?'<p class="split-hint">Ada item yang belum dipilih pesertanya. Pilih peserta agar pembagian lengkap.</p>':'')+'<button class="split-copy" onclick="splitCopy()">Salin hasil pembagian</button>';
+ splitItemsData.forEach(it=>{const price=Math.max(0,Number(it.price)||0),members=it.people.filter(j=>j>=0&&j<base.length);if(!members.length)return;members.forEach(j=>base[j]+=price/members.length)});
+ const allocated=base.reduce((a,b)=>a+b,0),shares=base.map(v=>allocated?v/allocated:1/Math.max(1,base.length));
+ const exact=shares.map(f=>f*total),rounded=exact.map(Math.floor);
+ let remainder=total-rounded.reduce((a,b)=>a+b,0);
+ const order=exact.map((v,i)=>({i,part:v-rounded[i]})).sort((a,b)=>b.part-a.part);
+ for(let k=0;k<remainder;k++)rounded[order[k%order.length].i]++;
+ return {subtotal,tax,service,discount,total,base,allocated,rounded};
+}
+function splitCalculate(){
+ const c=splitCompute(),fmt=n=>'Rp'+Math.round(n).toLocaleString('id-ID');
+ const safe=x=>String(x).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+ document.getElementById('splitResult').innerHTML=
+ '<div class="split-result-row"><span>Subtotal</span><strong>'+fmt(c.subtotal)+'</strong></div>'+
+ '<div class="split-result-row"><span>PPN</span><strong>+'+fmt(c.tax)+'</strong></div>'+
+ '<div class="split-result-row"><span>Biaya layanan</span><strong>+'+fmt(c.service)+'</strong></div>'+
+ '<div class="split-result-row"><span>Diskon</span><strong>−'+fmt(c.discount)+'</strong></div>'+
+ '<div class="split-total">Total tagihan <strong>'+fmt(c.total)+'</strong></div>'+
+ splitPersons.map((p,j)=>'<div class="split-result-row"><span>'+safe(p)+'</span><strong>'+fmt(c.rounded[j])+'</strong></div>').join('')+
+ (c.allocated<c.subtotal?'<p class="split-hint">Ada item yang belum dipilih pesertanya. Pilih semua peserta sebelum membagikan hasil.</p>':'')+
+ '<button class="split-copy" onclick="splitCopy()">Salin hasil pembagian</button>';
 }
 function splitCopy(){
- const base=splitPersons.map(()=>0);splitItemsData.forEach(it=>{if(!it.people.length)return;it.people.forEach(j=>{if(base[j]!==undefined)base[j]+=(Number(it.price)||0)/it.people.length})});
- const extra=Math.max(0,Number(document.getElementById('splitExtra').value)||0),sum=base.reduce((a,b)=>a+b,0);
- const text='Split Bill Planora Budget\n'+splitPersons.map((p,j)=>p+': Rp'+Math.round(base[j]+(sum?extra*base[j]/sum:extra/splitPersons.length)).toLocaleString('id-ID')).join('\n');
- if(navigator.clipboard?.writeText)navigator.clipboard.writeText(text).then(()=>toastMsg('Hasil split bill disalin')).catch(()=>toastMsg('Gagal menyalin'));else toastMsg('Salin tidak tersedia');
+ const c=splitCompute();if(c.allocated<c.subtotal){toastMsg('Pilih peserta untuk semua item terlebih dahulu');return}
+ const fmt=n=>'Rp'+Math.round(n).toLocaleString('id-ID');
+ const result='Split Bill Planora Budget\nSubtotal: '+fmt(c.subtotal)+'\nPPN: '+fmt(c.tax)+'\nBiaya layanan: '+fmt(c.service)+'\nDiskon: -'+fmt(c.discount)+'\nTotal: '+fmt(c.total)+'\n\n'+splitPersons.map((p,j)=>p+': '+fmt(c.rounded[j])).join('\n');
+ if(navigator.clipboard?.writeText)navigator.clipboard.writeText(result).then(()=>toastMsg('Hasil split bill disalin')).catch(()=>toastMsg('Gagal menyalin'));else toastMsg('Salin tidak tersedia');
 }
 
 function page(id){if(id==='growth')selectGrowthTab('assets');if(id==='moments')id='home';if(id==='assets'){id='growth';selectGrowthTab('assets')}if(id==='goals'){id='growth';selectGrowthTab('goals')}document.querySelectorAll('main').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.page===id));render()}
@@ -1861,7 +1883,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=40').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=41').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
