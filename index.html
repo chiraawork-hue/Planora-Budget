@@ -1203,7 +1203,7 @@ setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opa
 <script>
 (async function(){
  const gate=document.getElementById('planoraAccessGate'), input=document.getElementById('planoraAccessCode'), btn=document.getElementById('planoraActivateBtn'), out=document.getElementById('planoraAccessMsg');
- const cfg=window.PLANORA_CONFIG||{}; if(!cfg.url||!cfg.key){out.textContent='Planora Access belum terhubung.';return;}
+ const cfg=window.PLANORA_CONFIG||{}; if(!cfg.url||!cfg.key||cfg.url.includes('__SUPABASE_')||cfg.key.includes('__SUPABASE_')){out.textContent='Konfigurasi aktivasi GitHub Pages belum terpasang. Hubungi admin Planora; kode kamu tidak perlu diganti.';btn.disabled=true;return;}
  const sb=supabase.createClient(cfg.url,cfg.key); const TOKEN_KEY='planora_device_token_v1', ACCESS_KEY='planora_access_code_v1';
  let token=localStorage.getItem(TOKEN_KEY); if(!token){token=(crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random().toString(36).slice(2));localStorage.setItem(TOKEN_KEY,token)}
  async function activate(code,silent){code=(code||'').trim().toUpperCase();if(!code){if(!silent)out.textContent='Masukkan access code kamu.';return false} if(!silent){btn.disabled=true;btn.textContent='Checking…';out.textContent='';}
