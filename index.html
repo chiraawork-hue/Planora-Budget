@@ -1410,6 +1410,17 @@ header .brand-lockup .planora-ch2{flex:none}
  #home .home-checkin-sub{font-size:10px!important}
 }
 @media(max-width:350px){#home .home-checkin-heading .eyebrow{font-size:14px!important}#home .home-period-selectors .period-box:first-child{width:69px!important}#home .home-period-selectors .period-box:last-child{width:49px!important}}
+
+/* V83: remove inherited spacing and anchor period controls to title's first line */
+#home .home-checkin-header{position:relative!important;display:block!important;margin:0 0 16px!important;padding:0!important;min-height:60px!important}
+#home .home-checkin-heading{display:block!important;margin:0!important;padding:0!important;padding-right:148px!important}
+#home .home-checkin-heading .eyebrow{display:block!important;margin:0!important;padding:0!important;line-height:34px!important;font-size:19px!important;white-space:nowrap!important}
+#home .home-checkin-sub{display:block!important;margin:0!important;padding:0!important;line-height:18px!important}
+#home .home-period-selectors{position:absolute!important;top:0!important;right:0!important;left:auto!important;margin:0!important;padding:0!important;align-self:auto!important;transform:none!important}
+#home .home-period-selectors .period-boxes{display:flex!important;gap:6px!important;margin:0!important;padding:0!important;height:34px!important}
+#home .home-period-selectors .period-box{height:34px!important;min-height:34px!important;margin:0!important}
+@media(max-width:650px){#home .home-checkin-header{min-height:52px!important}#home .home-checkin-heading{padding-right:145px!important}#home .home-checkin-heading .eyebrow{font-size:clamp(14px,3.8vw,18px)!important;line-height:32px!important}#home .home-checkin-sub{font-size:9px!important;line-height:16px!important}#home .home-period-selectors .period-boxes{height:32px!important}#home .home-period-selectors .period-box{height:32px!important;min-height:32px!important}}
+@media(max-width:350px){#home .home-checkin-heading{padding-right:128px!important}#home .home-checkin-heading .eyebrow{font-size:13px!important}#home .home-period-selectors .period-boxes{gap:4px!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -2580,7 +2591,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=82').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=83').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
