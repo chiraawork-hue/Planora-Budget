@@ -1306,7 +1306,18 @@ header .brand-lockup .planora-ch2{flex:none}
 #home .home-clean-section>span{font-size:10px!important;font-weight:750!important;letter-spacing:.06em!important}
 #home .home-moment-action b,#home .split-home-entry strong{font-weight:700!important}
 @media(max-width:520px){#home .home-checkin-heading .eyebrow{font-size:20px!important}#home .home-checkin-sub{font-size:10px!important}}
-#home #safeSpendNote,#home #safeSpent{display:none!important}#home .safe-foot{justify-content:flex-end!important;margin-top:10px!important}</style>
+#home #safeSpendNote,#home #safeSpent{display:none!important}#home .safe-foot{justify-content:flex-end!important;margin-top:10px!important}
+/* V73 — little sailboat bobbing along the moving ocean surface */
+#home .safe-water-fill{overflow:visible!important}
+#home .safe-little-boat{position:absolute;z-index:3;left:70%;top:-43px;width:49px;height:43px;pointer-events:none;filter:drop-shadow(0 3px 2px #174c7030);transform-origin:50% 90%;animation:planoraBoatFloat 3.3s ease-in-out infinite}
+#home .safe-little-boat svg{display:block;width:100%;height:100%}
+@keyframes planoraBoatFloat{0%,100%{transform:translate(-50%,1px) rotate(-4deg)}50%{transform:translate(-50%,-4px) rotate(4deg)}}
+#home .safe-card{isolation:isolate!important}
+#home .safe-water-fill{z-index:0!important}
+#home .safe-top,#home .safe-foot{position:relative!important;z-index:5!important}
+@media(max-width:520px){#home .safe-little-boat{left:79%;width:42px;height:37px;top:-37px}}
+@media(prefers-reduced-motion:reduce){#home .safe-little-boat{animation:none!important;transform:translateX(-50%)!important}}
+</style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
 <div class="access-brand"><svg class="planora-ch2" aria-label="Planora Budget" viewBox="0 0 64 64">
@@ -1340,7 +1351,7 @@ header .brand-lockup .planora-ch2{flex:none}
 
 <main id="home" class="active"><div class="home-checkin-header"><div class="home-checkin-heading"><div class="eyebrow">Your money, in harmony.</div><div class="home-checkin-sub">Keuanganmu, lebih tertata.</div></div><div class="home-period-selectors"><div class="period-boxes" id="homeBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="homeMonthBtn" onclick="openPeriodBox('home','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="homeYearBtn" onclick="openPeriodBox('home','year')">Tahun</button></div></div><label class="home-period-field"><span>BULAN</span><select id="homeMonthSelect" aria-label="Pilih bulan" onchange="setHomePeriodMonth(this.value)"></select></label><label class="home-period-field home-year-field"><span>TAHUN</span><select id="homeYearSelect" aria-label="Pilih tahun" onchange="setHomePeriodYear(this.value)"></select></label></div></div>
 <div class="safe-card" id="safeWaterCard">
- <div class="safe-water-fill" id="safeWaterFill" aria-hidden="true"><div class="safe-water-wave"></div></div>
+ <div class="safe-water-fill" id="safeWaterFill" aria-hidden="true"><div class="safe-water-wave"></div><div class="safe-little-boat"><svg viewBox="0 0 64 52" aria-hidden="true"><path d="M32 3v27" stroke="#334155" stroke-width="2.8" stroke-linecap="round"/><path d="M29 7 9 29h20Z" fill="#fffdf5" stroke="#d8e4eb" stroke-width="1.2"/><path d="m35 10 15 19H35Z" fill="#ffdc82" stroke="#e9b54c" stroke-width="1.2"/><path d="M5 32h54l-9 13H16Z" fill="#b85d40"/><path d="M13 36h39" stroke="#f9d1ad" stroke-width="2" stroke-linecap="round"/></svg></div></div>
  <div class="safe-top"><div><div class="safe-label" data-i18n="safe">AMAN DIBELANJAKAN</div><b id="safeToSpend">Rp0</b></div><div class="safe-leaf">⌁</div></div>
  <div class="safe-note" id="safeSpendNote" hidden aria-hidden="true"></div>
  <div class="safe-progress" hidden aria-hidden="true"><i id="safeSpendBar"></i></div>
@@ -2476,7 +2487,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=72').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=73').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
