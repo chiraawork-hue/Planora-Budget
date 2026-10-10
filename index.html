@@ -1048,10 +1048,10 @@ header .brand-lockup .planora-ch2{flex:none}
 
 <nav class="nav">
 <button class="nav-item active" data-page="home" onclick="page('home')" aria-label="Home"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></span><span>Home</span></button>
-<button class="nav-item" data-page="plan" onclick="page('plan')" aria-label="Budget"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m-13 5 2 2 4-4"/></svg></span><span>Budget</span></button>
-<button class="nav-item" data-page="transactions" onclick="page('transactions')" aria-label="Transaction"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16m-4-4 4 4-4 4M20 17H4m4-4-4 4 4 4"/></svg></span><span>Transaction</span></button>
 <button class="nav-item" data-page="wallets" onclick="page('wallets')" aria-label="Account"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="15" rx="3"/><path d="M3 10h18M6 6V4h12"/><circle cx="17" cy="15" r="1"/></svg></span><span>Account</span></button>
+<button class="nav-item" data-page="transactions" onclick="page('transactions')" aria-label="Transaction"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16m-4-4 4 4-4 4M20 17H4m4-4-4 4 4 4"/></svg></span><span>Transaction</span></button>
 <button class="nav-item" data-page="growth" onclick="page('growth')" aria-label="Growth"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16M6 17v-5m6 5V8m6 9V4"/><path d="m5 8 5-4 4 2 5-4"/></svg></span><span>Growth</span></button>
+<button class="nav-item" data-page="plan" onclick="page('plan')" aria-label="Budget"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m-13 5 2 2 4-4"/></svg></span><span>Budget</span></button>
 <button class="nav-item" data-page="reports" onclick="page('reports')" aria-label="Wrapped"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18V6m0 12h16M7 15l4-4 3 2 5-7"/></svg></span><span>Wrapped</span></button>
 </nav>
 
@@ -2006,7 +2006,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=48').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=49').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
