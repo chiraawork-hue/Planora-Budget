@@ -900,6 +900,30 @@ header .brand-lockup .planora-ch2{flex:none}
 @media(prefers-reduced-motion:reduce){.split-wizard,.split-wizard-card{animation:none!important}}
 .split-avatar-choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:10px 0}.split-avatar-choice{display:flex;flex-direction:column;align-items:center;gap:5px;border:1.5px solid transparent;border-radius:16px;padding:10px 3px;background:#f5f8f5;cursor:pointer;min-width:0}.split-avatar-choice.is-selected{border-color:#0a986b;background:#eaf8ef}.split-avatar-face{width:49px;height:49px;border-radius:50%;background:#fce9d6;display:grid;place-items:center;font-size:28px}.split-avatar-choice:nth-child(4n+2) .split-avatar-face{background:#e8e9ff}.split-avatar-choice:nth-child(4n+3) .split-avatar-face{background:#fbe6ed}.split-avatar-choice:nth-child(4n+4) .split-avatar-face{background:#e0f3eb}.split-avatar-name{font-size:11px;font-weight:700;overflow:hidden;max-width:100%;text-overflow:ellipsis;white-space:nowrap}.split-avatar-tick{color:#0a986b;font-size:13px}.split-avatar-share{color:#0b815d!important;font-weight:650}.split-avatar-edit{border:0;background:#f7e9d6;border-radius:50%;width:42px;height:42px;flex:0 0 42px;font-size:24px;cursor:pointer}.split-avatar-picker{border:1px solid #dfe9e1;background:#fafdfa;border-radius:16px;padding:13px;margin-bottom:13px}.split-avatar-picker-head{display:flex;justify-content:space-between;align-items:center}.split-avatar-picker-head button{background:none;border:0;font-size:21px}.split-avatar-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:12px}.split-avatar-grid button{background:#f0f6f1;border:0;border-radius:12px;padding:7px 0;font-size:23px}.split-result-avatar{font-size:23px!important;flex:0 0 auto!important}.split-result-detail summary span:nth-child(2){flex:1!important}@media(max-width:390px){.split-avatar-choices{grid-template-columns:repeat(3,minmax(0,1fr))}.split-avatar-grid{grid-template-columns:repeat(6,1fr)}}
 .split-hidden-data{display:none!important}.split-start-panel{margin-top:16px}.split-start-panel .split-primary{margin-bottom:0}
+
+/* Colorful circular friend identity badges */
+.split-avatar-choice{background:transparent!important;border:0!important;padding:8px 2px!important;gap:6px!important}
+.split-avatar-face{position:relative;width:65px!important;height:65px!important;border-radius:50%!important;border:3px solid transparent!important;background:#ffe3d6!important;box-shadow:0 3px 12px #273c3020;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;font-size:32px!important}
+.split-avatar-choice:nth-child(8n+2) .split-avatar-face{background:#e0d9ff!important}
+.split-avatar-choice:nth-child(8n+3) .split-avatar-face{background:#ffdbe8!important}
+.split-avatar-choice:nth-child(8n+4) .split-avatar-face{background:#ccefe4!important}
+.split-avatar-choice:nth-child(8n+5) .split-avatar-face{background:#fff0bb!important}
+.split-avatar-choice:nth-child(8n+6) .split-avatar-face{background:#d7ebff!important}
+.split-avatar-choice:nth-child(8n+7) .split-avatar-face{background:#f5d8f6!important}
+.split-avatar-choice:nth-child(8n+8) .split-avatar-face{background:#d9f1ce!important}
+.split-avatar-choice.is-selected .split-avatar-face{border-color:#079869!important;box-shadow:0 0 0 3px #d9f5e7,0 4px 12px #167f5d33;transform:translateY(-2px)}
+.split-avatar-choice .split-avatar-tick{font-size:12px!important;color:#a6b5aa!important}
+.split-avatar-choice.is-selected .split-avatar-tick{color:#079869!important;font-weight:800}
+.split-avatar-name{font-size:12px!important;color:#344b40}
+.split-avatar-edit{background:#ffe3d6!important;border:2px solid #fff!important;box-shadow:0 2px 10px #193f2820}
+.split-person:nth-child(4n+2) .split-avatar-edit{background:#e0d9ff!important}
+.split-person:nth-child(4n+3) .split-avatar-edit{background:#ffdbe8!important}
+.split-person:nth-child(4n+4) .split-avatar-edit{background:#ccefe4!important}
+.split-result-avatar{display:inline-grid;place-items:center;width:39px;height:39px;border-radius:50%;background:#ffe3d6}
+.split-result-detail:nth-of-type(4n+2) .split-result-avatar{background:#e0d9ff}
+.split-result-detail:nth-of-type(4n+3) .split-result-avatar{background:#ffdbe8}
+.split-result-detail:nth-of-type(4n+4) .split-result-avatar{background:#ccefe4}
+@media(max-width:390px){.split-avatar-face{width:57px!important;height:57px!important;font-size:29px!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1950,7 +1974,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=44').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=45').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
