@@ -1189,6 +1189,22 @@ header .brand-lockup .planora-ch2{flex:none}
 #home #safeWaterCard .safe-label,#home #safeWaterCard #safeToSpend{color:#101b23!important}
 @keyframes planoraOceanWave{0%{transform:translateX(-4%) rotate(-1deg) scaleY(.75)}50%{transform:translateX(1%) rotate(.5deg) scaleY(1.1)}100%{transform:translateX(4%) rotate(1deg) scaleY(.8)}}
 @media(prefers-reduced-motion:reduce){#home #safeWaterCard .safe-water-wave,#home #safeWaterCard .safe-water-fill::after{animation:none!important}}
+
+/* V67 — lightweight month/year links tucked into top-right of Home */
+#home .home-checkin-header{position:relative!important;align-items:flex-start!important;padding-top:27px!important;margin-top:0!important;gap:8px!important}
+#home .home-period-selectors{position:absolute!important;right:0!important;top:0!important;margin:0!important;z-index:4!important;align-items:center!important}
+#home .period-boxes{gap:14px!important;align-items:center!important}
+#home .period-box{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding:0!important;display:flex!important;align-items:center!important;gap:4px!important}
+#home .period-box>span{display:none!important}
+#home .period-box button{background:transparent!important;border:0!important;border-bottom:1px solid #bac9c1!important;border-radius:0!important;padding:2px 0 3px!important;min-height:0!important;height:auto!important;line-height:1.3!important;font-size:12px!important;font-weight:650!important;color:#233b32!important;box-shadow:none!important}
+#home .period-box button:focus-visible{outline:2px solid #008fbe!important;outline-offset:4px!important}
+#home .home-period-field{display:none!important}
+@media(max-width:520px){
+ #home .home-checkin-header{padding-top:28px!important;margin-bottom:13px!important}
+ #home .home-period-selectors{top:-1px!important;right:1px!important}
+ #home .period-boxes{gap:12px!important}
+ #home .period-box button{font-size:11px!important}
+}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -2365,7 +2381,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=66').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=67').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
