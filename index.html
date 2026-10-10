@@ -1487,6 +1487,10 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 .member-name-editor summary{display:flex;justify-content:space-between;align-items:center;cursor:pointer;list-style:none;padding:12px 14px;color:#38664e;font-size:12px;font-weight:700}.member-name-editor summary::-webkit-details-marker{display:none}.member-name-editor[open] summary span:last-child{transform:rotate(180deg)}.member-name-editor-body{padding:0 13px 13px}.member-name-editor-body label{display:block;margin-bottom:6px;font-size:11px}
 .planora-guide-direct .folder-body{display:flex!important;align-items:center;justify-content:space-between;gap:8px;padding:12px 14px!important;flex-wrap:nowrap}.planora-guide-direct .folder-body b{font-size:12px;white-space:nowrap;flex-shrink:0}.planora-guide-link{background:none;border:0;padding:3px 0;color:#287854;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;text-align:right}
 @media(max-width:360px){.planora-guide-direct .folder-body b{font-size:11px}.planora-guide-link{font-size:10px}}
+
+/* V93 — smooth scrollable period picker shared by Home, Transaction and Wrapped */
+.period-box-popup.period-box-popup-floating{position:fixed!important;z-index:99999!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;touch-action:pan-y;box-sizing:border-box;background:#fff;border:1px solid #dfe5df;border-radius:15px;box-shadow:0 16px 40px #142b2029;padding:7px;gap:4px}
+.period-box-popup-floating button{min-height:38px;touch-action:manipulation}.period-box-popup-floating button.chosen{background:#e6f7ef;color:#087a5b;font-weight:800}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1721,17 +1725,20 @@ function refreshPeriodBoxes(){
   if(year)year.textContent=String(d.getFullYear());
  }
 }
+function closePeriodBox(){const p=document.getElementById('periodBoxPopup');if(p)p.remove();window.removeEventListener('resize',positionPeriodBox);window.removeEventListener('scroll',positionPeriodBox,true)}
+function positionPeriodBox(){const popup=document.getElementById('periodBoxPopup');if(!popup)return;const anchor=document.getElementById(popup.dataset.prefix+(popup.dataset.kind==='month'?'MonthBtn':'YearBtn'));if(!anchor){closePeriodBox();return}const rect=anchor.getBoundingClientRect();const vw=document.documentElement.clientWidth,vh=window.innerHeight;const w=Math.min(290,vw-24);popup.style.width=w+'px';popup.style.left=Math.max(12,Math.min(rect.left,vw-w-12))+'px';const below=vh-rect.bottom,above=rect.top;const showAbove=below<220&&above>below;popup.style.maxHeight=Math.max(140,Math.min(320,(showAbove?above:below)-16))+'px';popup.style.top=showAbove?'auto':Math.max(8,rect.bottom+6)+'px';popup.style.bottom=showAbove?Math.max(8,vh-rect.top+6)+'px':'auto'}
 function openPeriodBox(prefix,kind){
- const existing=document.getElementById('periodBoxPopup');
- if(existing){const same=existing.dataset.prefix===prefix&&existing.dataset.kind===kind;existing.remove();if(same)return}
- const anchor=document.getElementById(prefix+(kind==='month'?'MonthBtn':'YearBtn'));
- if(!anchor)return;
- const popup=document.createElement('div');popup.id='periodBoxPopup';popup.className='period-box-popup';popup.dataset.prefix=prefix;popup.dataset.kind=kind;
+ const existing=document.getElementById('periodBoxPopup');if(existing){const same=existing.dataset.prefix===prefix&&existing.dataset.kind===kind;closePeriodBox();if(same)return}
+ const anchor=document.getElementById(prefix+(kind==='month'?'MonthBtn':'YearBtn'));if(!anchor)return;
+ const popup=document.createElement('div');popup.id='periodBoxPopup';popup.className='period-box-popup period-box-popup-floating';popup.dataset.prefix=prefix;popup.dataset.kind=kind;
  const d=periodBoxDate(prefix),current=d.getFullYear();
- const values=kind==='month'?MONTHS_FULL_ID.map((name,i)=>({label:name,value:i})):Array.from({length:21},(_,i)=>({label:String(current-10+i),value:current-10+i}));
+ const names=lang==='en'?MONTHS_FULL_EN:MONTHS_FULL_ID;
+ const values=kind==='month'?names.map((name,i)=>({label:name,value:i})):Array.from({length:31},(_,i)=>({label:String(current-15+i),value:current-15+i}));
  popup.innerHTML=values.map(o=>'<button type="button" class="'+((kind==='month'?d.getMonth():current)===o.value?'chosen':'')+'" data-value="'+o.value+'">'+o.label+'</button>').join('');
- popup.addEventListener('click',e=>{const btn=e.target.closest('button[data-value]');if(!btn)return;choosePeriodBox(prefix,kind,Number(btn.dataset.value));popup.remove()});
- anchor.parentElement.appendChild(popup);
+ popup.addEventListener('click',e=>{const btn=e.target.closest('button[data-value]');if(!btn)return;choosePeriodBox(prefix,kind,Number(btn.dataset.value));closePeriodBox()});
+ document.body.appendChild(popup);positionPeriodBox();
+ window.addEventListener('resize',positionPeriodBox);window.addEventListener('scroll',positionPeriodBox,true);
+ const chosen=popup.querySelector('.chosen');if(chosen)requestAnimationFrame(()=>{popup.scrollTop=Math.max(0,chosen.offsetTop-popup.offsetTop-popup.clientHeight/2+chosen.clientHeight/2)});
 }
 function choosePeriodBox(prefix,kind,value){
  const d=periodBoxDate(prefix),month=kind==='month'?value:d.getMonth(),year=kind==='year'?value:d.getFullYear();
@@ -1741,7 +1748,7 @@ function choosePeriodBox(prefix,kind,value){
  else{const input=document.getElementById('txChartMonth');input.value=year+'-'+String(month+1).padStart(2,'0');syncTxMonth(input.value)}
  refreshPeriodBoxes();
 }
-document.addEventListener('click',e=>{const p=document.getElementById('periodBoxPopup');if(p&&!e.target.closest('.period-box'))p.remove()});
+document.addEventListener('click',e=>{const p=document.getElementById('periodBoxPopup');if(p&&!e.target.closest('.period-box')&&!e.target.closest('#periodBoxPopup'))closePeriodBox()});
 
 function periodTx(){return data.transactions.filter(t=>{let d=new Date(t.date+'T00:00:00');return d.getFullYear()===selectedPeriod.getFullYear()&&(periodMode==='year'||d.getMonth()===selectedPeriod.getMonth())})}
 function monthTx(){let n=new Date();return data.transactions.filter(t=>{let d=new Date(t.date+'T00:00:00');return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear()})}
