@@ -827,7 +827,7 @@ header .brand-lockup .planora-ch2{flex:none}
 @media(prefers-reduced-motion:reduce){.onboarding-content{transition:none!important}}
 </style>
 </head><body>
-<div id="planoraAccessGate"><div class="access-card">
+<div id="planoraAccessGate" class="access-hidden"><div class="access-card">
 <div class="access-brand"><svg class="planora-ch2" aria-label="Planora Budget" viewBox="0 0 64 64">
 <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#174E3B"/><stop offset=".55" stop-color="#237C59"/><stop offset="1" stop-color="#79AE79"/></linearGradient><linearGradient id="l" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#246B4C"/><stop offset="1" stop-color="#88BC86"/></linearGradient></defs>
 <rect width="64" height="64" rx="15" fill="#FCFCF8"/>
@@ -1766,12 +1766,14 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=32').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=33').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1100);
 </script>
 <script>
 (async function(){
  const gate=document.getElementById('planoraAccessGate'), input=document.getElementById('planoraAccessCode'), btn=document.getElementById('planoraActivateBtn'), out=document.getElementById('planoraAccessMsg');
+ const savedCodeAtStartup=(()=>{try{return localStorage.getItem('planora_access_code_v1')}catch(e){return null}})();
+ if(!savedCodeAtStartup)gate.classList.remove('access-hidden');
  const cfg=window.PLANORA_CONFIG||{}; if(!cfg.url||!cfg.key||cfg.url.includes('__SUPABASE_')||cfg.key.includes('__SUPABASE_')){out.textContent='Konfigurasi aktivasi GitHub Pages belum terpasang. Hubungi admin Planora; kode kamu tidak perlu diganti.';btn.disabled=true;return;}
  const sb=supabase.createClient(cfg.url,cfg.key); const TOKEN_KEY='planora_device_token_v1', ACCESS_KEY='planora_access_code_v1';
  let token=localStorage.getItem(TOKEN_KEY); if(!token){token=(crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random().toString(36).slice(2));localStorage.setItem(TOKEN_KEY,token)}
@@ -1782,7 +1784,8 @@ setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opa
   if(data&&data.success){localStorage.setItem(ACCESS_KEY,code);gate.classList.add('access-hidden');maybeShowPlanoraIntro();return true}
   localStorage.removeItem(ACCESS_KEY);if(!silent)out.textContent=(data&&data.message)||'Access code tidak valid.';return false;
  }
- const saved=localStorage.getItem(ACCESS_KEY);if(saved){input.value=saved;await activate(saved,true)}
+ const saved=savedCodeAtStartup;
+ if(saved){input.value=saved;try{const ok=await activate(saved,true);if(!ok){gate.classList.remove('access-hidden');out.textContent='Sesi aktivasi perlu diperiksa kembali. Silakan masukkan kode aktivasi.'}}catch(e){gate.classList.remove('access-hidden');out.textContent='Tidak dapat memeriksa aktivasi. Periksa koneksi internet lalu coba kembali.'}}
  btn.addEventListener('click',()=>activate(input.value,false));input.addEventListener('keydown',e=>{if(e.key==='Enter')activate(input.value,false)});
 })();
 </script>
