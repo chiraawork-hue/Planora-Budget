@@ -715,6 +715,11 @@ main:not(#home) > .title{font-size:clamp(20px,3.1vw,24px);font-weight:800;letter
 #reports>.period-boxes{margin:8px 0 14px}
 #reports .wrapped-filter-btn,#reports #wrappedPicker{display:none!important}
 @media(max-width:380px){.period-box>button{min-width:94px;padding:8px 10px}.period-box:nth-child(2)>button{min-width:68px}}
+
+#transactions .tx-income-summary-head{display:flex;align-items:flex-start;flex-wrap:wrap;gap:12px}
+#transactions #incomeBoxes{margin:0 0 0 auto}
+#transactions .tx-income-total{margin-left:auto}
+@media(max-width:520px){#transactions #incomeBoxes{order:3;margin:0;width:100%}#transactions .tx-income-total{margin-left:auto}}
 </style>
 </head><body>
 <div id="planoraAccessGate"><div class="access-card"><div class="access-mark"><svg class="planora-ch2" viewBox="0 0 64 64" aria-label="Planora"><path d="M42 12C24 6 10 17 10 32s13 25 30 20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M29 18v29M29 33c7-7 15-9 21-4v18" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><circle cx="51" cy="20" r="4.2" fill="#C9AE83"/></svg></div><h1>Welcome to Planora</h1><p>money, moments & little things.</p><input id="planoraAccessCode" autocomplete="off" placeholder="PLN-BUDGET-XXXX-XXXX"><button id="planoraActivateBtn">Activate Planora</button><p id="planoraAccessMsg" class="access-error"></p><p class="access-note">Your access code is included with your purchase.</p></div></div>
@@ -755,7 +760,7 @@ main:not(#home) > .title{font-size:clamp(20px,3.1vw,24px);font-weight:800;letter
 <div id="recent" class="hidden"></div>
 </main>
 
-<main id="transactions" class="transactions-redesign"><div class="eyebrow">YOUR FINANCIAL ACTIVITY</div><div class="tx-hero"><div><h1 class="title">Transaction</h1><p class="sub">Kelola pemasukan dan pengeluaran di sini.</p></div></div><div class="card tx-income-summary"><div class="tx-income-summary-head"><div><b>Income Summary</b><div class="sub">Rincian pemasukan berdasarkan sumber</div></div><div class="tx-income-total"><span>Total pemasukan</span><strong id="txIncomeSummary">Rp0</strong></div></div><div id="txIncomeBreakdown" class="tx-income-breakdown"></div></div><div class="card tx-spending-card"><div class="tx-chart-head"><div><h2>Where My Money Goes</h2><div class="sub">Persentase pengeluaran per kategori</div></div><div class="period-boxes" id="txBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="txMonthBtn" onclick="openPeriodBox('tx','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="txYearBtn" onclick="openPeriodBox('tx','year')">Tahun</button></div></div><input id="txChartMonth" type="month" onchange="syncTxMonth(this.value)" aria-label="Pilih bulan pengeluaran" class="period-native-hidden"></div><div id="txCategoryChart"></div></div><div class="tx-history-title"><h2>Riwayat Pengeluaran</h2><div class="sub">Detail pengeluaran berdasarkan kategori</div></div><div class="card tx-filter tx-filter-redesign"><input id="txSearch" aria-label="Cari transaksi" placeholder="⌕  Cari deskripsi, kategori, atau akun..." oninput="renderTx()"><select id="txSort" onchange="renderTx()" aria-label="Urutan transaksi"><option value="newest">Terbaru</option><option value="oldest">Terlama</option><option value="largest">Terbesar</option></select></div><div id="txList"></div><button type="button" class="tx-floating-add" onclick="openAdd()" aria-label="Tambah transaksi" title="Tambah transaksi">+</button></main>
+<main id="transactions" class="transactions-redesign"><div class="eyebrow">YOUR FINANCIAL ACTIVITY</div><div class="tx-hero"><div><h1 class="title">Transaction</h1><p class="sub">Kelola pemasukan dan pengeluaran di sini.</p></div></div><div class="card tx-income-summary"><div class="tx-income-summary-head"><div><b>Income Summary</b><div class="sub">Rincian pemasukan berdasarkan sumber</div></div><div class="period-boxes" id="incomeBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="incomeMonthBtn" onclick="openPeriodBox('income','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="incomeYearBtn" onclick="openPeriodBox('income','year')">Tahun</button></div></div><div class="tx-income-total"><span>Total pemasukan</span><strong id="txIncomeSummary">Rp0</strong></div></div><div id="txIncomeBreakdown" class="tx-income-breakdown"></div></div><div class="card tx-spending-card"><div class="tx-chart-head"><div><h2>Where My Money Goes</h2><div class="sub">Persentase pengeluaran per kategori</div></div><div class="period-boxes" id="txBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="txMonthBtn" onclick="openPeriodBox('tx','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="txYearBtn" onclick="openPeriodBox('tx','year')">Tahun</button></div></div><input id="txChartMonth" type="month" onchange="syncTxMonth(this.value)" aria-label="Pilih bulan pengeluaran" class="period-native-hidden"></div><div id="txCategoryChart"></div></div><div class="tx-history-title"><h2>Riwayat Pengeluaran</h2><div class="sub">Detail pengeluaran berdasarkan kategori</div></div><div class="card tx-filter tx-filter-redesign"><input id="txSearch" aria-label="Cari transaksi" placeholder="⌕  Cari deskripsi, kategori, atau akun..." oninput="renderTx()"><select id="txSort" onchange="renderTx()" aria-label="Urutan transaksi"><option value="newest">Terbaru</option><option value="oldest">Terlama</option><option value="largest">Terbesar</option></select></div><div id="txList"></div><button type="button" class="tx-floating-add" onclick="openAdd()" aria-label="Tambah transaksi" title="Tambah transaksi">+</button></main>
 
 <main id="wallets" class="wallets-redesign"><div class="eyebrow">YOUR MONEY</div><div class="wallets-top"><div><h1 class="title">Account</h1><p class="sub">Pantau saldo rekening dan dompetmu di satu tempat.</p></div><button class="pill" onclick="openWalletModal()">＋ Tambah Akun</button></div><div id="walletSummary"></div><div class="wallet-transfer-heading"><div><h2>Transfer Antar Akun</h2><div class="sub">Pindahkan saldo tanpa mengubah total uangmu.</div></div><button class="pill" onclick="openTransferModal()">↗ Transfer</button></div><div id="walletTransferHistory"></div></main>
 
@@ -901,12 +906,13 @@ function renderPeriodPicker(){
 
 function periodBoxDate(prefix){
  if(prefix==='home')return selectedPeriod;
+ if(prefix==='income')return incomePeriod;
  if(prefix==='wrapped')return wrappedPeriod;
  const value=document.getElementById('txChartMonth')?.value;
  return /^\d{4}-\d{2}$/.test(value||'')?new Date(value+'-01T12:00:00'):new Date();
 }
 function refreshPeriodBoxes(){
- for(const prefix of ['home','tx','wrapped']){
+ for(const prefix of ['home','tx','wrapped','income']){
   const d=periodBoxDate(prefix);
   const month=document.getElementById(prefix+'MonthBtn'),year=document.getElementById(prefix+'YearBtn');
   if(month)month.textContent=MONTHS_FULL_ID[d.getMonth()];
@@ -928,6 +934,7 @@ function openPeriodBox(prefix,kind){
 function choosePeriodBox(prefix,kind,value){
  const d=periodBoxDate(prefix),month=kind==='month'?value:d.getMonth(),year=kind==='year'?value:d.getFullYear();
  if(prefix==='home'){if(kind==='month')setHomePeriodMonth(month);else setHomePeriodYear(year)}
+ else if(prefix==='income'){incomePeriod=new Date(year,month,1);renderTxCategoryChart()}
  else if(prefix==='wrapped'){wrappedPeriod=new Date(year,month,1);wrappedMode='month';renderWrappedPicker();renderReports()}
  else{const input=document.getElementById('txChartMonth');input.value=year+'-'+String(month+1).padStart(2,'0');syncTxMonth(input.value)}
  refreshPeriodBoxes();
@@ -959,16 +966,19 @@ function render(){
  monthlyBudget.value=data.monthlyBudget||'';renderTx();renderWallets();renderBudget();renderGoals();renderBills();renderMoments();renderReports();
 }
 function syncTxMonth(value){refreshPeriodBoxes();renderTx()}
+let incomePeriod=new Date();
 function renderTxCategoryChart(){
  const chart=document.getElementById('txCategoryChart');if(!chart)return;
  const month=document.getElementById('txChartMonth').value||new Date().toLocaleDateString('en-CA').slice(0,7);
  const groups={};let total=0;
  data.transactions.filter(t=>t.type==='expense'&&String(t.date||'').startsWith(month)).forEach(t=>{const n=Math.max(0,Number(t.amount)||0);groups[t.category||'Lainnya']=(groups[t.category||'Lainnya']||0)+n;total+=n});
- const inc=data.transactions.filter(t=>t.type==='income'&&String(t.date||'').startsWith(month)).reduce((a,t)=>a+(Number(t.amount)||0),0);
+ const incomeMonth=incomePeriod.getFullYear()+'-'+String(incomePeriod.getMonth()+1).padStart(2,'0');
+ const inc=data.transactions.filter(t=>t.type==='income'&&String(t.date||'').startsWith(incomeMonth)).reduce((a,t)=>a+(Number(t.amount)||0),0);
  document.getElementById('txIncomeSummary').textContent=rp(inc);
  const incomeGroups={};
- data.transactions.filter(t=>t.type==='income'&&String(t.date||'').startsWith(month)).forEach(t=>{const key=t.category||'Lainnya';incomeGroups[key]=(incomeGroups[key]||0)+(Number(t.amount)||0)});
+ data.transactions.filter(t=>t.type==='income'&&String(t.date||'').startsWith(incomeMonth)).forEach(t=>{const key=t.category||'Lainnya';incomeGroups[key]=(incomeGroups[key]||0)+(Number(t.amount)||0)});
  const entries=Object.entries(incomeGroups).sort((a,b)=>b[1]-a[1]);
+ refreshPeriodBoxes();
  document.getElementById('txIncomeBreakdown').innerHTML=entries.length?entries.map(([name,value])=>'<div class="tx-income-source"><span class="tx-income-source-icon">'+categoryIconSvg(categoryVisual(name)[0])+'</span><div class="tx-income-source-label"><span>'+esc(name)+'</span><b>'+rp(value)+'</b></div></div>').join(''):'<div class="sub">Belum ada pemasukan pada bulan ini.</div>';
  if(!total){chart.innerHTML='<p class="sub" style="padding:20px 0">Belum ada pengeluaran pada bulan ini.</p>';return}
  const sorted=Object.entries(groups).sort((a,b)=>b[1]-a[1]);let start=0;
