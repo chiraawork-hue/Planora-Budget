@@ -657,7 +657,7 @@ html,body,.app{background:#fff!important}
 <div class="card"><b data-i18n="language">Bahasa</b><div class="sub" style="margin:5px 0 10px" data-i18n="languageNote">Pilih bahasa aplikasi.</div><select id="languageSelect" onchange="setLanguage(this.value)"><option value="id">Indonesia</option><option value="en">English</option></select></div>
 <div class="card"><b>Data</b><div class="sub" style="margin:5px 0 12px">Semua data tersimpan lokal di browser ini.</div><div class="actions"><button class="btn" onclick="backup()">Backup</button><button class="btn" onclick="document.getElementById('restoreFile').click()">Restore</button></div><input id="restoreFile" class="hidden" type="file" accept=".json" onchange="restoreBackup(event)"></div>
 <div class="card"><b>Bersihkan transaksi</b><div class="sub" style="margin:5px 0 12px">Menghapus pemasukan & pengeluaran saja. Budget, Goals, Bills, dan Moments tetap ada.</div><button class="btn danger wide" onclick="clearTransactions()">Hapus semua transaksi</button></div>
-<div class="card"><b>Reset Planora</b><div class="sub" style="margin:5px 0 12px">Kembali ke data awal Rp0.</div><button class="btn danger wide" onclick="resetAll()">Reset semua data</button></div>
+<div class="card"><b>Reset Planora</b><div class="sub" style="margin:5px 0 12px">Kosongkan seluruh data uji coba di perangkat ini. Access code tidak dihapus.</div><button class="btn danger wide" onclick="resetAll()">Hapus data uji coba</button></div>
 </main>
 </div>
 
@@ -1171,7 +1171,7 @@ function renderInsights(){
 }
 
 function clearTransactions(){data.transactions=[];data.transfers=[];data.moments.forEach(m=>{m.transactionId='';m.amount=0});persist();toastMsg('Semua transaksi dihapus')}
-function resetAll(){data=empty();persist();toastMsg('Planora kembali ke Rp0')}
+function resetAll(){if(!window.confirm('Hapus seluruh data uji coba Planora Budget di perangkat ini? Semua transaksi, sumber dana, Goals, Bills, dan Moments akan hilang dan tidak dapat dikembalikan tanpa backup.'))return;const old=data;data=empty();if(!persist()){data=old;render();return}try{localStorage.removeItem(KEY+'_before_wallets_v1')}catch(e){}toastMsg('Data uji coba berhasil dikosongkan')}
 function backup(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='planora-backup.json';a.click();URL.revokeObjectURL(a.href)}
 function restoreBackup(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!valid(x))throw 0;data=migrateWallets(x);persist();toastMsg('Backup dipulihkan')}catch(_){toastMsg('File backup tidak valid')}};r.readAsText(f)}
 
