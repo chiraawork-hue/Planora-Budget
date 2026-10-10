@@ -743,15 +743,74 @@ header .brand-wordmark .brand{font-family:Inter,ui-sans-serif,system-ui,sans-ser
 header .brand-wordmark .brand span{color:#087A5B;font-weight:650}
 header .brand-lockup .planora-ch2{flex:none}
 @media(max-width:380px){#planoraSplash .splash-lockup{gap:10px}#planoraSplash .splash-mark,#planoraSplash .splash-mark .planora-ch2{width:54px;height:54px}#planoraSplash .splash-wordmark strong{font-size:23px}#planoraSplash .splash-wordmark span{font-size:15px}}
+
+/* Gentle activation, first-run tour and collapsible Settings */
+#planoraAccessGate{background:radial-gradient(circle at 10% 12%,#e7f4eb 0,transparent 45%),radial-gradient(circle at 90% 85%,#f4efe0 0,transparent 38%),#fafcf9;overflow:auto;align-items:center}
+#planoraAccessGate .access-card{width:min(470px,100%);background:#fff;border:1px solid #e4ebe4;box-shadow:0 18px 65px #214c3420;border-radius:28px;padding:34px 30px;text-align:left}
+.access-brand{display:flex;align-items:center;gap:9px;margin-bottom:29px;font-size:16px;font-weight:850;color:#153a2b}
+.access-brand svg{width:40px;height:40px;flex:none}
+.access-brand em{font-style:normal;color:#31825e;font-weight:650}
+.access-eyebrow{font-size:10px;letter-spacing:.12em;font-weight:850;color:#087a5b;margin-bottom:12px}
+#planoraAccessGate .access-card h1{font-size:clamp(26px,5vw,34px);line-height:1.13;letter-spacing:-.04em;max-width:340px}
+#planoraAccessGate .access-lead{font-size:13px;color:#6d7b72;line-height:1.7;margin:13px 0 28px}
+.access-form{background:#f7faf7;border:1px solid #e8eee9;border-radius:19px;padding:17px}
+.access-form label{font-size:12px;font-weight:750;color:#31483c}
+#planoraAccessGate .access-card input{background:white;text-align:left;letter-spacing:.015em;font-weight:600;text-transform:uppercase;margin:9px 0 11px;border-color:#dce8df}
+#planoraAccessGate .access-card input:focus{outline:2px solid #87c6a6;outline-offset:1px}
+#planoraAccessGate .access-card button{background:#087a5b;transition:transform .18s,background .18s}
+#planoraAccessGate .access-card button:not(:disabled):active{transform:scale(.985)}
+#planoraAccessGate .access-note{text-align:center;font-size:11px!important;margin:16px 0 0}
+.onboarding-overlay[hidden]{display:none!important}
+.onboarding-overlay{position:fixed;inset:0;z-index:100005;background:#13271d88;display:grid;place-items:center;padding:20px}
+.onboarding-card{width:min(440px,100%);border-radius:27px;background:#fff;padding:25px;box-shadow:0 22px 80px #0002}
+.onboarding-top{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:10px;font-weight:850;letter-spacing:.09em;color:#087a5b}
+.onboarding-top button{background:transparent;border:0;color:#75867b;cursor:pointer;font-size:12px}
+.onboarding-art{width:94px;height:94px;border-radius:29px;background:linear-gradient(140deg,#e1f5e9,#f4f5e6);color:#087a5b;display:grid;place-items:center;font-size:48px;margin:30px auto 22px}
+.onboarding-count{font-size:11px;color:#7c8a81;font-weight:800}
+.onboarding-card h2{font-size:25px;line-height:1.2;letter-spacing:-.035em;margin:10px 0}
+.onboarding-card p{font-size:13px;line-height:1.7;color:#6e7b73;min-height:67px}
+.onboarding-dots{display:flex;gap:6px;margin:20px 0}
+.onboarding-dots span{height:5px;width:16px;border-radius:10px;background:#e3e9e3}
+.onboarding-dots span.active{width:27px;background:#087a5b}
+.onboarding-actions{display:flex;justify-content:space-between;gap:10px}
+.onboarding-actions button{border:1px solid #dfe8e1;background:#fff;border-radius:12px;padding:12px 18px;font-weight:750;cursor:pointer}
+.onboarding-actions button:last-child{background:#087a5b;color:#fff;border-color:#087a5b}
+.onboarding-actions button:disabled{opacity:.35;cursor:default}
+.settings-folders{display:grid;gap:11px;margin-top:21px}
+.settings-folder{border:1px solid #e0e8e1;border-radius:18px;background:#fff;overflow:visible}
+.settings-folder>summary{display:flex;align-items:center;gap:13px;padding:17px;cursor:pointer;list-style:none}
+.settings-folder>summary::-webkit-details-marker,.faq-list details>summary::-webkit-details-marker{display:none}
+.folder-symbol{display:grid;place-items:center;flex:none;width:39px;height:39px;border-radius:12px;background:#e9f5ed;color:#087a5b;font-size:19px;font-weight:750}
+.settings-folder>summary>span:nth-child(2){display:flex;flex-direction:column;gap:3px;flex:1}
+.settings-folder>summary b{font-size:14px;color:#1e3025}
+.settings-folder>summary small{font-size:11px;color:#7d8980}
+.folder-chevron{font-size:19px;color:#77877c;transition:transform .2s}
+.settings-folder[open] .folder-chevron{transform:rotate(180deg)}
+.folder-body{border-top:1px solid #edf1ed;padding:17px;font-size:13px;color:#44574a}
+.folder-body p{font-size:12px;line-height:1.65;color:#77877b;margin:9px 0 15px}
+.folder-body hr{border:0;border-top:1px solid #edf1ed;margin:19px 0}
+.faq-list details{border-bottom:1px solid #edf1ed;padding:12px 0}
+.faq-list details:last-child{border-bottom:0}
+.faq-list details>summary{font-size:12px;font-weight:750;cursor:pointer;list-style:none}
+.faq-list details p{margin:10px 0 2px}
+@media(max-width:420px){#planoraAccessGate{padding:12px}#planoraAccessGate .access-card{padding:25px 20px;border-radius:22px}.onboarding-card{padding:21px}}
 </style>
 </head><body>
-<div id="planoraAccessGate"><div class="access-card"><div class="access-mark"><svg class="planora-ch2" aria-label="Planora Budget" viewBox="0 0 64 64">
+<div id="planoraAccessGate"><div class="access-card">
+<div class="access-brand"><svg class="planora-ch2" aria-label="Planora Budget" viewBox="0 0 64 64">
 <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#174E3B"/><stop offset=".55" stop-color="#237C59"/><stop offset="1" stop-color="#79AE79"/></linearGradient><linearGradient id="l" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#246B4C"/><stop offset="1" stop-color="#88BC86"/></linearGradient></defs>
 <rect width="64" height="64" rx="15" fill="#FCFCF8"/>
 <path d="M47 15C37 6 21 9 13 20 4 32 9 48 22 54c7 3 14 2 20-1" fill="none" stroke="url(#g)" stroke-width="7.5" stroke-linecap="round"/>
 <path d="M31 15v36M31 36c4-8 9-11 15-10 8 1 10 8 10 15v10" fill="none" stroke="url(#l)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M48 21c1-6 5-9 10-9-1 6-4 10-10 11z" fill="#D6B66F"/>
-</svg></div><h1>Welcome to Planora</h1><p>money, moments & little things.</p><input id="planoraAccessCode" autocomplete="off" placeholder="PLN-BUDGET-XXXX-XXXX"><button id="planoraActivateBtn">Activate Planora</button><p id="planoraAccessMsg" class="access-error"></p><p class="access-note">Your access code is included with your purchase.</p></div></div>
+</svg><span>Planora <em>Budget</em></span></div>
+<div class="access-eyebrow">YOUR MONEY, YOUR LITTLE MOMENTS</div>
+<h1>Mulai perjalanan finansialmu.</h1>
+<p class="access-lead">Satu ruang nyaman untuk mengatur uang, menyusun rencana, dan merayakan setiap pencapaian kecil.</p>
+<div class="access-form"><label for="planoraAccessCode">Kode aktivasi kamu</label><input id="planoraAccessCode" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Masukkan kode aktivasi"><button id="planoraActivateBtn">Mulai dengan Planora <span aria-hidden="true">→</span></button><p id="planoraAccessMsg" class="access-error" role="alert"></p></div>
+<p class="access-note">Sudah mendapatkan kode? Masukkan di atas untuk membuka Planora Budget.</p>
+</div></div>
+<div id="planoraOnboarding" class="onboarding-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="onboardTitle"><div class="onboarding-card"><div class="onboarding-top"><span>GET TO KNOW PLANORA</span><button type="button" onclick="finishPlanoraOnboarding()" aria-label="Lewati pengenalan">Lewati ×</button></div><div class="onboarding-art" id="onboardIcon">✦</div><div class="onboarding-count" id="onboardCount">01 / 06</div><h2 id="onboardTitle">Welcome to Planora Budget</h2><p id="onboardDescription">Kelola keuangan dan momen kecilmu dalam satu tempat.</p><div class="onboarding-dots" id="onboardDots"></div><div class="onboarding-actions"><button type="button" id="onboardBack" onclick="movePlanoraOnboarding(-1)">Kembali</button><button type="button" id="onboardNext" onclick="movePlanoraOnboarding(1)">Lanjut →</button></div></div></div>
 <div id="planoraSplash" role="status" aria-label="Memuat Planora Budget"><div class="splash-lockup"><div class="splash-mark"><svg class="planora-ch2" aria-label="Planora Budget" viewBox="0 0 64 64">
 <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#174E3B"/><stop offset=".55" stop-color="#237C59"/><stop offset="1" stop-color="#79AE79"/></linearGradient><linearGradient id="l" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#246B4C"/><stop offset="1" stop-color="#88BC86"/></linearGradient></defs>
 <rect width="64" height="64" rx="15" fill="#FCFCF8"/>
@@ -808,12 +867,22 @@ header .brand-lockup .planora-ch2{flex:none}
 <main id="reports"><div class="eyebrow">WRAPPED</div><div class="wrapped-head"><h1 class="title" data-i18n="moneyStory">Cerita uangmu</h1><div class="period-boxes" id="wrappedBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="wrappedMonthBtn" onclick="openPeriodBox('wrapped','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="wrappedYearBtn" onclick="openPeriodBox('wrapped','year')">Tahun</button></div></div></div><div id="wrappedPicker" class="wrapped-picker hidden"><div class="period-mode"><button id="wrappedModeMonth" class="active" onclick="setWrappedMode('month')">Bulanan</button><button id="wrappedModeYear" onclick="setWrappedMode('year')">Tahunan</button></div><div class="period-controls"><button onclick="shiftWrapped(-1)">‹</button><b id="wrappedPeriodLabel"></b><button onclick="shiftWrapped(1)">›</button></div></div>
 <div class="section-head"><h2>Financial Insights</h2><span class="sub">Berdasarkan transaksi tercatat</span></div><div class="card"><b>Money Flow</b><div class="sub">Pemasukan dan pengeluaran 6 bulan terakhir</div><div id="insightsFlow" class="insights-bars"></div></div><div class="card"><b>Expenses Journey</b><div class="sub">Tren pengeluaran per bulan selama 6 bulan terakhir</div><div id="insightsExpenses"></div></div><div class="card"><b>Savings Journey</b><div class="sub">Perubahan saldo Goals berdasarkan riwayat menabung</div><div id="insightsSavings"></div></div></main>
 
-<main id="settings"><div class="eyebrow">PLANORA</div><h1 class="title" data-i18n="settings">Settings</h1>
-<div class="card"><b data-i18n="language">Bahasa</b><div class="sub" style="margin:5px 0 10px" data-i18n="languageNote">Pilih bahasa aplikasi.</div><select id="languageSelect" onchange="setLanguage(this.value)"><option value="id">Indonesia</option><option value="en">English</option></select></div>
-<div class="card"><b>Data</b><div class="sub" style="margin:5px 0 12px">Semua data tersimpan lokal di browser ini.</div><div class="actions"><button class="btn" onclick="backup()">Backup</button><button class="btn" onclick="document.getElementById('restoreFile').click()">Restore</button></div><input id="restoreFile" class="hidden" type="file" accept=".json" onchange="restoreBackup(event)"></div>
-<div class="card"><b>Bersihkan transaksi</b><div class="sub" style="margin:5px 0 12px">Menghapus pemasukan & pengeluaran saja. Budget, Goals, Bills, dan Moments tetap ada.</div><button class="btn danger wide" onclick="clearTransactions()">Hapus semua transaksi</button></div>
-<div class="card"><b>Reset Planora</b><div class="sub" style="margin:5px 0 12px">Kosongkan seluruh data uji coba di perangkat ini. Access code tidak dihapus.</div><button class="btn danger wide" onclick="resetAll()">Hapus data uji coba</button></div>
-</main>
+<main id="settings"><div class="eyebrow">PERSONALIZE YOUR SPACE</div><h1 class="title">Settings</h1><p class="sub">Semua yang kamu perlukan, tersusun rapi di sini.</p>
+<div class="settings-folders">
+<details class="settings-folder"><summary><span class="folder-symbol">✧</span><span><b>Panduan Planora</b><small>Kenali fitur dan cara memulainya</small></span><span class="folder-chevron">⌄</span></summary><div class="folder-body"><p>Baru pertama kali menggunakan Planora? Yuk, lihat tur singkat fiturnya.</p><button class="btn wide" type="button" onclick="startPlanoraOnboarding()">Lihat pengenalan fitur →</button><p class="sub">Tips: catat akun terlebih dahulu, atur budget, lalu mulai mencatat transaksi secara rutin.</p></div></details>
+<details class="settings-folder"><summary><span class="folder-symbol">?</span><span><b>FAQ</b><small>Pertanyaan yang sering ditanyakan</small></span><span class="folder-chevron">⌄</span></summary><div class="folder-body faq-list">
+<details><summary>Apakah saya harus memasukkan kode setiap kali membuka aplikasi?</summary><p>Tidak. Setelah berhasil diaktifkan, Planora akan mencoba mengenali perangkat ini saat dibuka kembali. Kode mungkin diperlukan jika data browser dihapus atau perangkat berubah.</p></details>
+<details><summary>Bagaimana cara mencatat pemasukan dan pengeluaran?</summary><p>Buka Transaction, lalu tambahkan transaksi. Pilih kategori, sumber dana, nominal, dan tanggal yang sesuai.</p></details>
+<details><summary>Bagaimana cara membuat budget bulanan?</summary><p>Buka Budget, masukkan batas budget bulanan, lalu atur kategori agar pengeluaran lebih mudah dipantau.</p></details>
+<details><summary>Apa bedanya Account dan Growth?</summary><p>Account menampilkan sumber dana dan saldo. Growth digunakan untuk mencatat aset serta memantau tujuan tabungan (Goals).</p></details>
+<details><summary>Apakah data saya otomatis tersimpan di semua perangkat?</summary><p>Data keuangan disimpan secara lokal di browser perangkat yang digunakan, bukan otomatis tersinkron ke perangkat lain. Gunakan Backup dan Restore jika ingin memindahkannya.</p></details>
+<details><summary>Bagaimana jika data hilang?</summary><p>Jika kamu punya file backup, buka Settings → Data & Backup → Restore. Tanpa backup, data lokal yang sudah terhapus mungkin tidak dapat dipulihkan.</p></details>
+</div></details>
+<details class="settings-folder"><summary><span class="folder-symbol">♡</span><span><b>Pusat Bantuan</b><small>Panduan masalah dan langkah penyelesaian</small></span><span class="folder-chevron">⌄</span></summary><div class="folder-body"><b>Kode aktivasi tidak berhasil?</b><p>Periksa penulisan kode dan koneksi internet, lalu coba kembali. Jika tetap gagal, hubungi penjual melalui kanal tempat kamu membeli Planora Budget.</p><b>Data tidak terlihat?</b><p>Pastikan bulan dan tahun yang dipilih sudah sesuai. Periksa juga apakah kamu membuka aplikasi dari browser atau perangkat yang biasa digunakan.</p><b>Aplikasi masih menampilkan versi lama?</b><p>Tutup aplikasi lalu buka kembali saat online. Pembaruan PWA terkadang memerlukan waktu untuk diterapkan.</p><button class="btn wide" type="button" onclick="startPlanoraOnboarding()">Buka panduan fitur</button></div></details>
+<details class="settings-folder"><summary><span class="folder-symbol">文</span><span><b>Bahasa</b><small>Sesuaikan bahasa aplikasi</small></span><span class="folder-chevron">⌄</span></summary><div class="folder-body"><label for="languageSelect">Bahasa aplikasi</label><select id="languageSelect" onchange="setLanguage(this.value)"><option value="id">Indonesia</option><option value="en">English</option></select></div></details>
+<details class="settings-folder"><summary><span class="folder-symbol">⇩</span><span><b>Data & Backup</b><small>Simpan atau pulihkan data keuangan</small></span><span class="folder-chevron">⌄</span></summary><div class="folder-body"><p>Data tersimpan lokal di browser. Simpan file backup secara berkala agar lebih aman.</p><div class="actions"><button class="btn" onclick="backup()">Backup</button><button class="btn" onclick="document.getElementById('restoreFile').click()">Restore</button></div><input id="restoreFile" class="hidden" type="file" accept=".json" onchange="restoreBackup(event)"></div></details>
+<details class="settings-folder settings-danger"><summary><span class="folder-symbol">⚙</span><span><b>Pengaturan Lanjutan</b><small>Kelola dan reset data perangkat</small></span><span class="folder-chevron">⌄</span></summary><div class="folder-body"><b>Bersihkan transaksi</b><p>Menghapus pemasukan dan pengeluaran saja. Budget, Goals, Bills, dan Moments tetap ada.</p><button class="btn danger wide" onclick="clearTransactions()">Hapus semua transaksi</button><hr><b>Reset Planora</b><p>Mengosongkan seluruh data di perangkat ini. Kode aktivasi tidak dihapus.</p><button class="btn danger wide" onclick="resetAll()">Hapus data uji coba</button></div></details>
+</div></main>
 </div>
 
 <nav class="nav">
@@ -969,6 +1038,32 @@ document.addEventListener('click',e=>{const p=document.getElementById('periodBox
 function periodTx(){return data.transactions.filter(t=>{let d=new Date(t.date+'T00:00:00');return d.getFullYear()===selectedPeriod.getFullYear()&&(periodMode==='year'||d.getMonth()===selectedPeriod.getMonth())})}
 function monthTx(){let n=new Date();return data.transactions.filter(t=>{let d=new Date(t.date+'T00:00:00');return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear()})}
 function toastMsg(s){toast.textContent=s;toast.classList.add('show');clearTimeout(window.tt);window.tt=setTimeout(()=>toast.classList.remove('show'),1600)}
+
+const PLANORA_INTRO_KEY='planora_budget_intro_seen_v1';
+const planoraSlides=[
+ {icon:'✦',title:'Welcome to Planora Budget',description:'Ruang personal untuk mengelola uang, rencana, dan momen-momen kecilmu.'},
+ {icon:'⌂',title:'Home — Your money at a glance',description:'Lihat ringkasan saldo, budget yang aman digunakan, tagihan, dan Life Lately dalam satu layar.'},
+ {icon:'▤',title:'Budget & Transaction',description:'Atur budget bulanan, catat pemasukan dan pengeluaran, lalu lihat ringkasan berdasarkan bulan.'},
+ {icon:'▣',title:'Account — All in one place',description:'Pantau rekening, dompet, dan perpindahan uang antar akun dengan lebih rapi.'},
+ {icon:'✧',title:'Growth — Your future',description:'Catat aset yang kamu miliki dan tabung sedikit demi sedikit untuk mencapai Goals.'},
+ {icon:'◷',title:'Wrapped & little moments',description:'Lihat perjalanan keuanganmu dan simpan cerita kecil yang ingin kamu kenang.'}
+];
+let planoraIntroIndex=0;
+function renderPlanoraOnboarding(){
+ const x=planoraSlides[planoraIntroIndex],overlay=document.getElementById('planoraOnboarding');if(!overlay)return;
+ document.getElementById('onboardIcon').textContent=x.icon;
+ document.getElementById('onboardTitle').textContent=x.title;
+ document.getElementById('onboardDescription').textContent=x.description;
+ document.getElementById('onboardCount').textContent=String(planoraIntroIndex+1).padStart(2,'0')+' / '+String(planoraSlides.length).padStart(2,'0');
+ document.getElementById('onboardDots').innerHTML=planoraSlides.map((_,i)=>'<span class="'+(i===planoraIntroIndex?'active':'')+'"></span>').join('');
+ document.getElementById('onboardBack').disabled=planoraIntroIndex===0;
+ document.getElementById('onboardNext').textContent=planoraIntroIndex===planoraSlides.length-1?'Mulai Planora →':'Lanjut →';
+}
+function startPlanoraOnboarding(){planoraIntroIndex=0;const overlay=document.getElementById('planoraOnboarding');overlay.hidden=false;renderPlanoraOnboarding()}
+function finishPlanoraOnboarding(){localStorage.setItem(PLANORA_INTRO_KEY,'1');document.getElementById('planoraOnboarding').hidden=true}
+function movePlanoraOnboarding(n){if(planoraIntroIndex+n>=planoraSlides.length){finishPlanoraOnboarding();return}planoraIntroIndex=Math.max(0,planoraIntroIndex+n);renderPlanoraOnboarding()}
+function maybeShowPlanoraIntro(){if(!localStorage.getItem(PLANORA_INTRO_KEY))startPlanoraOnboarding()}
+
 function page(id){if(id==='growth')selectGrowthTab('assets');if(id==='moments')id='home';if(id==='assets'){id='growth';selectGrowthTab('assets')}if(id==='goals'){id='growth';selectGrowthTab('goals')}document.querySelectorAll('main').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.page===id));render()}
 function openM(id){document.getElementById(id).classList.add('open')}function closeM(id){document.getElementById(id).classList.remove('open')}
 function render(){
@@ -1591,11 +1686,11 @@ setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opa
  const cfg=window.PLANORA_CONFIG||{}; if(!cfg.url||!cfg.key||cfg.url.includes('__SUPABASE_')||cfg.key.includes('__SUPABASE_')){out.textContent='Konfigurasi aktivasi GitHub Pages belum terpasang. Hubungi admin Planora; kode kamu tidak perlu diganti.';btn.disabled=true;return;}
  const sb=supabase.createClient(cfg.url,cfg.key); const TOKEN_KEY='planora_device_token_v1', ACCESS_KEY='planora_access_code_v1';
  let token=localStorage.getItem(TOKEN_KEY); if(!token){token=(crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random().toString(36).slice(2));localStorage.setItem(TOKEN_KEY,token)}
- async function activate(code,silent){code=(code||'').trim().toUpperCase();if(!code){if(!silent)out.textContent='Masukkan access code kamu.';return false} if(!silent){btn.disabled=true;btn.textContent='Checking…';out.textContent='';}
+ async function activate(code,silent){code=(code||'').trim().toUpperCase();if(!code){if(!silent)out.textContent='Masukkan access code kamu.';return false} if(!silent){btn.disabled=true;btn.textContent='Memeriksa kode…';out.textContent='';}
   const {data,error}=await sb.rpc('activate_planora',{p_access_code:code,p_device_token:token,p_device_name:(navigator.platform||'Device')});
-  if(!silent){btn.disabled=false;btn.textContent='Activate Planora';}
+  if(!silent){btn.disabled=false;btn.innerHTML='Mulai dengan Planora <span aria-hidden="true">→</span>';}
   if(error){if(!silent)out.textContent='Tidak dapat memeriksa access code.';return false}
-  if(data&&data.success){localStorage.setItem(ACCESS_KEY,code);gate.classList.add('access-hidden');return true}
+  if(data&&data.success){localStorage.setItem(ACCESS_KEY,code);gate.classList.add('access-hidden');maybeShowPlanoraIntro();return true}
   localStorage.removeItem(ACCESS_KEY);if(!silent)out.textContent=(data&&data.message)||'Access code tidak valid.';return false;
  }
  const saved=localStorage.getItem(ACCESS_KEY);if(saved){input.value=saved;await activate(saved,true)}
