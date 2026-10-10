@@ -898,6 +898,7 @@ header .brand-lockup .planora-ch2{flex:none}
 .split-choice-item{border-top:1px solid #edf0ed;padding:13px 0;display:grid;gap:5px}.split-choice-item small{color:#7a8b80}.split-result-detail{border:1px solid #e3ebe5;border-radius:14px;margin:10px 0;overflow:hidden}.split-result-detail summary{display:flex;align-items:center;gap:8px;justify-content:space-between;cursor:pointer;padding:15px;list-style:none}.split-result-detail summary span:first-child{flex:1}.split-result-detail-body{padding:0 14px 12px;background:#fafcfb}.split-wizard-total{display:flex;justify-content:space-between;gap:12px;background:#edf8f1;padding:17px;border-radius:15px;color:#087a5b}.split-wizard-total strong{font-size:20px}
 @keyframes splitShade{from{opacity:0}to{opacity:1}}@keyframes splitAppear{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.split-wizard,.split-wizard-card{animation:none!important}}
+.split-avatar-choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:10px 0}.split-avatar-choice{display:flex;flex-direction:column;align-items:center;gap:5px;border:1.5px solid transparent;border-radius:16px;padding:10px 3px;background:#f5f8f5;cursor:pointer;min-width:0}.split-avatar-choice.is-selected{border-color:#0a986b;background:#eaf8ef}.split-avatar-face{width:49px;height:49px;border-radius:50%;background:#fce9d6;display:grid;place-items:center;font-size:28px}.split-avatar-choice:nth-child(4n+2) .split-avatar-face{background:#e8e9ff}.split-avatar-choice:nth-child(4n+3) .split-avatar-face{background:#fbe6ed}.split-avatar-choice:nth-child(4n+4) .split-avatar-face{background:#e0f3eb}.split-avatar-name{font-size:11px;font-weight:700;overflow:hidden;max-width:100%;text-overflow:ellipsis;white-space:nowrap}.split-avatar-tick{color:#0a986b;font-size:13px}.split-avatar-share{color:#0b815d!important;font-weight:650}.split-avatar-edit{border:0;background:#f7e9d6;border-radius:50%;width:42px;height:42px;flex:0 0 42px;font-size:24px;cursor:pointer}.split-avatar-picker{border:1px solid #dfe9e1;background:#fafdfa;border-radius:16px;padding:13px;margin-bottom:13px}.split-avatar-picker-head{display:flex;justify-content:space-between;align-items:center}.split-avatar-picker-head button{background:none;border:0;font-size:21px}.split-avatar-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:12px}.split-avatar-grid button{background:#f0f6f1;border:0;border-radius:12px;padding:7px 0;font-size:23px}.split-result-avatar{font-size:23px!important;flex:0 0 auto!important}.split-result-detail summary span:nth-child(2){flex:1!important}@media(max-width:390px){.split-avatar-choices{grid-template-columns:repeat(3,minmax(0,1fr))}.split-avatar-grid{grid-template-columns:repeat(6,1fr)}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1218,18 +1219,18 @@ function movePlanoraOnboarding(n){
 function maybeShowPlanoraIntro(){if(!localStorage.getItem(PLANORA_INTRO_KEY))startPlanoraOnboarding()}
 
 
-let splitPersons=['Aku','Teman 1'],splitItemsData=[{name:'Item 1',price:0,people:[0,1]}];
+let splitAvatars=['🐱','🐼'],splitAvatarOptions=['🐱','🐼','🐰','🦊','🐻','🐸','🐨','🐯','🐶','🐧','🦄','🐣','🍓','🌻','🍒','⭐'];let splitPersons=['Aku','Teman 1'],splitItemsData=[{name:'Item 1',price:0,people:[0,1]}];
 function openSplitBill(){page('splitbill');splitRender()}
 function splitMode(mode){document.getElementById('splitPhotoPanel').hidden=mode!=='photo';document.getElementById('splitPhotoTab').classList.toggle('selected',mode==='photo');document.getElementById('splitManualTab').classList.toggle('selected',mode==='manual')}
 function splitPhotoSelected(el){const f=el.files?.[0];if(!f)return;const im=document.getElementById('splitPreview');if(im.dataset.url)URL.revokeObjectURL(im.dataset.url);const url=URL.createObjectURL(f);im.src=url;im.dataset.url=url;im.hidden=false;splitOpenStep('review')}
 function splitAddItem(){splitItemsData.push({name:'Item '+(splitItemsData.length+1),price:0,people:[0]});splitRender()}
-function splitAddPerson(){splitPersons.push('Teman '+splitPersons.length);splitRender()}
+function splitAddPerson(){splitPersons.push('Teman '+splitPersons.length);splitAvatars.push(splitAvatarOptions[(splitPersons.length-1)%splitAvatarOptions.length]);splitRender()}
 function splitSetItem(i,k,v){splitItemsData[i][k]=v;splitCalculate()}
 function splitTogglePerson(i,j,checked){let p=splitItemsData[i].people;splitItemsData[i].people=checked?[...new Set([...p,j])]:p.filter(x=>x!==j);splitCalculate()}
 function splitRemoveItem(i){splitItemsData.splice(i,1);splitRender()}
 function splitRender(){
  const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- document.getElementById('splitPeople').innerHTML=splitPersons.map((p,j)=>'<div class="split-person"><input aria-label="Nama peserta" value="'+esc(p)+'" oninput="splitPersons['+j+']=this.value;splitCalculate()"><button aria-label="Hapus peserta" onclick="if(splitPersons.length<2)return;splitPersons.splice('+j+',1);splitItemsData.forEach(x=>x.people=x.people.filter(k=>k!=='+j+').map(k=>k>'+j+'?k-1:k));splitRender()">×</button></div>').join('');
+ document.getElementById('splitPeople').innerHTML=splitPersons.map((p,j)=>'<div class="split-person"><input aria-label="Nama peserta" value="'+esc(p)+'" oninput="splitPersons['+j+']=this.value;splitCalculate()"><button aria-label="Hapus peserta" onclick="if(splitPersons.length<2)return;splitPersons.splice('+j+',1);splitAvatars.splice('+j+',1);splitItemsData.forEach(x=>x.people=x.people.filter(k=>k!=='+j+').map(k=>k>'+j+'?k-1:k));splitRender()">×</button></div>').join('');
  document.getElementById('splitItems').innerHTML=splitItemsData.map((it,i)=>'<div class="split-item"><div class="split-item-head"><input aria-label="Nama item" value="'+esc(it.name)+'" oninput="splitSetItem('+i+',\'name\',this.value)"><input aria-label="Harga item" type="number" min="0" value="'+it.price+'" oninput="splitSetItem('+i+',\'price\',this.value)"><button onclick="splitRemoveItem('+i+')">×</button></div><div class="split-picks">'+splitPersons.map((p,j)=>'<label><input type="checkbox" '+(it.people.includes(j)?'checked':'')+' onchange="splitTogglePerson('+i+','+j+',this.checked)"> '+esc(p)+'</label>').join('')+'</div></div>').join('');
  splitCalculate();
 }
@@ -1260,20 +1261,26 @@ function splitDrawWizard(){
  if(stage==='review'){
   body.innerHTML='<div class="split-wizard-items">'+splitItemsData.map((it,i)=>'<div class="split-wizard-edit"><input aria-label="Nama menu" value="'+splitEsc(it.name)+'" oninput="splitSetItem('+i+',\'name\',this.value)"><input aria-label="Harga menu" type="number" min="0" value="'+it.price+'" oninput="splitSetItem('+i+',\'price\',this.value)"><button onclick="splitRemoveItem('+i+');splitDrawWizard()">×</button></div>').join('')+'</div><button class="split-inline-add" onclick="splitAddItem();splitDrawWizard()">+ Tambah menu</button><div class="split-wizard-fees">'+['Tax','Service','Discount'].map((key,i)=>{const input=document.getElementById('split'+key),unit=document.getElementById('split'+key+'Unit');return '<label>'+['PPN','Biaya layanan','Diskon'][i]+'<div><input type="number" min="0" step="any" value="'+input.value+'" oninput="document.getElementById(\'split'+key+'\').value=this.value;splitCalculate()"><select onchange="document.getElementById(\'split'+key+'Unit\').value=this.value;splitCalculate()"><option value="percent" '+(unit.value==='percent'?'selected':'')+'>%</option><option value="amount" '+(unit.value==='amount'?'selected':'')+'>Rp</option></select></div></label>'}).join('')+'</div>';
  }else if(stage==='friends'){
-  body.innerHTML='<div class="split-wizard-friends">'+splitPersons.map((p,j)=>'<div class="split-person"><input aria-label="Nama teman" value="'+splitEsc(p)+'" oninput="splitPersons['+j+']=this.value;splitRender();splitDrawFriendChoices()"><button onclick="if(splitPersons.length<2)return;splitPersons.splice('+j+',1);splitItemsData.forEach(x=>x.people=x.people.filter(k=>k!=='+j+').map(k=>k>'+j+'?k-1:k));splitRender();splitDrawWizard()">×</button></div>').join('')+'</div><button class="split-inline-add" onclick="splitAddPerson();splitDrawWizard()">+ Tambah teman</button><div id="splitWizardChoices"></div>';
+  body.innerHTML='<div class="split-wizard-friends">'+splitPersons.map((p,j)=>'<div class="split-person"><button class="split-avatar-edit" title="Ganti avatar" onclick="splitPickAvatar('+j+')">'+splitAvatars[j]+'</button><input aria-label="Nama teman" value="'+splitEsc(p)+'" oninput="splitPersons['+j+']=this.value;splitRender();splitDrawFriendChoices()"><button onclick="if(splitPersons.length<2)return;splitPersons.splice('+j+',1);splitItemsData.forEach(x=>x.people=x.people.filter(k=>k!=='+j+').map(k=>k>'+j+'?k-1:k));splitRender();splitDrawWizard()">×</button></div>').join('')+'</div><button class="split-inline-add" onclick="splitAddPerson();splitDrawWizard()">+ Tambah teman</button><div id="splitWizardChoices"></div>';
   splitDrawFriendChoices();
  }else{
   const c=splitCompute(),fmt=n=>'Rp'+Math.round(n).toLocaleString('id-ID');
   body.innerHTML='<div class="split-wizard-total"><span>Total tagihan</span><strong>'+fmt(c.total)+'</strong></div><p class="split-hint">Termasuk PPN '+fmt(c.tax)+', layanan '+fmt(c.service)+' dan diskon −'+fmt(c.discount)+'</p>'+splitPersons.map((p,j)=>{
    const itemDetails=splitItemsData.filter(it=>it.people.includes(j)).map(it=>'<div class="split-result-row"><span>'+splitEsc(it.name)+'</span><span>'+fmt((Number(it.price)||0)/it.people.length)+'</span></div>').join('');
    const base=c.base[j],ratio=c.allocated?base/c.allocated:1/splitPersons.length;
-   return '<details class="split-result-detail"><summary><span>'+splitEsc(p)+'</span><strong>'+fmt(c.rounded[j])+'</strong><span>⌄</span></summary><div class="split-result-detail-body">'+itemDetails+'<div class="split-result-row"><span>PPN</span><span>'+fmt(c.tax*ratio)+'</span></div><div class="split-result-row"><span>Biaya layanan</span><span>'+fmt(c.service*ratio)+'</span></div><div class="split-result-row"><span>Diskon</span><span>−'+fmt(c.discount*ratio)+'</span></div><div class="split-result-row"><b>Total</b><b>'+fmt(c.rounded[j])+'</b></div></div></details>';
+   return '<details class="split-result-detail"><summary><span class="split-result-avatar">'+splitAvatars[j]+'</span><span>'+splitEsc(p)+'</span><strong>'+fmt(c.rounded[j])+'</strong><span>⌄</span></summary><div class="split-result-detail-body">'+itemDetails+'<div class="split-result-row"><span>PPN</span><span>'+fmt(c.tax*ratio)+'</span></div><div class="split-result-row"><span>Biaya layanan</span><span>'+fmt(c.service*ratio)+'</span></div><div class="split-result-row"><span>Diskon</span><span>−'+fmt(c.discount*ratio)+'</span></div><div class="split-result-row"><b>Total</b><b>'+fmt(c.rounded[j])+'</b></div></div></details>';
   }).join('')+'<button class="split-primary" onclick="splitCopy()">Salin rincian semua orang</button>';
  }
 }
+function splitPickAvatar(j){
+ const el=document.getElementById('splitAvatarPicker');if(el){el.remove();return}
+ const wrap=document.createElement('div');wrap.id='splitAvatarPicker';wrap.className='split-avatar-picker';
+ wrap.innerHTML='<div class="split-avatar-picker-head"><strong>Pilih avatar</strong><button onclick="document.getElementById(\'splitAvatarPicker\').remove()">×</button></div><div class="split-avatar-grid">'+splitAvatarOptions.map((e,k)=>'<button onclick="splitAvatars['+j+']=splitAvatarOptions['+k+'];document.getElementById(\'splitAvatarPicker\').remove();splitDrawWizard()">'+e+'</button>').join('')+'</div>';
+ document.querySelector('.split-wizard-friends').prepend(wrap);
+}
 function splitDrawFriendChoices(){
  const target=document.getElementById('splitWizardChoices');if(!target)return;
- target.innerHTML=splitItemsData.map((it,i)=>'<div class="split-choice-item"><b>'+splitEsc(it.name)+'</b><small>Siapa yang menikmati item ini?</small><div class="split-picks">'+splitPersons.map((p,j)=>'<label><input type="checkbox" '+(it.people.includes(j)?'checked':'')+' onchange="splitTogglePerson('+i+','+j+',this.checked)"> '+splitEsc(p)+'</label>').join('')+'</div></div>').join('');
+ target.innerHTML=splitItemsData.map((it,i)=>'<div class="split-choice-item"><b>'+splitEsc(it.name)+'</b><small>Siapa yang menikmati item ini?</small><div class="split-avatar-choices">'+splitPersons.map((p,j)=>'<button type="button" class="split-avatar-choice '+(it.people.includes(j)?'is-selected':'')+'" onclick="splitTogglePerson('+i+','+j+','+(!it.people.includes(j))+');splitDrawFriendChoices()"><span class="split-avatar-face">'+splitAvatars[j]+'</span><span class="split-avatar-name">'+splitEsc(p)+'</span><span class="split-avatar-tick">'+(it.people.includes(j)?'✓':'○')+'</span></button>').join('')+'</div><small class="split-avatar-share">'+(it.people.length?('Dibagi '+it.people.length+' orang · Rp'+Math.round((Number(it.price)||0)/it.people.length).toLocaleString('id-ID')+'/orang'):'Pilih minimal satu orang')+'</small></div>').join('');
 }
 
 function splitCompute(){
@@ -1944,7 +1951,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=42').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=43').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
