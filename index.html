@@ -1425,6 +1425,16 @@ header .brand-lockup .planora-ch2{flex:none}
 /* V84: center month and year labels inside Home picker boxes */
 #home .home-period-selectors .period-box{justify-content:center!important;text-align:center!important}
 #home .home-period-selectors .period-box button{display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;padding:0!important;width:100%!important;height:100%!important;line-height:normal!important}
+
+/* V85: compact, fully centered mobile splash lockup without cropped Budget */
+#planoraSplash{display:flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;padding:20px!important;overflow:hidden!important}
+#planoraSplash .splash-lockup{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important;gap:9px!important;width:min(100%,290px)!important;max-width:100%!important;min-width:0!important;padding:0!important;margin:auto!important;box-sizing:border-box!important;transform:none!important}
+#planoraSplash .splash-mark{display:flex!important;align-items:center!important;justify-content:center!important;width:58px!important;height:58px!important;flex:0 0 58px!important;margin:0 auto!important}
+#planoraSplash .splash-mark img,#planoraSplash .splash-mark svg,#planoraSplash .splash-mark .planora-ch2{display:block!important;width:100%!important;height:100%!important;max-width:58px!important;max-height:58px!important;object-fit:contain!important;margin:0 auto!important}
+#planoraSplash .splash-wordmark{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important;gap:0!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;overflow:visible!important;white-space:normal!important;letter-spacing:-.025em!important;line-height:1.12!important}
+#planoraSplash .splash-wordmark strong{display:block!important;font-size:clamp(22px,6vw,27px)!important;line-height:1.15!important;white-space:nowrap!important}
+#planoraSplash .splash-wordmark span{display:block!important;font-size:clamp(17px,4.8vw,21px)!important;line-height:1.25!important;white-space:nowrap!important;overflow:visible!important}
+@media(min-width:700px){#planoraSplash .splash-lockup{flex-direction:row!important;width:auto!important;gap:14px!important}#planoraSplash .splash-wordmark{align-items:flex-start!important;text-align:left!important;width:auto!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -2595,7 +2605,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=84').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=85').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
