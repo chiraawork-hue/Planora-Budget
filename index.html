@@ -903,7 +903,7 @@ function periodBoxDate(prefix){
  if(prefix==='home')return selectedPeriod;
  if(prefix==='wrapped')return wrappedPeriod;
  const value=document.getElementById('txChartMonth')?.value;
- return /^\\d{4}-\\d{2}$/.test(value||'')?new Date(value+'-01T12:00:00'):new Date();
+ return /^\d{4}-\d{2}$/.test(value||'')?new Date(value+'-01T12:00:00'):new Date();
 }
 function refreshPeriodBoxes(){
  for(const prefix of ['home','tx','wrapped']){
