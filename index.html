@@ -985,6 +985,20 @@ header .brand-lockup .planora-ch2{flex:none}
 #home .home-memory-label{margin-bottom:0!important}
 #home #homeMoments{margin-top:6px!important}
 @media(max-width:390px){#home .safe-card{padding:19px!important}#home .money-card,#home .money-card.dark{padding:13px 11px!important}#home .home-actions-line button{font-size:10px!important}#home .home-checkin-header{gap:7px!important}}
+
+/* Splash responsive correction: no clipped wordmark on narrow screens */
+#planoraSplash{overflow:hidden!important;padding:24px!important;box-sizing:border-box!important}
+#planoraSplash .splash-lockup{box-sizing:border-box!important;width:min(76vw,440px)!important;max-width:440px!important;gap:6px!important;overflow:visible!important;align-items:center!important}
+#planoraSplash .splash-mark{flex:0 0 35%!important;width:35%!important;max-width:155px!important}
+#planoraSplash .splash-wordmark{flex:1 1 65%!important;width:auto!important;max-width:none!important;min-width:0!important;margin-left:0!important;overflow:visible!important}
+#planoraSplash .splash-mark img,#planoraSplash .splash-wordmark img{max-width:100%!important;max-height:145px!important;object-fit:contain!important}
+@media(max-width:520px){
+ #planoraSplash .splash-lockup{width:min(78vw,300px)!important;max-width:300px!important;gap:5px!important}
+ #planoraSplash .splash-mark{flex:0 0 34%!important;width:34%!important;max-width:102px!important}
+ #planoraSplash .splash-wordmark{flex:1 1 66%!important;width:auto!important;overflow:visible!important;font-size:clamp(13px,4vw,18px)!important;line-height:1.15!important}
+ #planoraSplash .splash-mark img,#planoraSplash .splash-wordmark img{max-height:105px!important}
+}
+@media(max-width:360px){#planoraSplash .splash-lockup{width:82vw!important;gap:3px!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -2158,7 +2172,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=56').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=57').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
