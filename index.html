@@ -825,6 +825,20 @@ header .brand-lockup .planora-ch2{flex:none}
 .onboarding-content.intro-fade-out{opacity:0}
 .onboarding-content.intro-fade-in{opacity:0}
 @media(prefers-reduced-motion:reduce){.onboarding-content{transition:none!important}}
+
+/* Loading screen must sit above activation while the saved code is checked */
+#planoraSplash{z-index:100001!important;background:#fff!important}
+#planoraSplash .splash-lockup{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:13px!important}
+#planoraSplash .splash-mark{width:66px!important;height:66px!important;flex:0 0 66px!important}
+#planoraSplash .splash-mark svg{display:block!important;width:66px!important;height:66px!important}
+#planoraSplash .splash-wordmark{display:block!important;white-space:nowrap!important;line-height:1.1!important}
+#planoraSplash .splash-wordmark strong{font:800 clamp(20px,5vw,27px)/1.1 Inter,system-ui,sans-serif!important;letter-spacing:-.035em;color:#17352a!important}
+#planoraSplash .splash-wordmark strong span{display:inline!important;font:inherit!important;color:#087a5b!important}
+#planoraSplash .splash-mark{animation:planoraLogoEnter .65s ease both}
+#planoraSplash .splash-wordmark{animation:planoraWordEnter .7s ease .12s both}
+@keyframes planoraLogoEnter{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+@keyframes planoraWordEnter{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+@media(prefers-reduced-motion:reduce){#planoraSplash .splash-mark,#planoraSplash .splash-wordmark{animation:none!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -855,7 +869,7 @@ header .brand-lockup .planora-ch2{flex:none}
 <path d="M47 15C37 6 21 9 13 20 4 32 9 48 22 54c7 3 14 2 20-1" fill="none" stroke="url(#g)" stroke-width="7.5" stroke-linecap="round"/>
 <path d="M31 15v36M31 36c4-8 9-11 15-10 8 1 10 8 10 15v10" fill="none" stroke="url(#l)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M48 21c1-6 5-9 10-9-1 6-4 10-10 11z" fill="#D6B66F"/>
-</svg></div><div class="splash-wordmark"><strong>Planora</strong><span>Budget</span></div></div></div>
+</svg></div><div class="splash-wordmark"><strong>Planora <span>Budget</span></strong></div></div></div>
 <div class="app">
 <header><div class="brand-lockup"><svg class="planora-ch2" viewBox="0 0 64 64" aria-label="Planora">
 <path d="M42 12C24 6 10 17 10 32s13 25 30 20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
@@ -1766,8 +1780,8 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=33').then(reg=>reg.update()).catch(()=>{});
-setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1100);
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=34').then(reg=>reg.update()).catch(()=>{});
+setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1450);
 </script>
 <script>
 (async function(){
