@@ -948,6 +948,43 @@ header .brand-lockup .planora-ch2{flex:none}
 #momentModal .photo-source-grid{gap:9px}
 #momentModal .photo-source{border-radius:13px}
 @media(max-width:480px){#momentModal{padding:13px!important}#momentModal .sheet{max-height:86dvh!important;border-radius:21px!important}}
+
+/* Planora Home — calm editorial hierarchy */
+#home{--home-navy:#213c53;--home-blue:#2e6f9c}
+#home .home-checkin-header{margin:4px 0 22px!important;align-items:center!important;gap:12px!important}
+#home .home-checkin-heading .eyebrow{color:#426b87!important;font-size:10px!important;letter-spacing:.16em!important}
+#home .home-checkin-sub{color:#6d8191!important;font-size:12px!important;margin-top:5px}
+#home .home-period-selectors{margin-left:auto!important}
+#home .period-boxes{gap:6px!important}
+#home .period-box{border:1px solid #e3eaf0!important;background:#fff!important;border-radius:12px!important;box-shadow:none!important}
+#home .period-box button{color:#274b67!important}
+#home .safe-card{background:#223d55!important;color:#fff!important;border:0!important;border-radius:24px!important;padding:24px!important;box-shadow:0 10px 28px #203d521a!important;margin:0 0 24px!important}
+#home .safe-label{color:#c5d8e7!important;font-size:10px!important;letter-spacing:.13em}
+#home #safeToSpend{font-size:clamp(26px,6vw,35px)!important;font-weight:800!important;letter-spacing:-.045em!important;color:white!important;line-height:1.2!important}
+#home .safe-leaf{color:#c6e1ef!important;opacity:.7}
+#home .safe-note,#home .safe-foot{color:#d4e1ea!important}
+#home .safe-progress{background:#4b6376!important}
+#home .safe-progress i{background:#9bd8d6!important}
+#home .home-clean-section{display:flex;justify-content:space-between;align-items:center;margin:24px 0 11px}
+#home .home-clean-section>span{font-size:10px;letter-spacing:.14em;font-weight:800;color:#698094}
+#home .home-clean-section button{border:0;background:transparent;color:#326e98;font-size:11px;font-weight:700;cursor:pointer}
+#home .money-strip{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important;margin:0!important}
+#home .money-card,#home .money-card.dark{background:#fff!important;border:1px solid #e5ebef!important;color:#263e50!important;border-radius:18px!important;padding:18px 15px!important;box-shadow:none!important}
+#home .money-card small,#home .money-card.dark small{color:#768b99!important;font-size:11px!important}
+#home .money-card b,#home .money-card.dark b{color:#233f55!important;font-size:clamp(16px,4.2vw,23px)!important;letter-spacing:-.045em;overflow-wrap:anywhere}
+#home .money-card .note{color:#90a0aa!important;font-size:10px!important}
+#home .home-actions-line{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px!important;margin:0 0 12px!important}
+#home .home-actions-line button{border:1px solid #e2eaf0!important;background:white!important;color:#294a62!important;border-radius:15px!important;padding:14px 7px!important;min-height:64px;font-size:11px!important;font-weight:700!important;box-shadow:none!important}
+#home .home-actions-line button span{color:#347ba6!important}
+#home .split-home-entry{background:#edf5fa!important;border:1px solid #dbeaf4!important;border-radius:18px!important;color:#254c68!important;margin:0!important;padding:15px!important}
+#home .split-entry-icon{background:#dcecf8!important;color:#2c719f!important}
+#home .split-home-entry small{color:#7994a6!important}
+#home .home-moment-action{background:transparent!important;border:0!important;border-top:1px solid #e5ebef!important;border-radius:0!important;padding:18px 0 8px!important;margin:0!important}
+#home .home-moment-action b{color:#29465c!important}
+#home .home-moment-action .moment-plus{background:#2f739e!important;color:white!important;box-shadow:none!important}
+#home .home-memory-label{margin-bottom:0!important}
+#home #homeMoments{margin-top:6px!important}
+@media(max-width:390px){#home .safe-card{padding:19px!important}#home .money-card,#home .money-card.dark{padding:13px 11px!important}#home .home-actions-line button{font-size:10px!important}#home .home-checkin-header{gap:7px!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -980,21 +1017,19 @@ header .brand-lockup .planora-ch2{flex:none}
 <circle cx="51" cy="20" r="4.2" fill="#C9AE83"/>
 </svg><div class="brand-wordmark"><div class="brand">Planora <span>Budget</span></div><div class="sub">money, moments & little things.</div></div></div><button class="iconbtn" onclick="page('settings')">⚙</button></header>
 
-<main id="home" class="active">
-<div class="home-checkin-header"><div class="home-checkin-heading"><div class="eyebrow">MONEY CHECK-IN</div><div class="home-checkin-sub">Ringkasan keuanganmu</div></div><div class="home-period-selectors"><div class="period-boxes" id="homeBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="homeMonthBtn" onclick="openPeriodBox('home','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="homeYearBtn" onclick="openPeriodBox('home','year')">Tahun</button></div></div><label class="home-period-field"><span>BULAN</span><select id="homeMonthSelect" aria-label="Pilih bulan" onchange="setHomePeriodMonth(this.value)"></select></label><label class="home-period-field home-year-field"><span>TAHUN</span><select id="homeYearSelect" aria-label="Pilih tahun" onchange="setHomePeriodYear(this.value)"></select></label></div></div>
-<div class="money-strip">
- <div class="money-card dark"><small data-i18n="available">Uang tersedia</small><b id="available">Rp0</b><div class="note" data-i18n="availableNote">saldo akun di luar alokasi Goals</div></div>
- <div class="money-card"><small data-i18n="saved">Tersimpan</small><b id="saved">Rp0</b><div class="note" data-i18n="savedNote">sedang disisihkan di goals</div></div>
-</div>
-<div class="home-section-label"><span>RINGKASAN KEUANGAN</span><button onclick="page('wallets')">Detail akun ↗</button></div>
+<main id="home" class="active"><div class="home-checkin-header"><div class="home-checkin-heading"><div class="eyebrow">MONEY CHECK-IN</div><div class="home-checkin-sub">Ringkasan keuanganmu</div></div><div class="home-period-selectors"><div class="period-boxes" id="homeBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="homeMonthBtn" onclick="openPeriodBox('home','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="homeYearBtn" onclick="openPeriodBox('home','year')">Tahun</button></div></div><label class="home-period-field"><span>BULAN</span><select id="homeMonthSelect" aria-label="Pilih bulan" onchange="setHomePeriodMonth(this.value)"></select></label><label class="home-period-field home-year-field"><span>TAHUN</span><select id="homeYearSelect" aria-label="Pilih tahun" onchange="setHomePeriodYear(this.value)"></select></label></div></div>
 <div class="safe-card">
  <div class="safe-top"><div><div class="safe-label" data-i18n="safe">AMAN DIBELANJAKAN</div><b id="safeToSpend">Rp0</b></div><div class="safe-leaf">⌁</div></div>
  <div class="safe-note" id="safeSpendNote">Sesuai sisa budget bulan ini</div>
  <div class="safe-progress"><i id="safeSpendBar"></i></div>
  <div class="safe-foot"><span id="safeSpent">Terpakai Rp0</span><span id="safeBudget">Budget Rp0</span></div>
 </div>
-<button type="button" class="split-home-entry" onclick="openSplitBill()"><span class="split-entry-icon">▤</span><span><strong>Split Bill</strong><small>Bagi tagihan bareng teman dari struk atau input manual</small></span><span class="split-arrow">→</span></button><div class="home-actions-line"><button onclick="openAdd()"><span>＋</span> Catat transaksi</button><button onclick="page('growth');selectGrowthTab('goals')"><span>◎</span> Nabung Goals</button><button onclick="page('plan');selectPlanTab('bills')"><span>▤</span> Bayar tagihan</button></div>
-<div class="home-moment-action"><div><b>Life lately</b><div class="sub">Simpan cerita kecilmu.</div></div><button class="moment-plus" onclick="openMoment()" aria-label="Tambah Moment">＋</button></div>
+<div class="home-clean-section"><span>OVERVIEW</span><button type="button" onclick="page('wallets')">Lihat akun →</button></div><div class="money-strip">
+ <div class="money-card dark"><small data-i18n="available">Uang tersedia</small><b id="available">Rp0</b><div class="note" data-i18n="availableNote">saldo akun di luar alokasi Goals</div></div>
+ <div class="money-card"><small data-i18n="saved">Tersimpan</small><b id="saved">Rp0</b><div class="note" data-i18n="savedNote">sedang disisihkan di goals</div></div>
+</div>
+<div class="home-clean-section"><span>QUICK ACTIONS</span></div><div class="home-actions-line"><button onclick="openAdd()"><span>＋</span> Catat transaksi</button><button onclick="page('growth');selectGrowthTab('goals')"><span>◎</span> Nabung Goals</button><button onclick="page('plan');selectPlanTab('bills')"><span>▤</span> Bayar tagihan</button></div>
+<button type="button" class="split-home-entry" onclick="openSplitBill()"><span class="split-entry-icon">▤</span><span><strong>Split Bill</strong><small>Bagi tagihan bareng teman dari struk atau input manual</small></span><span class="split-arrow">→</span></button><div class="home-clean-section home-memory-label"><span>YOUR MOMENTS</span></div><div class="home-moment-action"><div><b>Life lately</b><div class="sub">Simpan cerita kecilmu.</div></div><button class="moment-plus" onclick="openMoment()" aria-label="Tambah Moment">＋</button></div>
 <div id="homeMoments"></div>
 <div id="recent" class="hidden"></div>
 </main>
@@ -2123,7 +2158,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=55').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=56').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
