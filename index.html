@@ -814,9 +814,28 @@ function renderTxCategoryChart(){
  chart.innerHTML='<div class="insights-donut-layout">'+donut+'<div class="insights-donut-list">'+legend+'</div></div>';
 }
 const CATEGORY_VISUALS={
- 'Makan & Minum':['🍜','#e59a50'],'Transport':['🚗','#679bc7'],'Belanja':['🛍️','#b58ac8'],'Tagihan':['🧾','#8799a5'],'Kesehatan':['🩺','#56a99e'],'Hiburan':['🎬','#aa8bd3'],'Pendidikan':['📚','#7b9e66'],'Kecantikan':['🌸','#dc8faa'],'Keluarga':['🏡','#c69a71'],'Donasi':['💝','#bd8e9c'],'Wellness':['🌿','#72ad88'],'Self Reward':['🎁','#dbad62'],'Gaji':['💼','#6d9f83'],'Bonus':['✨','#c49c5e'],'Freelance':['💻','#7696bc'],'Hadiah':['🎀','#cb8aab'],'Investasi':['📈','#5c9a91'],'Lainnya':['🧩','#8d9ca5']
+ 'Makan & Minum':['food','#e59a50'],'Transport':['car','#679bc7'],'Belanja':['bag','#b58ac8'],'Tagihan':['receipt','#8799a5'],'Kesehatan':['heart','#56a99e'],'Hiburan':['play','#aa8bd3'],'Pendidikan':['book','#7b9e66'],'Kecantikan':['flower','#dc8faa'],'Keluarga':['home','#c69a71'],'Donasi':['heart','#bd8e9c'],'Wellness':['leaf','#72ad88'],'Self Reward':['gift','#dbad62'],'Gaji':['briefcase','#6d9f83'],'Bonus':['sparkles','#c49c5e'],'Freelance':['laptop','#7696bc'],'Hadiah':['gift','#cb8aab'],'Investasi':['chart','#5c9a91'],'Lainnya':['folder','#8d9ca5']
 };
-function categoryVisual(name){return CATEGORY_VISUALS[name]||['📁','#879d9a']}
+const CATEGORY_ICON_PATHS={
+ food:'<path d="M4 12h16a8 8 0 0 1-16 0Z"/><path d="M7 20h10M8 3v6M12 3v6M16 3v6"/>',
+ car:'<path d="m5 11 2-5h10l2 5M5 17h14l2-3v-3H3v3l2 3ZM7 17v3M17 17v3"/><circle cx="7.5" cy="14" r=".8"/><circle cx="16.5" cy="14" r=".8"/>',
+ bag:'<path d="M4 8h16l-1 13H5L4 8ZM9 9V6a3 3 0 0 1 6 0v3"/>',
+ receipt:'<path d="M5 3h14v18l-3-2-4 2-4-2-3 2V3ZM9 8h6M9 12h6M9 16h3"/>',
+ heart:'<path d="M20.8 8.6c0 4.2-8.8 10.3-8.8 10.3S3.2 12.8 3.2 8.6a4.8 4.8 0 0 1 8.8-2.5 4.8 4.8 0 0 1 8.8 2.5Z"/>',
+ play:'<circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4V8Z"/>',
+ book:'<path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1ZM12 6v14"/>',
+ flower:'<circle cx="12" cy="12" r="2"/><path d="M12 10c-5-9-10-3-3 2-7 5-2 11 3 3 5 8 10 2 3-3 7-5 2-11-3-2Z"/>',
+ home:'<path d="m3 11 9-8 9 8v10H3V11ZM9 21v-7h6v7"/>',
+ leaf:'<path d="M20 4C9 4 4 9 4 16a4 4 0 0 0 4 4c7 0 12-5 12-16ZM4 20c3-5 7-8 12-11"/>',
+ gift:'<rect x="3" y="10" width="18" height="11" rx="1"/><path d="M2 7h20v4H2zM12 7v14M12 7c-7 0-8-6-4-6 2 0 4 3 4 6ZM12 7c7 0 8-6 4-6-2 0-4 3-4 6Z"/>',
+ briefcase:'<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V4h8v3M3 13c6 4 12 4 18 0M11 14h2"/>',
+ sparkles:'<path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2Z"/>',
+ laptop:'<rect x="5" y="4" width="14" height="12" rx="1"/><path d="M3 20h18l-2-4H5l-2 4Z"/>',
+ chart:'<path d="M4 20V4M4 20h17M7 16l5-5 3 2 5-7M16 6h4v4"/>',
+ folder:'<path d="M3 6h7l2 3h9v11H3V6Z"/>'
+};
+function categoryVisual(name){return CATEGORY_VISUALS[name]||['folder','#879d9a']}
+function categoryIconSvg(icon){return '<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(CATEGORY_ICON_PATHS[icon]||CATEGORY_ICON_PATHS.folder)+'</svg>'}
 function renderTx(){
  renderTxCategoryChart();
  const search=(document.getElementById('txSearch')?.value||'').trim().toLowerCase(),type=document.getElementById('txFilterType')?.value||'all',month=document.getElementById('txFilterMonth')?.value||'';
@@ -835,7 +854,7 @@ function renderTx(){
   const percent=budget>0?Math.round(actualSpent/budget*100):0;
   const remaining=budget-actualSpent;
   const budgetInfo=g.type==='expense'?(budget>0?'<div class="tx-budget"><div class="tx-budget-label"><span>'+percent+'% budget terpakai · '+rp(actualSpent)+' / '+rp(budget)+'</span><b class="'+(remaining<0?'over':'')+'">'+(remaining>=0?'Sisa '+rp(remaining):'Lewat '+rp(-remaining))+'</b></div><div class="progress"><i style="width:'+Math.min(100,percent)+'%;background:'+(percent>100?'#e65d5d':categoryColor)+'"></i></div></div>':'<div class="tx-budget-unset">Belum dianggarkan · Atur alokasi di Plan</div>'):'';
-  return '<details class="card tx-group"><summary><span class="tx-group-heading"><span class="tx-category-icon" style="background:'+categoryColor+'20;color:'+categoryColor+'">'+categoryIcon+'</span><span class="tx-group-heading-text"><b>'+esc(g.category)+'</b><small>'+(g.type==='income'?'Pemasukan':'Pengeluaran')+' · '+g.items.length+' transaksi</small></span></span><span class="tx-group-amount"><b class="amount '+g.type+'">'+(g.type==='expense'?'−':'+')+rp(g.total)+'</b><span class="tx-group-chevron">⌄</span></span></summary>'+budgetInfo+'<div class="tx-group-items">'+detail+'</div></details>';
+  return '<details class="card tx-group"><summary><span class="tx-group-heading"><span class="tx-category-icon" style="background:'+categoryColor+'20;color:'+categoryColor+'">'+categoryIconSvg(categoryIcon)+'</span><span class="tx-group-heading-text"><b style="color:'+categoryColor+'">'+esc(g.category)+'</b><small>'+(g.type==='income'?'Pemasukan':'Pengeluaran')+' · '+g.items.length+' transaksi</small></span></span><span class="tx-group-amount"><b class="amount '+g.type+'">'+(g.type==='expense'?'−':'+')+rp(g.total)+'</b><span class="tx-group-chevron">⌄</span></span></summary>'+budgetInfo+'<div class="tx-group-items">'+detail+'</div></details>';
  }).join(''):'<div class="card empty"><b>Belum ada transaksi</b><div class="sub">Tambah lewat tombol +.</div></div>';
  recent.innerHTML='';
 }
