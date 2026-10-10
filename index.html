@@ -1339,11 +1339,20 @@ async function splitPreprocessReceipt(file){
  for(let i=0;i<d.length;i+=4){const gray=.299*d[i]+.587*d[i+1]+.114*d[i+2];let value=(gray-min)*255/range;value=Math.max(0,Math.min(255,(value-128)*1.55+145));d[i]=d[i+1]=d[i+2]=value}
  ctx.putImageData(image,0,0);return canvas;
 }
+async function splitSharpenReceipt(canvas){
+ const ctx=canvas.getContext('2d',{willReadFrequently:true}),w=canvas.width,h=canvas.height;
+ const src=ctx.getImageData(0,0,w,h),dst=ctx.createImageData(w,h),a=src.data,b=dst.data;
+ for(let y=0;y<h;y++)for(let x=0;x<w;x++){const i=(y*w+x)*4;for(let c=0;c<3;c++){
+  const center=a[i+c],left=a[(y*w+Math.max(0,x-1))*4+c],right=a[(y*w+Math.min(w-1,x+1))*4+c],up=a[(Math.max(0,y-1)*w+x)*4+c],down=a[(Math.min(h-1,y+1)*w+x)*4+c];
+  b[i+c]=Math.max(0,Math.min(255,center*1.85-(left+right+up+down)*.2125));
+ }b[i+3]=255}
+ ctx.putImageData(dst,0,0);return canvas;
+}
 async function splitReadReceipt(file){
  splitOcrStatus('Memperjelas foto struk…');
  try{
   const T=await splitLoadOcr();
-  let source=file;try{source=await splitPreprocessReceipt(file)}catch(e){source=file}
+  let source=file;try{source=await splitPreprocessReceipt(file);source=await splitSharpenReceipt(source)}catch(e){source=file}
   splitOcrStatus('Membaca tulisan pada struk…');
   const result=await T.recognize(source,'eng',{logger:m=>{if(m.status==='recognizing text')splitOcrStatus('Membaca struk… '+Math.round((m.progress||0)*100)+'%')}});
   const raw=result?.data?.text||'';document.getElementById('splitOcrRaw').value=raw;const parsed=splitParseReceipt(raw);
@@ -2087,7 +2096,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=52').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=53').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
