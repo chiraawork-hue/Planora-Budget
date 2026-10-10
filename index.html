@@ -862,6 +862,7 @@ header .brand-lockup .planora-ch2{flex:none}
 @media(prefers-reduced-motion:reduce){#planoraSplash .splash-mark,#planoraSplash .splash-wordmark{animation:none!important}}
 
 #planoraSplash .splash-wordmark{font:800 clamp(20px,4vw,30px)/1.2 Inter,system-ui,sans-serif;color:#17533d}
+#planoraSplash .splash-mark{flex-basis:43%!important;width:43%!important}#planoraSplash .splash-wordmark{margin-left:-3%!important}#planoraSplash .splash-lockup{width:min(90vw,610px)!important}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -886,7 +887,7 @@ header .brand-lockup .planora-ch2{flex:none}
 <path d="M48 21c1-6 5-9 10-9-1 6-4 10-10 11z" fill="#D6B66F"/>
 </svg></div><div class="onboarding-count" id="onboardCount">01 / 06</div><h2 id="onboardTitle">Welcome to Planora Budget</h2><p id="onboardDescription">Kelola keuangan dan momen kecilmu dalam satu tempat.</p><div class="onboarding-dots" id="onboardDots"></div></div><div class="onboarding-actions"><button type="button" id="onboardBack" onclick="movePlanoraOnboarding(-1)">Kembali</button><button type="button" id="onboardNext" onclick="movePlanoraOnboarding(1)">Lanjut →</button></div></div></div>
 <div id="planoraDeleteConfirm" class="planora-confirm-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="planoraConfirmTitle"><div class="planora-confirm-card"><div class="planora-confirm-symbol">×</div><h2 id="planoraConfirmTitle">Hapus transaksi ini?</h2><p id="planoraConfirmDescription">Transaksi akan dihapus dari catatan dan saldo serta ringkasan keuangan akan diperbarui.</p><div class="planora-confirm-actions"><button type="button" onclick="closePlanoraDeleteConfirm()">Batal</button><button type="button" class="confirm-danger" onclick="approvePlanoraDeleteConfirm()">Ya, hapus</button></div></div></div>
-<div id="planoraSplash" role="status" aria-label="Memuat Planora Budget"><div class="splash-lockup"><div class="splash-mark"><img src="./planora-budget-ch.png" alt="CH" onerror="this.onerror=null;this.src='./icon.svg'"></div><div class="splash-wordmark"><img src="./planora-budget-wordmark.png" alt="Planora Budget" onerror="this.style.display='none';this.parentElement.textContent='Planora Budget'"></div></div></div>
+<div id="planoraSplash" role="status" aria-label="Memuat Planora Budget"><div class="splash-lockup"><div class="splash-mark"><img src="./planora-budget-ch-approved.webp" alt="CH" onerror="this.onerror=null;this.src='./icon.svg'"></div><div class="splash-wordmark"><img src="./planora-budget-wordmark-approved.webp" alt="Planora Budget" onerror="this.style.display='none';this.parentElement.textContent='Planora Budget'"></div></div></div>
 <div class="app">
 <header><div class="brand-lockup"><svg class="planora-ch2" viewBox="0 0 64 64" aria-label="Planora">
 <path d="M42 12C24 6 10 17 10 32s13 25 30 20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
@@ -1797,7 +1798,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=37').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=38').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1450);
 </script>
 <script>
