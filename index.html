@@ -2702,4 +2702,25 @@ function applyPlanoraExtraTranslations(){const isEn=lang==='en';document.querySe
 const _originalApplyLanguage=applyLanguage;applyLanguage=function(){_originalApplyLanguage();applyPlanoraExtraTranslations();refreshPlanoraMemberCard();applyPlanoraTheme()};
 applyPlanoraTheme();refreshPlanoraMemberCard();
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if((localStorage.getItem('planora_theme')||'system')==='system')applyPlanoraTheme()})}catch(e){}
+
+/* Comprehensive UI translation layer: translates text without modifying saved user content. */
+const PLANORA_UI_TRANSLATIONS={"Bulan":"Month","Tahun":"Year","Pemasukan":"Income","Pengeluaran":"Expenses","Transaksi":"Transactions","Tagihan":"Bills","Tabungan":"Savings","Pengaturan":"Settings","Bahasa":"Language","Simpan":"Save","Batal":"Cancel","Hapus":"Delete","Ubah":"Edit","Tambah":"Add","Selesai":"Done","Kembali":"Back","Berikutnya":"Next","Tutup":"Close","Cari":"Search","Pilih":"Select","Semua":"All","Belum dibayar":"Unpaid","Sudah dibayar":"Paid","Jumlah":"Amount","Tanggal":"Date","Kategori":"Category","Catatan":"Notes","Nama":"Name","Saldo":"Balance","Total":"Total","Lainnya":"Other","Belum ada transaksi":"No transactions yet","Tidak ada data":"No data","Lihat semua":"View all","Transaksi terbaru":"Recent transactions","Bulan ini":"This month","Tahun ini":"This year","Hari ini":"Today","Kemarin":"Yesterday","Besok":"Tomorrow","Minggu ini":"This week","Pengeluaran bulan ini":"Expenses this month","Pemasukan bulan ini":"Income this month","Sumber Dana":"Funding Source","Belum dialokasikan":"Unallocated","Rincian":"Details","Ringkasan":"Summary","Riwayat":"History","Tambah transaksi":"Add transaction","Tambah tagihan":"Add bill","Tambah momen":"Add moment","Nama pengguna":"Member name","Pertanyaan yang sering ditanyakan":"Frequently asked questions","Pusat Bantuan":"Help Center","Pengaturan Lanjutan":"Advanced Settings","Panduan Pengguna":"User Guide","Lihat fitur panduan":"View guide","Nama pada kartu":"Name on card","Masukkan tahun":"Enter year","Arahkan uangmu, nikmati perjalanannya.":"Guide your money, enjoy the journey.","Berdasarkan transaksi tercatat":"Based on recorded transactions","Pemasukan dan pengeluaran 6 bulan terakhir":"Income and expenses over the last 6 months","Tren pengeluaran per bulan selama 6 bulan terakhir":"Monthly spending trends over the last 6 months","Perubahan saldo Goals berdasarkan riwayat menabung":"Changes in Goals balances based on savings history","Semua yang kamu perlukan, tersusun rapi di sini.":"Everything you need, neatly organized here.","Makan & Minum":"Food & Drinks","Transport":"Transport","Belanja":"Shopping","Kesehatan":"Health","Hiburan":"Entertainment","Pendidikan":"Education","Kecantikan":"Beauty","Keluarga":"Family","Donasi":"Donations","Gaji":"Salary","Hadiah":"Gifts","Investasi":"Investments","Uang tersedia":"Available money","Tersimpan":"Saved","Cerita uangmu":"Your money story","AMAN DIBELANJAKAN":"SAFE TO SPEND","NAMA PENGGUNA":"MEMBER NAME","KODE AKTIVASI":"ACTIVATION CODE","KARTU PENGGUNA":"MEMBER CARD"};
+const PLANORA_UI_REVERSE=Object.fromEntries(Object.entries(PLANORA_UI_TRANSLATIONS).map(([a,b])=>[b,a]));
+const PLANORA_TRANSLATION_SKIP='script,style,textarea,option,[contenteditable],.user-content,[data-no-translate]';
+function translatePlanoraText(root=document){
+ const target=lang==='en'?PLANORA_UI_TRANSLATIONS:PLANORA_UI_REVERSE;
+ const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node;
+ while((node=walker.nextNode())){
+  const parent=node.parentElement;if(!parent||parent.closest(PLANORA_TRANSLATION_SKIP)||parent.closest('#momentList,#txList,#billList,#goalList,#walletList'))continue;
+  const raw=node.nodeValue,trim=raw.trim();if(!trim||!Object.prototype.hasOwnProperty.call(target,trim))continue;
+  node.nodeValue=raw.replace(trim,target[trim]);
+ }
+ document.querySelectorAll('input[placeholder],textarea[placeholder]').forEach(el=>{if(el.dataset.userDefinedPlaceholder)return;const old=el.getAttribute('placeholder');if(target[old])el.setAttribute('placeholder',target[old])});
+ document.querySelectorAll('[aria-label],[title]').forEach(el=>{for(const key of ['aria-label','title']){const old=el.getAttribute(key);if(old&&target[old])el.setAttribute(key,target[old])}});
+}
+const _planoraLanguageWithExtras=applyLanguage;
+applyLanguage=function(){_planoraLanguageWithExtras();translatePlanoraText()};
+const planoraTranslationObserver=new MutationObserver(()=>{if(window.__planoraTranslateQueued)return;window.__planoraTranslateQueued=true;requestAnimationFrame(()=>{window.__planoraTranslateQueued=false;translatePlanoraText()})});
+planoraTranslationObserver.observe(document.body,{subtree:true,childList:true,characterData:true});
+applyLanguage();
 </script></body></html>
