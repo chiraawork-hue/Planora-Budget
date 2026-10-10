@@ -636,6 +636,7 @@ body{background:#f8f9fb;color:#111318}.card,.money-card,.sheet,.tx-filter{backgr
 #addModal .money-add-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 #addModal .money-add{min-width:0}
 @media(max-width:530px){.tx-floating-add{right:20px;bottom:calc(84px + env(safe-area-inset-bottom,0px));width:56px;height:56px}#addModal .sheet,#txModal .sheet{width:min(100%,420px);border-radius:22px}#addModal .money-add-grid{grid-template-columns:1fr}}
+.tx-wallet-choices{display:flex;flex-wrap:wrap;gap:9px;margin:8px 0 14px}.tx-wallet-choice{font:500 13px Inter,ui-sans-serif,system-ui,sans-serif;border:1px solid #dfe5e3;background:#fff;color:#111318;padding:11px 15px;border-radius:14px;cursor:pointer;min-height:42px;transition:background .15s,border-color .15s}.tx-wallet-choice.selected{background:#e7f8ef;border-color:#087a5b;color:#075c46;box-shadow:inset 0 0 0 1px #087a5b}.tx-wallet-choice:focus-visible{outline:2px solid #087a5b;outline-offset:2px}
 </style>
 </head><body>
 <div id="planoraAccessGate"><div class="access-card"><div class="access-mark"><svg class="planora-ch2" viewBox="0 0 64 64" aria-label="Planora"><path d="M42 12C24 6 10 17 10 32s13 25 30 20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M29 18v29M29 33c7-7 15-9 21-4v18" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><circle cx="51" cy="20" r="4.2" fill="#C9AE83"/></svg></div><h1>Welcome to Planora</h1><p>money, moments & little things.</p><input id="planoraAccessCode" autocomplete="off" placeholder="PLN-BUDGET-XXXX-XXXX"><button id="planoraActivateBtn">Activate Planora</button><p id="planoraAccessMsg" class="access-error"></p><p class="access-note">Your access code is included with your purchase.</p></div></div>
@@ -712,7 +713,7 @@ body{background:#f8f9fb;color:#111318}.card,.money-card,.sheet,.tx-filter{backgr
 <div class="modal" id="addModal"><div class="sheet add-sheet"><div class="row"><div><div class="eyebrow">QUICK ADD</div><h3>Catat uangmu</h3></div><button class="pill" onclick="closeM('addModal')">✕</button></div><div class="money-add-grid"><button class="money-add expense-add" onclick="openTx('expense')"><span>−</span><div><b>Pengeluaran</b><small>Catat uang yang keluar</small></div></button><button class="money-add income-add" onclick="openTx('income')"><span>+</span><div><b>Pemasukan</b><small>Catat uang yang masuk</small></div></button></div></div></div>
 
 <div class="modal" id="txModal"><div class="sheet"><div class="row"><h3 id="txHeading">Transaksi</h3><button class="pill" onclick="closeM('txModal')">✕</button></div><input id="txId" type="hidden"><input id="txType" type="hidden">
-<label>Tanggal</label><input id="txDate" type="date"><label>Tipe</label><select id="txTypeSelect" onchange="changeTxType(this.value)"><option value="expense">Pengeluaran</option><option value="income">Pemasukan</option></select><label>Akun / Sumber Dana</label><select id="txWallet"></select><label>Deskripsi</label><input id="txNote" placeholder="Contoh: Belanja sayur, gaji bulanan"><label>Kategori</label><select id="txCategory"></select><label>Jumlah (Rp)</label><input id="txAmount" type="number" inputmode="numeric" min="1" placeholder="0">
+<label>Tanggal</label><input id="txDate" type="date"><label>Tipe</label><select id="txTypeSelect" onchange="changeTxType(this.value)"><option value="expense">Pengeluaran</option><option value="income">Pemasukan</option></select><label>Akun / Sumber Dana</label><input id="txWallet" type="hidden"><div id="txWalletChoices" class="tx-wallet-choices" role="group" aria-label="Pilih akun atau sumber dana"></div><label>Kategori</label><select id="txCategory"></select><label>Jumlah (Rp)</label><input id="txAmount" type="number" inputmode="numeric" min="1" placeholder="0"><label>Deskripsi</label><input id="txNote" placeholder="Contoh: Belanja sayur, gaji bulanan">
 <div class="actions"><button id="txDelete" class="btn danger hidden" onclick="deleteTx()">Hapus</button><button class="btn primary" onclick="saveTx()">Simpan</button></div></div></div>
 
 <div class="modal" id="walletModal"><div class="sheet"><div class="row"><h3>Tambah sumber dana</h3><button class="pill" onclick="closeM('walletModal')">✕</button></div><label>Nama rekening / dompet</label><input id="walletName" maxlength="60" placeholder="Contoh: BCA, GoPay, Cash"><label>Jenis</label><select id="walletKind"><option value="bank">Bank</option><option value="ewallet">E-wallet</option><option value="cash">Cash</option><option value="other">Lainnya</option></select><label>Saldo awal</label><input id="walletOpening" type="number" min="0" inputmode="numeric" placeholder="0"><div class="sub">Saldo awal untuk uang yang belum tercatat sebagai pemasukan. Jangan masukkan ulang uang dari transaksi lama.</div><button class="btn primary wide" onclick="saveWallet()">Simpan sumber dana</button></div></div>
@@ -1253,14 +1254,24 @@ function renderReports(){renderInsights()}
 // Sumber Dana: saldo dihitung dari saldo awal, transaksi dan transfer; tidak mengubah perhitungan Goals lama.
 function walletName(id){return (data.wallets||[]).find(w=>w.id===(id||'legacy'))?.name||'Belum dialokasikan'}
 function walletBalance(id){const w=(data.wallets||[]).find(w=>w.id===id);if(!w)return 0;const tx=data.transactions.reduce((n,t)=>((t.walletId||'legacy')===id?n+(t.type==='income'?1:-1)*Number(t.amount||0):n),0);const tr=(data.transfers||[]).reduce((n,t)=>n+(t.to===id?Number(t.amount):0)-(t.from===id?Number(t.amount):0),0);return Number(w.opening||0)+tx+tr}
+function chooseTxWallet(id){
+ txWallet.value=id;
+ document.querySelectorAll('#txWalletChoices .tx-wallet-choice').forEach(btn=>{
+  const chosen=btn.dataset.walletId===id;
+  btn.classList.toggle('selected',chosen);
+  btn.setAttribute('aria-pressed',chosen?'true':'false');
+ });
+}
 function populateTxWallet(selected){
  const wallets=(data.wallets||[]).filter(w=>w.id!=='legacy');
  const existing=(data.wallets||[]).find(w=>w.id===selected);
  const showLegacy=selected==='legacy'&&!!txId.value&&!!existing;
  const available=showLegacy?[existing,...wallets]:wallets;
- txWallet.innerHTML=available.length?available.map(w=>'<option value="'+esc(w.id)+'" '+(w.id===selected?'selected':'')+'>'+esc(w.name)+'</option>').join(''):'<option value="">Belum ada sumber dana — tambah di menu Dana</option>';
- txWallet.disabled=!available.length;
- if(available.length&&!available.some(w=>w.id===selected))txWallet.value=available[0].id;
+ const target=document.getElementById('txWalletChoices');
+ txWallet.value='';
+ if(!available.length){target.innerHTML='<p class="sub">Belum ada sumber dana. Tambahkan dulu di menu Dana.</p>';return}
+ target.innerHTML=available.map(w=>'<button type="button" class="tx-wallet-choice" data-wallet-id="'+esc(w.id)+'" aria-pressed="false" onclick="chooseTxWallet(this.dataset.walletId)">'+esc(w.name)+'</button>').join('');
+ chooseTxWallet(available.some(w=>w.id===selected)?selected:available[0].id);
 }
 function openWalletModal(){walletNameInputReset();openM('walletModal')}
 function walletNameInputReset(){document.getElementById('walletName').value='';walletOpening.value='';walletKind.value='bank'}
