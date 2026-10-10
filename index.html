@@ -940,6 +940,7 @@ header .brand-lockup .planora-ch2{flex:none}
 .split-camera-overlay[hidden]{display:none!important}.split-camera-overlay{position:fixed;inset:0;z-index:100030;background:#0a1723cc;display:grid;place-items:center;padding:15px}.split-camera-card{width:min(540px,100%);background:#fff;border-radius:22px;padding:16px}.split-camera-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;color:#173d65}.split-camera-head button{border:0;background:#edf3fa;border-radius:50%;font-size:24px;width:34px;height:34px}.split-camera-card video{display:block;width:100%;max-height:65vh;object-fit:contain;background:#152536;border-radius:14px}.split-camera-card .split-primary{background:#236da8}.split-camera-card .split-primary:disabled{opacity:.5}.split-camera-fallback{display:block;margin:8px auto;background:none;border:0;color:#236da8;text-decoration:underline;cursor:pointer}
 .bill-color-calendar .bill-day.day-paid{background:#daf7e6!important;border:1px solid #8edbb0!important;color:#087445!important;font-weight:700!important}.bill-color-calendar .bill-day.day-paid .bill-dots i{background:#0aaf6c!important}
 .split-ocr-debug{margin:12px 0;border:1px solid #dce8f4;border-radius:12px;padding:10px;color:#23577b;font-size:12px}.split-ocr-debug textarea{width:100%;box-sizing:border-box;margin:9px 0;border:1px solid #dce8f4;border-radius:9px;padding:9px;font:12px monospace}.split-ocr-debug button{border:1px solid #c8ddf0;background:#f0f7ff;border-radius:9px;padding:9px;color:#23577b}
+.split-top{position:relative}.split-cancel{position:absolute;right:0;top:0;border:1px solid #e6c8cd;background:#fff6f7;color:#aa4051;border-radius:11px;padding:9px 14px;font-weight:700;cursor:pointer}.split-exit-modal[hidden]{display:none!important}.split-exit-modal{position:fixed;inset:0;z-index:100060;background:#172a3880;display:grid;place-items:center;padding:18px}.split-exit-card{width:min(410px,100%);border-radius:23px;background:white;padding:28px 22px;text-align:center;box-shadow:0 20px 70px #12253638}.split-exit-symbol{display:grid;place-items:center;background:#edf5ff;border-radius:50%;width:60px;height:60px;font-size:30px;margin:0 auto 13px}.split-exit-card h2{font-size:21px;margin:8px 0;color:#1b334a}.split-exit-card p{font-size:13px;line-height:1.65;color:#6b7b89}.split-exit-actions{display:grid;gap:10px;margin-top:20px}.split-exit-actions button{padding:13px;border-radius:12px;font-weight:750;cursor:pointer}.split-exit-actions button:first-child{border:1px solid #f2cfd3;background:#fff5f5;color:#b04454}.split-exit-actions button:last-child{border:0;background:#226ca9;color:white}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -992,7 +993,7 @@ header .brand-lockup .planora-ch2{flex:none}
 </main>
 
 <main id="splitbill" class="split-page">
-<div class="split-top"><button class="split-back" onclick="page('home')">← Home</button><div class="eyebrow">SHARE THE MOMENT</div><h1>Split Bill</h1><p>Bagi tagihan bersama, tanpa ribet.</p></div>
+<div class="split-top"><button class="split-back" onclick="splitRequestExit('home')">← Home</button><button class="split-cancel" type="button" onclick="splitRequestExit('home')">Batal</button><div class="eyebrow">SHARE THE MOMENT</div><h1>Split Bill</h1><p>Bagi tagihan bersama, tanpa ribet.</p></div>
 <div class="split-modes"><button id="splitPhotoTab" class="selected" onclick="splitMode('photo')">▧ Foto Struk</button><button id="splitManualTab" onclick="splitMode('manual')">✎ Input Manual</button></div>
 <div id="splitPhotoPanel" class="split-panel"><div class="split-photo-actions"><button type="button" class="split-photo-action" onclick="splitOpenCamera()"><span class="split-photo-icon">📸</span><strong>Ambil Foto</strong><small>Foto struk langsung</small></button><button type="button" class="split-photo-action" onclick="document.getElementById('splitGalleryInput').click()"><span class="split-photo-icon">🖼️</span><strong>Pilih dari Galeri</strong><small>Gunakan foto tersimpan</small></button></div><input id="splitCameraInput" class="split-file-hidden" type="file" accept="image/*" capture="environment" onchange="splitPhotoSelected(this)"><input id="splitGalleryInput" class="split-file-hidden" type="file" accept="image/*" onchange="splitPhotoSelected(this)"><div id="splitCameraOverlay" class="split-camera-overlay" hidden><div class="split-camera-card"><div class="split-camera-head"><strong>Foto Struk</strong><button onclick="splitCloseCamera()" aria-label="Tutup kamera">×</button></div><video id="splitCameraVideo" autoplay playsinline muted></video><p id="splitCameraHelp" class="split-hint">Arahkan kamera ke struk, pastikan tulisan terlihat jelas.</p><button id="splitCameraShoot" class="split-primary" onclick="splitCaptureCamera()">📸 Ambil Foto</button><button class="split-camera-fallback" onclick="splitCloseCamera();document.getElementById('splitCameraInput').click()">Gunakan kamera bawaan HP</button></div></div><div id="splitPhotoRetake" hidden><button type="button" onclick="document.getElementById('splitCameraInput').click()">↻ Foto ulang</button><button type="button" onclick="document.getElementById('splitGalleryInput').click()">Ganti dari galeri</button></div><img id="splitPreview" alt="Foto struk yang dipilih" hidden><p id="splitOcrStatus" class="split-hint" role="status" aria-live="polite">Foto akan dibaca otomatis setelah dipilih.</p><details class="split-ocr-debug"><summary>Lihat teks yang terbaca</summary><textarea id="splitOcrRaw" readonly rows="7" placeholder="Hasil OCR akan muncul di sini"></textarea><button type="button" onclick="splitReparseRaw()">Coba baca ulang teks</button></details><p class="split-hint">Setelah pembacaan otomatis selesai, periksa dan koreksi hasilnya di pop-up. Foto tetap tersimpan sementara di perangkat.</p></div>
 <div class="split-panel split-start-panel"><div class="split-row"><h2>Mulai bagi tagihan</h2></div><p class="split-hint">Pilih foto struk atau input manual. Rincian menu, teman, dan hasil pembagian akan ditampilkan bertahap.</p><button class="split-primary" onclick="splitOpenStep('review')">Lanjut ke Rincian Tagihan →</button></div>
@@ -1006,6 +1007,7 @@ header .brand-lockup .planora-ch2{flex:none}
 <div class="split-wizard-top"><span id="splitWizardStep">STEP 1 / 3</span><button type="button" onclick="splitCloseStep()" aria-label="Tutup">×</button></div>
 <h2 id="splitWizardTitle">Periksa tagihanmu</h2><p id="splitWizardSub"></p><div id="splitWizardBody"></div><div class="split-wizard-actions"><button id="splitWizardBack" type="button" onclick="splitWizardBack()">Kembali</button><button id="splitWizardNext" type="button" onclick="splitWizardNext()">Simpan & Lanjut →</button></div>
 </div></div>
+<div id="splitExitModal" class="split-exit-modal" hidden role="dialog" aria-modal="true" aria-labelledby="splitExitTitle"><div class="split-exit-card"><div class="split-exit-symbol">🧾</div><h2 id="splitExitTitle">Batalkan Split Bill?</h2><p>Split Bill yang sedang kamu kerjakan akan dihapus jika kamu keluar. Mau lanjut mengerjakannya?</p><div class="split-exit-actions"><button type="button" onclick="splitDiscardAndExit()">Hapus Split Bill</button><button type="button" onclick="splitKeepWorking()">Lanjutkan Split Bill</button></div></div></div>
 <main id="transactions" class="transactions-redesign"><div class="eyebrow">YOUR FINANCIAL ACTIVITY</div><div class="tx-hero"><div><h1 class="title">Transaction</h1><p class="sub">Kelola pemasukan dan pengeluaran di sini.</p></div><div class="period-boxes" id="txBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="txMonthBtn" onclick="openPeriodBox('tx','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="txYearBtn" onclick="openPeriodBox('tx','year')">Tahun</button></div></div></div><div class="card tx-income-summary"><div class="tx-income-summary-head"><div><b>Income Summary</b><div class="sub">Rincian pemasukan berdasarkan sumber</div></div><div class="tx-income-total"><span>Total pemasukan</span><strong id="txIncomeSummary">Rp0</strong></div></div><div id="txIncomeBreakdown" class="tx-income-breakdown"></div></div><div class="card tx-spending-card"><div class="tx-chart-head"><div><h2>Where My Money Goes</h2><div class="sub">Persentase pengeluaran per kategori</div></div><input id="txChartMonth" type="month" onchange="syncTxMonth(this.value)" aria-label="Pilih bulan pengeluaran" class="period-native-hidden"></div><div id="txCategoryChart"></div></div><div class="tx-history-title"><h2>Riwayat Pengeluaran</h2><div class="sub">Detail pengeluaran berdasarkan kategori</div></div><div class="card tx-filter tx-filter-redesign"><input id="txSearch" aria-label="Cari transaksi" placeholder="⌕  Cari deskripsi, kategori, atau akun..." oninput="renderTx()"><select id="txSort" onchange="renderTx()" aria-label="Urutan transaksi"><option value="newest">Terbaru</option><option value="oldest">Terlama</option><option value="largest">Terbesar</option></select></div><div id="txList"></div><button type="button" class="tx-floating-add" onclick="openAdd()" aria-label="Tambah transaksi" title="Tambah transaksi">+</button></main>
 
 <main id="wallets" class="wallets-redesign"><div class="eyebrow">YOUR MONEY</div><div class="wallets-top"><div><h1 class="title">Account</h1><p class="sub">Pantau saldo rekening dan dompetmu di satu tempat.</p></div><button class="pill" onclick="openWalletModal()">＋ Tambah Akun</button></div><div id="walletSummary"></div><div class="wallet-transfer-heading"><div><h2>Transfer Antar Akun</h2><div class="sub">Pindahkan saldo tanpa mengubah total uangmu.</div></div><button class="pill" onclick="openTransferModal()">↗ Transfer</button></div><div id="walletTransferHistory"></div></main>
@@ -1259,8 +1261,25 @@ function maybeShowPlanoraIntro(){if(!localStorage.getItem(PLANORA_INTRO_KEY))sta
 
 
 let splitAvatars=['🐱','🐼'],splitAvatarOptions=['🐱','🐼','🐰','🦊','🐻','🐸','🐨','🐯','🐶','🐧','🦄','🐣','🍓','🌻','🍒','⭐'];let splitPersons=['Aku','Teman 1'],splitItemsData=[{name:'Item 1',price:0,people:[0,1]}];
+let splitExitTarget='home',splitHasStarted=false,splitOcrRun=0;
+function splitRequestExit(target='home'){
+ splitExitTarget=target;
+ if(!splitHasStarted){splitCloseCamera();splitCloseStep();page(target);return}
+ document.getElementById('splitExitModal').hidden=false;
+}
+function splitKeepWorking(){document.getElementById('splitExitModal').hidden=true}
+function splitDiscardAndExit(){
+ document.getElementById('splitExitModal').hidden=true;
+ splitOcrRun++;splitCloseCamera();splitCloseStep();
+ splitPersons=['Aku','Teman 1'];splitAvatars=['🐱','🐼'];splitItemsData=[{name:'Item 1',price:0,people:[0,1]}];
+ ['Tax','Service','Discount'].forEach(k=>{const n=document.getElementById('split'+k),u=document.getElementById('split'+k+'Unit');if(n)n.value='0';if(u)u.value=k==='Discount'?'amount':'percent'});
+ const im=document.getElementById('splitPreview');if(im?.dataset.url)URL.revokeObjectURL(im.dataset.url);if(im){im.hidden=true;im.removeAttribute('src');delete im.dataset.url}
+ document.getElementById('splitPhotoRetake').hidden=true;
+ document.getElementById('splitOcrRaw').value='';splitOcrStatus('Foto akan dibaca otomatis setelah dipilih.');
+ splitMode('photo');splitWizardStage='review';splitHasStarted=false;splitRender();page(splitExitTarget);
+}
 function openSplitBill(){page('splitbill');splitRender()}
-function splitMode(mode){document.getElementById('splitPhotoPanel').hidden=mode!=='photo';document.getElementById('splitPhotoTab').classList.toggle('selected',mode==='photo');document.getElementById('splitManualTab').classList.toggle('selected',mode==='manual')}
+function splitMode(mode){if(mode==='manual')splitHasStarted=true;document.getElementById('splitPhotoPanel').hidden=mode!=='photo';document.getElementById('splitPhotoTab').classList.toggle('selected',mode==='photo');document.getElementById('splitManualTab').classList.toggle('selected',mode==='manual')}
 let splitCameraStream=null;
 async function splitOpenCamera(){
  const overlay=document.getElementById('splitCameraOverlay'),video=document.getElementById('splitCameraVideo'),help=document.getElementById('splitCameraHelp');
@@ -1366,11 +1385,11 @@ async function splitReadReceipt(file){
  }catch(e){splitOcrStatus('Pembacaan otomatis belum berhasil. Coba foto lebih dekat atau input manual.');splitOpenStep('review')}
 }
 
-function splitShowPhoto(file){const im=document.getElementById('splitPreview');if(im.dataset.url)URL.revokeObjectURL(im.dataset.url);const url=URL.createObjectURL(file);im.src=url;im.dataset.url=url;im.hidden=false;document.getElementById('splitPhotoRetake').hidden=false;splitReadReceipt(file)}
+function splitShowPhoto(file){splitHasStarted=true;const im=document.getElementById('splitPreview');if(im.dataset.url)URL.revokeObjectURL(im.dataset.url);const url=URL.createObjectURL(file);im.src=url;im.dataset.url=url;im.hidden=false;document.getElementById('splitPhotoRetake').hidden=false;splitReadReceipt(file)}
 function splitPhotoSelected(el){const f=el.files?.[0];if(!f)return;splitShowPhoto(f);el.value=''}
-function splitAddItem(){splitItemsData.push({name:'Item '+(splitItemsData.length+1),price:0,people:[0]});splitRender()}
-function splitAddPerson(){splitPersons.push('Teman '+splitPersons.length);splitAvatars.push(splitAvatarOptions[(splitPersons.length-1)%splitAvatarOptions.length]);splitRender()}
-function splitSetItem(i,k,v){splitItemsData[i][k]=v;splitCalculate()}
+function splitAddItem(){splitHasStarted=true;splitItemsData.push({name:'Item '+(splitItemsData.length+1),price:0,people:[0]});splitRender()}
+function splitAddPerson(){splitHasStarted=true;splitPersons.push('Teman '+splitPersons.length);splitAvatars.push(splitAvatarOptions[(splitPersons.length-1)%splitAvatarOptions.length]);splitRender()}
+function splitSetItem(i,k,v){splitHasStarted=true;splitItemsData[i][k]=v;splitCalculate()}
 function splitTogglePerson(i,j,checked){let p=splitItemsData[i].people;splitItemsData[i].people=checked?[...new Set([...p,j])]:p.filter(x=>x!==j);splitCalculate()}
 function splitRemoveItem(i){splitItemsData.splice(i,1);splitRender()}
 function splitRender(){
@@ -1382,7 +1401,7 @@ function splitRender(){
 
 let splitWizardStage='review';
 const splitEsc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function splitOpenStep(stage){splitWizardStage=stage;document.getElementById('splitWizard').hidden=false;splitDrawWizard()}
+function splitOpenStep(stage){splitHasStarted=true;splitWizardStage=stage;document.getElementById('splitWizard').hidden=false;splitDrawWizard()}
 function splitCloseStep(){document.getElementById('splitWizard').hidden=true}
 function splitWizardBack(){if(splitWizardStage==='results')splitOpenStep('friends');else if(splitWizardStage==='friends')splitOpenStep('review');else splitCloseStep()}
 function splitWizardNext(){
@@ -1463,7 +1482,7 @@ function splitCopy(){
  if(navigator.clipboard?.writeText)navigator.clipboard.writeText(result).then(()=>toastMsg('Hasil split bill disalin')).catch(()=>toastMsg('Gagal menyalin'));else toastMsg('Salin tidak tersedia');
 }
 
-function page(id){if(id==='growth')selectGrowthTab('assets');if(id==='moments')id='home';if(id==='assets'){id='growth';selectGrowthTab('assets')}if(id==='goals'){id='growth';selectGrowthTab('goals')}document.querySelectorAll('main').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.page===id));render()}
+function page(id){if(document.getElementById('splitbill')?.classList.contains('active')&&id!=='splitbill'&&splitHasStarted){splitRequestExit(id);return}if(id==='growth')selectGrowthTab('assets');if(id==='moments')id='home';if(id==='assets'){id='growth';selectGrowthTab('assets')}if(id==='goals'){id='growth';selectGrowthTab('goals')}document.querySelectorAll('main').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.page===id));render()}
 function openM(id){document.getElementById(id).classList.add('open')}function closeM(id){document.getElementById(id).classList.remove('open')}
 function render(){
  const tx=periodTx(),income=tx.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0),expense=tx.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
@@ -2096,7 +2115,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=53').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=54').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
