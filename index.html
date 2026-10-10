@@ -1325,21 +1325,36 @@ function splitParseReceipt(raw){
 }
 function splitOcrStatus(message){const el=document.getElementById('splitOcrStatus');if(el)el.textContent=message}
 function splitReparseRaw(){const raw=document.getElementById('splitOcrRaw').value;if(!raw)return;const parsed=splitParseReceipt(raw);if(parsed.items.length){splitItemsData=parsed.items;splitRender();splitOpenStep('review');splitOcrStatus('Ditemukan '+parsed.items.length+' item dari teks. Periksa kembali hasilnya.')}else splitOcrStatus('Teks belum bisa dipisahkan menjadi item. Periksa manual.')}
+async function splitPreprocessReceipt(file){
+ const bitmap=await createImageBitmap(file),w=bitmap.width,h=bitmap.height;
+ const scale=Math.min(3,Math.max(1,1800/Math.max(w,h))),canvas=document.createElement('canvas');
+ canvas.width=Math.round(w*scale);canvas.height=Math.round(h*scale);
+ const ctx=canvas.getContext('2d',{willReadFrequently:true});
+ ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);
+ ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);
+ bitmap.close?.();
+ const image=ctx.getImageData(0,0,canvas.width,canvas.height),d=image.data;
+ let min=255,max=0;for(let i=0;i<d.length;i+=4){const gray=.299*d[i]+.587*d[i+1]+.114*d[i+2];if(gray<min)min=gray;if(gray>max)max=gray}
+ const range=Math.max(1,max-min);
+ for(let i=0;i<d.length;i+=4){const gray=.299*d[i]+.587*d[i+1]+.114*d[i+2];let value=(gray-min)*255/range;value=Math.max(0,Math.min(255,(value-128)*1.55+145));d[i]=d[i+1]=d[i+2]=value}
+ ctx.putImageData(image,0,0);return canvas;
+}
 async function splitReadReceipt(file){
- splitOcrStatus('Menyiapkan pembaca struk…');
+ splitOcrStatus('Memperjelas foto struk…');
  try{
   const T=await splitLoadOcr();
+  let source=file;try{source=await splitPreprocessReceipt(file)}catch(e){source=file}
   splitOcrStatus('Membaca tulisan pada struk…');
-  const result=await T.recognize(file,'eng',{logger:m=>{if(m.status==='recognizing text')splitOcrStatus('Membaca struk… '+Math.round((m.progress||0)*100)+'%')}});
+  const result=await T.recognize(source,'eng',{logger:m=>{if(m.status==='recognizing text')splitOcrStatus('Membaca struk… '+Math.round((m.progress||0)*100)+'%')}});
   const raw=result?.data?.text||'';document.getElementById('splitOcrRaw').value=raw;const parsed=splitParseReceipt(raw);
   if(parsed.items.length){
    splitItemsData=parsed.items;
    for(const [key,val] of Object.entries(parsed.fees)){if(val!==null){const input=document.getElementById('split'+key[0].toUpperCase()+key.slice(1));const unit=document.getElementById('split'+key[0].toUpperCase()+key.slice(1)+'Unit');if(input&&unit){input.value=val;unit.value='amount'}}}
    splitRender();
    splitOcrStatus('Ditemukan '+parsed.items.length+' item. Periksa kembali nama, harga, pajak, dan diskon.');
-  }else splitOcrStatus('Menu belum terbaca jelas. Isi atau koreksi manual di pop-up.');
+  }else splitOcrStatus('Tulisan belum terbaca cukup jelas. Coba foto lebih dekat atau isi manual.');
   splitOpenStep('review');
- }catch(e){splitOcrStatus('Pembacaan otomatis belum berhasil. Coba foto lebih jelas atau input manual.');splitOpenStep('review')}
+ }catch(e){splitOcrStatus('Pembacaan otomatis belum berhasil. Coba foto lebih dekat atau input manual.');splitOpenStep('review')}
 }
 
 function splitShowPhoto(file){const im=document.getElementById('splitPreview');if(im.dataset.url)URL.revokeObjectURL(im.dataset.url);const url=URL.createObjectURL(file);im.src=url;im.dataset.url=url;im.hidden=false;document.getElementById('splitPhotoRetake').hidden=false;splitReadReceipt(file)}
@@ -2072,7 +2087,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=51').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=52').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
