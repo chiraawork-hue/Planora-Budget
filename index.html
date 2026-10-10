@@ -794,6 +794,18 @@ header .brand-lockup .planora-ch2{flex:none}
 .faq-list details>summary{font-size:12px;font-weight:750;cursor:pointer;list-style:none}
 .faq-list details p{margin:10px 0 2px}
 @media(max-width:420px){#planoraAccessGate{padding:12px}#planoraAccessGate .access-card{padding:25px 20px;border-radius:22px}.onboarding-card{padding:21px}}
+
+/* Smaller transaction delete button and gentle confirmation dialog */
+.tx-quick-delete{width:24px!important;height:24px!important;min-width:24px!important;font-size:16px!important;line-height:1!important;display:grid!important;place-items:center!important;padding:0!important;border-radius:50%}
+.planora-confirm-overlay[hidden]{display:none!important}
+.planora-confirm-overlay{position:fixed;inset:0;z-index:100010;background:#182a2166;display:grid;place-items:center;padding:20px}
+.planora-confirm-card{width:min(370px,100%);padding:28px 24px;background:#fff;border:1px solid #e7ebe8;border-radius:24px;box-shadow:0 22px 70px #13271e26;text-align:center}
+.planora-confirm-symbol{margin:0 auto 15px;display:grid;place-items:center;width:47px;height:47px;background:#fff1f2;color:#c54856;border-radius:16px;font-size:26px;font-weight:500}
+.planora-confirm-card h2{font:800 21px Inter,system-ui,sans-serif;letter-spacing:-.03em;color:#203129;margin:0 0 10px}
+.planora-confirm-card p{font-size:12px;line-height:1.7;color:#718075;margin:0 0 23px}
+.planora-confirm-actions{display:flex;gap:10px}
+.planora-confirm-actions button{flex:1;border:1px solid #e3e9e4;border-radius:12px;background:#fff;padding:12px;font-size:12px;font-weight:750;cursor:pointer}
+.planora-confirm-actions .confirm-danger{background:#c74754;border-color:#c74754;color:#fff}
 </style>
 </head><body>
 <div id="planoraAccessGate"><div class="access-card">
@@ -811,6 +823,7 @@ header .brand-lockup .planora-ch2{flex:none}
 <p class="access-note">Sudah mendapatkan kode? Masukkan di atas untuk membuka Planora Budget.</p>
 </div></div>
 <div id="planoraOnboarding" class="onboarding-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="onboardTitle"><div class="onboarding-card"><div class="onboarding-top"><span>GET TO KNOW PLANORA</span><button type="button" onclick="finishPlanoraOnboarding()" aria-label="Lewati pengenalan">Lewati ×</button></div><div class="onboarding-art" id="onboardIcon">✦</div><div class="onboarding-count" id="onboardCount">01 / 06</div><h2 id="onboardTitle">Welcome to Planora Budget</h2><p id="onboardDescription">Kelola keuangan dan momen kecilmu dalam satu tempat.</p><div class="onboarding-dots" id="onboardDots"></div><div class="onboarding-actions"><button type="button" id="onboardBack" onclick="movePlanoraOnboarding(-1)">Kembali</button><button type="button" id="onboardNext" onclick="movePlanoraOnboarding(1)">Lanjut →</button></div></div></div>
+<div id="planoraDeleteConfirm" class="planora-confirm-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="planoraConfirmTitle"><div class="planora-confirm-card"><div class="planora-confirm-symbol">×</div><h2 id="planoraConfirmTitle">Hapus transaksi ini?</h2><p id="planoraConfirmDescription">Transaksi akan dihapus dari catatan dan saldo serta ringkasan keuangan akan diperbarui.</p><div class="planora-confirm-actions"><button type="button" onclick="closePlanoraDeleteConfirm()">Batal</button><button type="button" class="confirm-danger" onclick="approvePlanoraDeleteConfirm()">Ya, hapus</button></div></div></div>
 <div id="planoraSplash" role="status" aria-label="Memuat Planora Budget"><div class="splash-lockup"><div class="splash-mark"><svg class="planora-ch2" aria-label="Planora Budget" viewBox="0 0 64 64">
 <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#174E3B"/><stop offset=".55" stop-color="#237C59"/><stop offset="1" stop-color="#79AE79"/></linearGradient><linearGradient id="l" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#246B4C"/><stop offset="1" stop-color="#88BC86"/></linearGradient></defs>
 <rect width="64" height="64" rx="15" fill="#FCFCF8"/>
@@ -1156,7 +1169,7 @@ function openTx(type){closeM('addModal');txId.value='';txType.value=type;txTypeS
 function editTx(id){let t=data.transactions.find(x=>x.id===id);if(!t)return;txId.value=t.id;txType.value=t.type;txTypeSelect.value=t.type;txHeading.textContent='Edit transaksi';txNameLabel.textContent=t.type==='expense'?'Nama Pengeluaran':'Nama Pemasukan';txName.placeholder=t.type==='expense'?'Contoh: Beli skincare':'Contoh: Gaji Oktober';txName.value=t.name||t.note||t.category||'';txAmount.value=t.amount;txDate.value=t.date;txNote.value=t.note||'';txCategory.innerHTML=(t.type==='expense'?expenseCats:incomeCats).map(c=>`<option ${c===t.category?'selected':''}>${c}</option>`).join('');txDelete.classList.remove('hidden');populateTxWallet(t.walletId||'legacy');openM('txModal')}
 function changeTxType(type){txType.value=type;txHeading.textContent=type==='income'?'Pemasukan':'Pengeluaran';txNameLabel.textContent=type==='income'?'Nama Pemasukan':'Nama Pengeluaran';txName.placeholder=type==='income'?'Contoh: Gaji Oktober':'Contoh: Beli skincare';txCategory.innerHTML=(type==='expense'?expenseCats:incomeCats).map(c=>'<option>'+esc(c)+'</option>').join('')}
 function saveTx(){let amount=Number(txAmount.value),date=txDate.value;txType.value=txTypeSelect.value;if(amount<=0||!date)return toastMsg('Isi nominal dan tanggal');if(!txName.value.trim())return toastMsg('Isi nama transaksi terlebih dahulu');if(!txWallet.value||!data.wallets.some(w=>w.id===txWallet.value))return toastMsg('Tambahkan dan pilih sumber dana di menu Dana terlebih dahulu');let id=txId.value,prior=id?data.transactions.find(t=>t.id===id):null,obj={...(prior||{}),id:id||uid(),type:txType.value,amount,date,category:txCategory.value,name:txName.value.trim(),note:txNote.value.trim(),walletId:txWallet.value};if(id){let i=data.transactions.findIndex(x=>x.id===id);if(i>=0)data.transactions[i]=obj}else data.transactions.push(obj);persist();closeM('txModal');toastMsg('Transaksi tersimpan')}
-function deleteTx(){let id=txId.value;data.transactions=data.transactions.filter(x=>x.id!==id);data.moments.forEach(m=>{if(m.transactionId===id){m.transactionId='';m.amount=0}});persist();closeM('txModal');toastMsg('Transaksi dihapus')}
+function deleteTx(){const id=txId.value;if(!id)return;confirmPlanoraTransactionDelete(id,true)}
 function saveMonthlyBudget(){let n=Number(monthlyBudget.value);if(n<0)return;data.monthlyBudget=n;persist();toastMsg('Budget tersimpan')}
 function renderBudget(){
  const allocated=Object.values(data.categoryBudgets).reduce((sum,n)=>sum+Number(n||0),0);
@@ -1353,9 +1366,29 @@ function editMoment(id){
  if(m.withPerson||m.place||m.mapUrl||m.littleNote){momentDetails.classList.remove('hidden');momentDetailsToggle.textContent='− Hide details'}
  syncMomentMoney();
 }
+
+let pendingPlanoraDelete=null;
+function confirmPlanoraTransactionDelete(id,fromEditor){
+ const t=data.transactions.find(x=>String(x.id)===String(id));if(!t)return;
+ pendingPlanoraDelete={id:String(id),fromEditor:!!fromEditor};
+ const description=document.getElementById('planoraConfirmDescription');
+ description.textContent='Transaksi "'+(t.name||t.category||'Tanpa nama')+'" ('+rp(t.amount)+') akan dihapus. Saldo dan ringkasan keuangan akan diperbarui. Tindakan ini tidak dapat dibatalkan.';
+ document.getElementById('planoraDeleteConfirm').hidden=false;
+}
+function closePlanoraDeleteConfirm(){pendingPlanoraDelete=null;document.getElementById('planoraDeleteConfirm').hidden=true}
+function approvePlanoraDeleteConfirm(){
+ const pending=pendingPlanoraDelete;if(!pending)return;
+ const oldTx=data.transactions,oldMoments=data.moments.map(m=>({...m}));
+ data.transactions=oldTx.filter(x=>String(x.id)!==pending.id);
+ data.moments.forEach(m=>{if(String(m.transactionId)===pending.id){m.transactionId='';m.amount=0}});
+ if(!persist()){data.transactions=oldTx;data.moments=oldMoments;render();closePlanoraDeleteConfirm();return}
+ if(pending.fromEditor)closeM('txModal');
+ closePlanoraDeleteConfirm();toastMsg('Transaksi berhasil dihapus');
+}
+
 function removeTransactionById(id){
  const t=data.transactions.find(x=>String(x.id)===String(id));if(!t)return;
- if(!window.confirm('Hapus transaksi ini? Saldo dan ringkasan keuangan akan diperbarui.'))return;
+ confirmPlanoraTransactionDelete(id,false);return;
  const oldTx=data.transactions,oldMoments=data.moments.map(m=>({...m}));
  data.transactions=oldTx.filter(x=>String(x.id)!==String(id));
  data.moments.forEach(m=>{if(String(m.transactionId)===String(id)){m.transactionId='';m.amount=0}});
