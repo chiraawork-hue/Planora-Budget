@@ -1371,6 +1371,11 @@ header .brand-lockup .planora-ch2{flex:none}
 #home .home-period-selectors .period-box{height:24px!important;display:flex!important;align-items:center!important;padding:0 4px!important}
 #home .home-period-selectors .period-box button{line-height:20px!important}
 @media(max-width:520px){#home .home-checkin-header{align-items:flex-start!important}#home .home-period-selectors{align-self:flex-start!important;margin-top:0!important}#home .home-period-selectors .period-box{height:23px!important;padding:0 3px!important}}
+
+/* V80 — persistent Home quick-add for transactions */
+#home .home-floating-add{position:fixed;right:20px;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:35;width:54px;height:54px;border:0;border-radius:50%;background:#087f60;color:#fff;font-family:Inter,system-ui,sans-serif;font-size:32px;font-weight:350;line-height:1;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 18px #075f483d;cursor:pointer}
+#home .home-floating-add:active{transform:scale(.95)}
+@media(min-width:800px){#home .home-floating-add{right:max(24px,calc((100vw - 800px)/2 + 18px))}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1415,10 +1420,10 @@ header .brand-lockup .planora-ch2{flex:none}
  <div class="money-card dark"><small data-i18n="available">Uang tersedia</small><b id="available">Rp0</b><div class="note" data-i18n="availableNote">saldo akun di luar alokasi Goals</div></div>
  <div class="money-card"><small data-i18n="saved">Tersimpan</small><b id="saved">Rp0</b><div class="note" data-i18n="savedNote">sedang disisihkan di goals</div></div>
 </div>
-<div class="home-clean-section"><span>QUICK ACTIONS</span></div><div class="home-actions-line"><button onclick="openAdd()"><span aria-hidden="true">✎</span> Catat transaksi</button><button onclick="page('growth');selectGrowthTab('goals')"><span aria-hidden="true">⚑</span> Nabung Goals</button><button onclick="page('plan');selectPlanTab('bills')"><span aria-hidden="true">▣</span> Bayar tagihan</button></div>
+<div class="home-clean-section"><span>QUICK ACTIONS</span></div><div class="home-actions-line"><button onclick="openTransferModal()"><span aria-hidden="true">⇄</span> Transfer akun</button><button onclick="page('growth');selectGrowthTab('goals')"><span aria-hidden="true">⚑</span> Nabung Goals</button><button onclick="page('plan');selectPlanTab('bills')"><span aria-hidden="true">▣</span> Cek tagihan</button></div>
 <button type="button" class="split-home-entry" onclick="openSplitBill()"><span class="split-entry-icon" aria-hidden="true">↗</span><span><strong>Split Bill</strong><small>Bagi tagihan bareng teman dari struk atau input manual</small></span><span class="split-arrow">→</span></button><div class="home-clean-section home-memory-label"><span>YOUR MOMENTS</span></div><div class="home-moment-action"><div><b>Life lately</b><div class="sub">Simpan cerita kecilmu.</div></div><button class="moment-plus" onclick="openMoment()" aria-label="Tambah Moment">＋</button></div>
 <div id="homeMoments"></div>
-<div id="recent" class="hidden"></div>
+<div id="recent" class="hidden"></div><button type="button" class="home-floating-add" onclick="openAdd()" aria-label="Catat transaksi baru" title="Catat transaksi baru">+</button>
 </main>
 
 <main id="splitbill" class="split-page">
@@ -2541,7 +2546,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=79').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=80').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
