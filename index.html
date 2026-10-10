@@ -1281,6 +1281,21 @@ header .brand-lockup .planora-ch2{flex:none}
  #plan #billList .bill-item-actions button{padding:6px 9px!important;font-size:10px!important}
  #plan #planBills .bill-color-calendar{font-size:11px!important}
 }
+#plan #catList{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+#plan #catList .plan-category-card{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:8px!important;text-align:left!important;padding:14px!important;margin:0!important;min-width:0!important;min-height:125px!important;background:#fff!important;border:1px solid #e2e8e5!important;border-radius:14px!important}
+#plan #catList .plan-category-top{display:flex!important;align-items:center!important;gap:7px!important;min-width:0!important}
+#plan #catList .plan-category-icon{background:transparent!important;flex:0 0 25px!important;width:25px!important;height:25px!important}
+#plan #catList .plan-category-name{flex:1!important;min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;font-size:12px!important;font-weight:650!important}
+#plan #catList .plan-category-chevron{font-size:16px!important;color:#8b9990!important}
+#plan #catList .plan-budget-label{font-size:10px!important;color:#69776e!important}
+#plan #catList .plan-budget-amount{font-size:clamp(14px,3.6vw,19px)!important;font-weight:750!important;color:#172b25!important;overflow-wrap:anywhere!important}
+#plan #catList .plan-budget-edit{font-size:9px!important;color:#008c68!important;margin-top:auto!important}
+#transactions .tx-income-details{margin-top:8px!important;border-top:1px solid #e7ece9!important}
+#transactions .tx-income-details>summary{display:flex;align-items:center;justify-content:space-between;list-style:none;cursor:pointer;padding:12px 1px 3px;color:#117f60;font-size:11px;font-weight:650}
+#transactions .tx-income-details>summary::-webkit-details-marker{display:none}
+#transactions .tx-income-details[open]>summary span{transform:rotate(180deg)}
+#transactions .tx-income-details .tx-income-breakdown{margin-top:10px!important}
+@media(max-width:390px){#plan #catList{gap:8px!important}#plan #catList .plan-category-card{padding:11px!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1347,7 +1362,7 @@ header .brand-lockup .planora-ch2{flex:none}
 <h2 id="splitWizardTitle">Periksa tagihanmu</h2><p id="splitWizardSub"></p><div id="splitWizardBody"></div><div class="split-wizard-actions"><button id="splitWizardBack" type="button" onclick="splitWizardBack()">Kembali</button><button id="splitWizardNext" type="button" onclick="splitWizardNext()">Simpan & Lanjut →</button></div>
 </div></div>
 <div id="splitExitModal" class="split-exit-modal" hidden role="dialog" aria-modal="true" aria-labelledby="splitExitTitle"><div class="split-exit-card"><div class="split-exit-symbol">🧾</div><h2 id="splitExitTitle">Batalkan Split Bill?</h2><p>Split Bill yang sedang kamu kerjakan akan dihapus jika kamu keluar. Mau lanjut mengerjakannya?</p><div class="split-exit-actions"><button type="button" onclick="splitDiscardAndExit()">Hapus Split Bill</button><button type="button" onclick="splitKeepWorking()">Lanjutkan Split Bill</button></div></div></div>
-<main id="transactions" class="transactions-redesign"><div class="eyebrow">YOUR FINANCIAL ACTIVITY</div><div class="tx-hero"><div><h1 class="title">Transaction</h1><p class="sub">Kelola pemasukan dan pengeluaran di sini.</p></div><div class="period-boxes" id="txBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="txMonthBtn" onclick="openPeriodBox('tx','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="txYearBtn" onclick="openPeriodBox('tx','year')">Tahun</button></div></div></div><div class="card tx-income-summary"><div class="tx-income-summary-head"><div><b>Income Summary</b><div class="sub">Rincian pemasukan berdasarkan sumber</div></div><div class="tx-income-total"><span>Total pemasukan</span><strong id="txIncomeSummary">Rp0</strong></div></div><div id="txIncomeBreakdown" class="tx-income-breakdown"></div></div><div class="card tx-spending-card"><div class="tx-chart-head"><div><h2>Where My Money Goes</h2><div class="sub">Persentase pengeluaran per kategori</div></div><input id="txChartMonth" type="month" onchange="syncTxMonth(this.value)" aria-label="Pilih bulan pengeluaran" class="period-native-hidden"></div><div id="txCategoryChart"></div></div><div class="tx-history-title"><h2>Riwayat Pengeluaran</h2><div class="sub">Detail pengeluaran berdasarkan kategori</div></div><div class="card tx-filter tx-filter-redesign"><input id="txSearch" aria-label="Cari transaksi" placeholder="⌕  Cari deskripsi, kategori, atau akun..." oninput="renderTx()"><select id="txSort" onchange="renderTx()" aria-label="Urutan transaksi"><option value="newest">Terbaru</option><option value="oldest">Terlama</option><option value="largest">Terbesar</option></select></div><div id="txList"></div><button type="button" class="tx-floating-add" onclick="openAdd()" aria-label="Tambah transaksi" title="Tambah transaksi">+</button></main>
+<main id="transactions" class="transactions-redesign"><div class="eyebrow">YOUR FINANCIAL ACTIVITY</div><div class="tx-hero"><div><h1 class="title">Transaction</h1><p class="sub">Kelola pemasukan dan pengeluaran di sini.</p></div><div class="period-boxes" id="txBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="txMonthBtn" onclick="openPeriodBox('tx','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="txYearBtn" onclick="openPeriodBox('tx','year')">Tahun</button></div></div></div><div class="card tx-income-summary"><div class="tx-income-summary-head"><div><b>Income Summary</b><div class="sub">Total pemasukan bulan ini</div></div><div class="tx-income-total"><span>Total pemasukan</span><strong id="txIncomeSummary">Rp0</strong></div></div><details class="tx-income-details"><summary>Lihat rincian pemasukan <span aria-hidden="true">⌄</span></summary><div id="txIncomeBreakdown" class="tx-income-breakdown"></div></details></div><div class="card tx-spending-card"><div class="tx-chart-head"><div><h2>Where My Money Goes</h2><div class="sub">Persentase pengeluaran per kategori</div></div><input id="txChartMonth" type="month" onchange="syncTxMonth(this.value)" aria-label="Pilih bulan pengeluaran" class="period-native-hidden"></div><div id="txCategoryChart"></div></div><div class="tx-history-title"><h2>Riwayat Pengeluaran</h2><div class="sub">Detail pengeluaran berdasarkan kategori</div></div><div class="card tx-filter tx-filter-redesign"><input id="txSearch" aria-label="Cari transaksi" placeholder="⌕  Cari deskripsi, kategori, atau akun..." oninput="renderTx()"><select id="txSort" onchange="renderTx()" aria-label="Urutan transaksi"><option value="newest">Terbaru</option><option value="oldest">Terlama</option><option value="largest">Terbesar</option></select></div><div id="txList"></div><button type="button" class="tx-floating-add" onclick="openAdd()" aria-label="Tambah transaksi" title="Tambah transaksi">+</button></main>
 
 <main id="wallets" class="wallets-redesign"><div class="eyebrow">YOUR MONEY</div><div class="wallets-top"><div><h1 class="title">Account</h1><p class="sub">Pantau saldo rekening dan dompetmu di satu tempat.</p></div><button class="pill" onclick="openWalletModal()" aria-label="Tambah akun" title="Tambah akun">＋ <span class="wallet-add-label">Tambah Akun</span></button></div><div id="walletSummary"></div><div class="wallet-transfer-heading"><div><h2>Transfer Antar Akun</h2><div class="sub">Pindahkan saldo tanpa mengubah total uangmu.</div></div><button class="pill" onclick="openTransferModal()">↗ Transfer</button></div><div id="walletTransferHistory"></div></main>
 
@@ -1360,7 +1375,7 @@ header .brand-lockup .planora-ch2{flex:none}
 <section id="planBudget" class="plan-tab-panel" role="tabpanel" aria-labelledby="planTabBudget">
 <div class="section-head"><h2 data-i18n="budget">Budget</h2><span class="sub">bulan berjalan</span></div>
 <div class="card"><label>Batas budget bulanan</label><input id="monthlyBudget" type="number" inputmode="numeric" placeholder="0"><button class="btn primary wide" style="margin-top:12px" onclick="saveMonthlyBudget()">Simpan budget</button></div>
-<div class="section-head"><div><h2>Budget per kategori</h2><div class="sub">Terpakai dihitung langsung dari riwayat transaksi bulan berjalan.</div></div><button class="pill" onclick="openCat()">+ Kategori</button></div>
+<div class="section-head"><div><h2>Budget per kategori</h2><div class="sub">Atur batas pengeluaran tiap kategori.</div></div><button class="pill" onclick="openCat()">+ Kategori</button></div>
 <div class="card summary"><div><small>Monthly Budget</small><b id="sumBudget">Rp0</b></div><div><small>Allocated</small><b id="sumAllocated">Rp0</b></div><div><small>Unallocated</small><b id="sumUnallocated">Rp0</b></div></div><div id="catList"></div>
 </section>
 <section id="planBills" class="plan-tab-panel" role="tabpanel" aria-labelledby="planTabBills" hidden>
@@ -1923,17 +1938,11 @@ function renderBudget(){
  sumBudget.textContent=rp(data.monthlyBudget);sumAllocated.textContent=rp(allocated);
  const unallocated=data.monthlyBudget-allocated;
  sumUnallocated.textContent=(unallocated<0?'-':'')+rp(Math.abs(unallocated));sumUnallocated.classList.toggle('over',unallocated<0);
- const tx=monthTx().filter(t=>t.type==='expense');
  catList.innerHTML=Object.entries(data.categoryBudgets).map(([category,rawBudget])=>{
   const budget=Number(rawBudget)||0;
-  const matches=tx.filter(t=>String(t.category||'').trim().toLowerCase()===category.trim().toLowerCase());
-  const spent=matches.reduce((sum,t)=>sum+Number(t.amount||0),0);
-  const percent=budget>0?Math.round(spent/budget*100):0;
-  const left=budget-spent;
   const [icon,color]=categoryVisual(category);
-  const status=budget>0?(left<0?'Melebihi budget':percent===100?'Budget habis':'Sisa '+rp(left)):'Belum ada batas budget';
-  return '<button type="button" class="card plan-category-card" data-category="'+esc(category)+'" onclick="openCat(this.dataset.category)"><div class="plan-category-top"><span class="plan-category-icon" style="color:'+color+';background:'+color+'19">'+categoryIconSvg(icon)+'</span><span class="plan-category-name">'+esc(category)+'</span><span class="plan-category-chevron">›</span></div><div class="plan-category-amount"><span>'+rp(spent)+' <small>/ '+rp(budget)+'</small></span><span>'+percent+'%</span></div><div class="plan-category-progress"><i style="width:'+Math.max(0,Math.min(100,percent))+'%;background:'+color+'"></i></div><div class="plan-category-bottom"><span>'+matches.length+' transaksi</span><span class="'+(left<0?'plan-category-over':'')+'">'+status+'</span></div></button>'
- }).join('')||'<div class="card empty"><span class="sub">Belum ada alokasi kategori. Ketuk + Kategori untuk mulai.</span></div>'
+  return '<button type="button" class="card plan-category-card" data-category="'+esc(category)+'" onclick="openCat(this.dataset.category)"><div class="plan-category-top"><span class="plan-category-icon" style="color:'+color+'">'+categoryIconSvg(icon)+'</span><span class="plan-category-name">'+esc(category)+'</span><span class="plan-category-chevron">›</span></div><div class="plan-budget-label">Batas anggaran</div><strong class="plan-budget-amount">'+rp(budget)+'</strong><div class="plan-budget-edit">Ketuk untuk mengubah batas ↗</div></button>'
+ }).join('')||'<div class="card empty"><span class="sub">Belum ada alokasi kategori. Ketuk + Kategori untuk mulai.</span></div>';
 }
 function openCat(c=''){catOld.value=c;catName.innerHTML=expenseCats.map(x=>`<option ${x===c?'selected':''}>${x}</option>`).join('');catName.disabled=!!c;catAmount.value=c?data.categoryBudgets[c]:'';catDelete.classList.toggle('hidden',!c);openM('catModal')}
 function saveCat(){let c=catName.value,n=Number(catAmount.value);if(n<0)return;data.categoryBudgets[c]=n;persist();closeM('catModal');toastMsg('Budget kategori tersimpan')}
@@ -2457,7 +2466,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=69').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=70').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
