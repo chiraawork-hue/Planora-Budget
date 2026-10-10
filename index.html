@@ -1155,6 +1155,7 @@ header .brand-lockup .planora-ch2{flex:none}
 #home #safeWaterCard>.safe-top,#home #safeWaterCard>.safe-note,#home #safeWaterCard>.safe-progress,#home #safeWaterCard>.safe-foot{z-index:2}
 #home #safeWaterCard .safe-water-fill{opacity:.86!important}
 #home #safeWaterCard .safe-top,#home #safeWaterCard .safe-note,#home #safeWaterCard .safe-foot{filter:drop-shadow(0 1px 1px rgba(255,255,255,.9))}
+#home #safeWaterCard .safe-progress{display:none!important}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1192,7 +1193,7 @@ header .brand-lockup .planora-ch2{flex:none}
  <div class="safe-water-fill" id="safeWaterFill" aria-hidden="true"><div class="safe-water-wave"></div></div>
  <div class="safe-top"><div><div class="safe-label" data-i18n="safe">AMAN DIBELANJAKAN</div><b id="safeToSpend">Rp0</b></div><div class="safe-leaf">⌁</div></div>
  <div class="safe-note" id="safeSpendNote">Sesuai sisa budget bulan ini</div>
- <div class="safe-progress"><i id="safeSpendBar"></i></div>
+ <div class="safe-progress" hidden aria-hidden="true"><i id="safeSpendBar"></i></div>
  <div class="safe-foot"><span id="safeSpent">Terpakai Rp0</span><span id="safeBudget">Budget Rp0</span></div>
 </div>
 <div class="home-clean-section"><span>OVERVIEW</span><button type="button" onclick="page('wallets')">Lihat akun →</button></div><div class="money-strip">
@@ -2331,7 +2332,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=63').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=64').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
