@@ -1336,6 +1336,17 @@ header .brand-lockup .planora-ch2{flex:none}
 #home .safe-bubbles i:nth-child(7){left:94%;width:4px;height:4px;animation-delay:-3.8s;animation-duration:3.7s}
 @keyframes planoraBubbleRise{0%{transform:translate3d(0,0,0) scale(.7);opacity:0}18%{opacity:.65}75%{opacity:.5}100%{transform:translate3d(11px,-145px,0) scale(1.15);opacity:0}}
 @media(prefers-reduced-motion:reduce){#home .safe-bubbles i{animation:none!important;opacity:.2!important}}
+
+/* V76: Home month/year controls match Wrapped; budget values regular */
+#home .home-period-selectors{display:flex!important;align-items:center!important;justify-content:flex-end!important;flex:none!important;gap:0!important;margin:0!important}
+#home .home-period-selectors .period-boxes{display:flex!important;gap:8px!important;align-items:center!important;margin:0!important}
+#home .home-period-selectors .period-box{padding:0!important;border:1px solid #e1e7e2!important;background:#fff!important;border-radius:10px!important;box-shadow:none!important;min-width:0!important}
+#home .home-period-selectors .period-box>span{display:block!important;font-size:8px!important;color:#7a857f!important;letter-spacing:.05em!important;margin:0 0 2px!important}
+#home .home-period-selectors .period-box button{font-size:11px!important;font-weight:600!important;line-height:1.2!important;border:0!important;background:transparent!important;text-decoration:none!important;padding:0!important;min-width:0!important}
+#home .home-period-selectors .period-box{padding:7px 9px!important}
+#home .home-period-field{display:none!important}
+#plan #catList .plan-budget-amount{font-weight:400!important;letter-spacing:0!important}
+@media(max-width:520px){#home .home-checkin-header{align-items:flex-start!important;gap:6px!important}#home .home-checkin-heading .eyebrow{font-size:19px!important}#home .home-checkin-sub{font-size:9px!important}#home .home-period-selectors .period-box{padding:5px 7px!important}#home .home-period-selectors .period-box button{font-size:10px!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1368,7 +1379,7 @@ header .brand-lockup .planora-ch2{flex:none}
 <circle cx="51" cy="20" r="4.2" fill="#C9AE83"/>
 </svg><div class="brand-wordmark"><div class="brand">Planora <span>Budget</span></div><div class="sub">money, moments & little things.</div></div></div><button class="iconbtn" onclick="page('settings')">⚙</button></header>
 
-<main id="home" class="active"><div class="home-checkin-header"><div class="home-checkin-heading"><div class="eyebrow">Your money, in harmony.</div><div class="home-checkin-sub">Keuanganmu, lebih tertata.</div></div><div class="home-period-selectors"><div class="period-boxes" id="homeBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="homeMonthBtn" onclick="openPeriodBox('home','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="homeYearBtn" onclick="openPeriodBox('home','year')">Tahun</button></div></div><label class="home-period-field"><span>BULAN</span><select id="homeMonthSelect" aria-label="Pilih bulan" onchange="setHomePeriodMonth(this.value)"></select></label><label class="home-period-field home-year-field"><span>TAHUN</span><select id="homeYearSelect" aria-label="Pilih tahun" onchange="setHomePeriodYear(this.value)"></select></label></div></div>
+<main id="home" class="active"><div class="home-checkin-header"><div class="home-checkin-heading"><div class="eyebrow">Sail with Planora.</div><div class="home-checkin-sub">Arahkan uangmu, nikmati perjalanannya.</div></div><div class="home-period-selectors"><div class="period-boxes" id="homeBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="homeMonthBtn" onclick="openPeriodBox('home','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="homeYearBtn" onclick="openPeriodBox('home','year')">Tahun</button></div></div><label class="home-period-field"><span>BULAN</span><select id="homeMonthSelect" aria-label="Pilih bulan" onchange="setHomePeriodMonth(this.value)"></select></label><label class="home-period-field home-year-field"><span>TAHUN</span><select id="homeYearSelect" aria-label="Pilih tahun" onchange="setHomePeriodYear(this.value)"></select></label></div></div>
 <div class="safe-card" id="safeWaterCard">
  <div class="safe-water-fill" id="safeWaterFill" aria-hidden="true"><div class="safe-water-wave"></div><div class="safe-bubbles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="safe-little-boat"><svg viewBox="0 0 64 52" aria-hidden="true"><path d="M32 3v27" stroke="#334155" stroke-width="2.8" stroke-linecap="round"/><path d="M29 7 9 29h20Z" fill="#fffdf5" stroke="#d8e4eb" stroke-width="1.2"/><path d="m35 10 15 19H35Z" fill="#ffdc82" stroke="#e9b54c" stroke-width="1.2"/><path d="M5 32h54l-9 13H16Z" fill="#b85d40"/><path d="M13 36h39" stroke="#f9d1ad" stroke-width="2" stroke-linecap="round"/></svg></div></div>
  <div class="safe-top"><div><div class="safe-label" data-i18n="safe">AMAN DIBELANJAKAN</div><b id="safeToSpend">Rp0</b></div><div class="safe-leaf">⌁</div></div>
@@ -2506,7 +2517,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=75').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=76').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
