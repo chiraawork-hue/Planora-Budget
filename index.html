@@ -1455,6 +1455,10 @@ header .brand-lockup .planora-ch2{flex:none}
  #planoraSplash .splash-wordmark strong{font-size:22px!important}
  #planoraSplash .splash-wordmark span{font-size:15px!important}
 }
+
+/* V88 — unified approved CH branding in app header */
+.brand-lockup .planora-header-logo{display:block;width:35px;height:35px;flex:0 0 35px;object-fit:contain;border-radius:9px}
+@media(max-width:430px){.brand-lockup{min-width:0;gap:8px}.brand-wordmark{min-width:0}.brand-lockup .planora-header-logo{width:31px;height:31px;flex-basis:31px}.brand-wordmark .brand{font-size:clamp(14px,4vw,17px);white-space:nowrap}.brand-wordmark .sub{font-size:9px}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1481,11 +1485,7 @@ header .brand-lockup .planora-ch2{flex:none}
 <div id="planoraDeleteConfirm" class="planora-confirm-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="planoraConfirmTitle"><div class="planora-confirm-card"><div class="planora-confirm-symbol">×</div><h2 id="planoraConfirmTitle">Hapus transaksi ini?</h2><p id="planoraConfirmDescription">Transaksi akan dihapus dari catatan dan saldo serta ringkasan keuangan akan diperbarui.</p><div class="planora-confirm-actions"><button type="button" onclick="closePlanoraDeleteConfirm()">Batal</button><button type="button" class="confirm-danger" onclick="approvePlanoraDeleteConfirm()">Ya, hapus</button></div></div></div>
 <div id="planoraSplash" role="status" aria-label="Memuat Planora Budget"><div class="splash-lockup"><div class="splash-mark"><img src="./planora-budget-ch-approved.webp" alt="CH" onerror="this.onerror=null;this.src='./icon.svg'"></div><div class="splash-wordmark" aria-label="Planora Budget"><strong>Planora</strong><span>Budget</span></div></div></div>
 <div class="app">
-<header><div class="brand-lockup"><svg class="planora-ch2" viewBox="0 0 64 64" aria-label="Planora">
-<path d="M42 12C24 6 10 17 10 32s13 25 30 20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
-<path d="M29 18v29M29 33c7-7 15-9 21-4v18" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
-<circle cx="51" cy="20" r="4.2" fill="#C9AE83"/>
-</svg><div class="brand-wordmark"><div class="brand">Planora <span>Budget</span></div><div class="sub">money, moments & little things.</div></div></div><button class="iconbtn" onclick="page('settings')">⚙</button></header>
+<header><div class="brand-lockup"><img class="planora-header-logo" src="./planora-budget-ch-approved.webp" alt="Logo CH Planora" onerror="this.onerror=null;this.src='./icon.svg'"><div class="brand-wordmark"><div class="brand">Planora <span>Budget</span></div><div class="sub">money, moments & little things.</div></div></div><button class="iconbtn" onclick="page('settings')">⚙</button></header>
 
 <main id="home" class="active"><div class="home-checkin-header"><div class="home-checkin-heading"><div class="eyebrow">Sail with Planora.</div><div class="home-checkin-sub">Arahkan uangmu, nikmati perjalanannya.</div></div><div class="home-period-selectors"><div class="period-boxes" id="homeBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="homeMonthBtn" onclick="openPeriodBox('home','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="homeYearBtn" onclick="openPeriodBox('home','year')">Tahun</button></div></div><label class="home-period-field"><span>BULAN</span><select id="homeMonthSelect" aria-label="Pilih bulan" onchange="setHomePeriodMonth(this.value)"></select></label><label class="home-period-field home-year-field"><span>TAHUN</span><select id="homeYearSelect" aria-label="Pilih tahun" onchange="setHomePeriodYear(this.value)"></select></label></div></div>
 <div class="safe-card" id="safeWaterCard">
