@@ -1361,6 +1361,16 @@ header .brand-lockup .planora-ch2{flex:none}
 #transactions .tx-hero{padding-top:0!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important}
 #transactions .tx-hero>.period-boxes{position:static!important;margin-left:auto!important;flex-shrink:0!important}
 @media(max-width:520px){#home .home-checkin-header{align-items:center!important}#home .home-period-selectors{align-self:center!important}#home .home-period-selectors .period-boxes{gap:5px!important}#home .home-period-selectors .period-box{padding:3px 4px!important}#home .home-period-selectors .period-box button{font-size:10px!important}}
+
+/* V79: align period controls with first title line, not title+subtitle group */
+#home .home-checkin-header{align-items:flex-start!important}
+#home .home-period-selectors{align-self:flex-start!important;margin-top:0!important;padding-top:0!important}
+#home .home-checkin-heading{margin-top:0!important;padding-top:0!important}
+#home .home-checkin-heading .eyebrow{margin-top:0!important}
+#home .home-period-selectors .period-boxes{height:24px!important;align-items:center!important}
+#home .home-period-selectors .period-box{height:24px!important;display:flex!important;align-items:center!important;padding:0 4px!important}
+#home .home-period-selectors .period-box button{line-height:20px!important}
+@media(max-width:520px){#home .home-checkin-header{align-items:flex-start!important}#home .home-period-selectors{align-self:flex-start!important;margin-top:0!important}#home .home-period-selectors .period-box{height:23px!important;padding:0 3px!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -2531,7 +2541,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=78').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=79').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
