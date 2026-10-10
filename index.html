@@ -1296,6 +1296,16 @@ header .brand-lockup .planora-ch2{flex:none}
 #transactions .tx-income-details[open]>summary span{transform:rotate(180deg)}
 #transactions .tx-income-details .tx-income-breakdown{margin-top:10px!important}
 @media(max-width:390px){#plan #catList{gap:8px!important}#plan #catList .plan-category-card{padding:11px!important}}
+
+/* V71: Home typography consistent with Wrapped */
+#home{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif!important}
+#home .home-checkin-heading .eyebrow{font-family:inherit!important;font-size:clamp(20px,4.7vw,24px)!important;font-weight:800!important;letter-spacing:-.035em!important;line-height:1.2!important;color:#171b19!important}
+#home .home-checkin-sub{font-family:inherit!important;font-size:11px!important;line-height:1.45!important;font-weight:400!important;color:#737c78!important}
+#home .safe-label,#home .safe-note,#home .safe-foot,#home .home-clean-section,#home .home-actions-line,#home .home-moment-action,#home .split-home-entry,#home .money-card,#home .moment-copy{font-family:inherit!important}
+#home #safeToSpend,#home .money-card b,#home .money-card.dark b{font-family:inherit!important;font-weight:750!important;letter-spacing:-.035em!important}
+#home .home-clean-section>span{font-size:10px!important;font-weight:750!important;letter-spacing:.06em!important}
+#home .home-moment-action b,#home .split-home-entry strong{font-weight:700!important}
+@media(max-width:520px){#home .home-checkin-heading .eyebrow{font-size:20px!important}#home .home-checkin-sub{font-size:10px!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -2466,7 +2476,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=70').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=71').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
