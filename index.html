@@ -1156,6 +1156,13 @@ header .brand-lockup .planora-ch2{flex:none}
 #home #safeWaterCard .safe-water-fill{opacity:.86!important}
 #home #safeWaterCard .safe-top,#home #safeWaterCard .safe-note,#home #safeWaterCard .safe-foot{filter:drop-shadow(0 1px 1px rgba(255,255,255,.9))}
 #home #safeWaterCard .safe-progress{display:none!important}
+/* V65 — Home matches Account's native Inter/system typography */
+#home,#home button,#home input,#home select{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif!important}
+#home .home-checkin-heading .eyebrow,#home #safeToSpend,#home .money-card b,#home .money-card.dark b{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif!important}
+#home .home-checkin-heading .eyebrow{font-weight:700!important;letter-spacing:-.025em!important}
+#home #safeToSpend{font-weight:750!important;letter-spacing:-.035em!important}
+#home .money-card b,#home .money-card.dark b{font-weight:700!important;letter-spacing:-.025em!important}
+#home .safe-label,#home .money-card small,#home .money-card.dark small,#home .home-clean-section>span{letter-spacing:0!important;font-weight:500!important}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -2332,7 +2339,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=64').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=65').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
