@@ -1347,6 +1347,20 @@ header .brand-lockup .planora-ch2{flex:none}
 #home .home-period-field{display:none!important}
 #plan #catList .plan-budget-amount{font-weight:400!important;letter-spacing:0!important}
 @media(max-width:520px){#home .home-checkin-header{align-items:flex-start!important;gap:6px!important}#home .home-checkin-heading .eyebrow{font-size:19px!important}#home .home-checkin-sub{font-size:9px!important}#home .home-period-selectors .period-box{padding:5px 7px!important}#home .home-period-selectors .period-box button{font-size:10px!important}}
+
+/* V78: month/year selectors align with titles; remove redundant labels */
+#home .home-checkin-header{align-items:center!important}
+#home .home-period-selectors{align-self:center!important}
+#home .home-period-selectors .period-boxes,#reports .wrapped-head .period-boxes,#transactions .tx-hero>.period-boxes{align-items:center!important}
+#home .home-period-selectors .period-box>span,#reports .wrapped-head .period-box>span,#transactions .tx-hero .period-box>span{display:none!important}
+#home .home-period-selectors .period-box{padding:4px 6px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;border-bottom:1px solid #aab8b0!important}
+#home .home-period-selectors .period-box button{font-size:11px!important;font-weight:600!important;padding:0!important}
+#reports .wrapped-head{justify-content:space-between!important}
+#reports .wrapped-head .period-boxes{margin-left:auto!important}
+#reports .wrapped-head .period-box{padding:0!important}
+#transactions .tx-hero{padding-top:0!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important}
+#transactions .tx-hero>.period-boxes{position:static!important;margin-left:auto!important;flex-shrink:0!important}
+@media(max-width:520px){#home .home-checkin-header{align-items:center!important}#home .home-period-selectors{align-self:center!important}#home .home-period-selectors .period-boxes{gap:5px!important}#home .home-period-selectors .period-box{padding:3px 4px!important}#home .home-period-selectors .period-box button{font-size:10px!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -2517,7 +2531,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=77').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=78').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
