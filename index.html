@@ -863,6 +863,15 @@ header .brand-lockup .planora-ch2{flex:none}
 
 #planoraSplash .splash-wordmark{font:800 clamp(20px,4vw,30px)/1.2 Inter,system-ui,sans-serif;color:#17533d}
 #planoraSplash .splash-mark{flex-basis:43%!important;width:43%!important}#planoraSplash .splash-wordmark{margin-left:-3%!important}#planoraSplash .splash-lockup{width:min(90vw,610px)!important}
+
+/* Approved high-resolution CH + wordmark loading composition */
+#planoraSplash .splash-lockup{width:min(88vw,660px)!important;max-width:660px!important;gap:0!important;overflow:visible!important}
+#planoraSplash .splash-mark{flex:0 0 42%!important;width:42%!important;min-width:0!important}
+#planoraSplash .splash-wordmark{flex:1 1 58%!important;width:58%!important;min-width:0!important;margin-left:-2%!important}
+#planoraSplash .splash-mark img,#planoraSplash .splash-wordmark img{display:block!important;width:100%!important;max-width:100%!important;height:auto!important;object-fit:contain!important;image-rendering:auto!important}
+#planoraSplash .splash-mark{animation:pbMarkIn .65s ease-out both!important}
+#planoraSplash .splash-wordmark{animation:pbTypeOut .95s cubic-bezier(.22,1,.36,1) .3s both!important}
+@media(max-width:520px){#planoraSplash .splash-lockup{width:94vw!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1798,8 +1807,8 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=38').then(reg=>reg.update()).catch(()=>{});
-setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1450);
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=39').then(reg=>reg.update()).catch(()=>{});
+setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
 (async function(){
