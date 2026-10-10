@@ -839,7 +839,7 @@ function applyLanguage(){
  document.documentElement.lang=lang;languageSelect.value=lang;
  document.querySelectorAll('[data-i18n]').forEach(el=>{let k=el.dataset.i18n;if(I18N[lang][k])el.textContent=I18N[lang][k]});
  const labels=document.querySelectorAll('.nav-item span:last-child');
- const n=lang==='id'?['Home','Moments','Plan','Wrapped']:['Home','Moments','Plan','Wrapped'];
+ const n=['Home','Budget','Transaction','Account','Growth','Wrapped'];
  labels.forEach((x,i)=>x.textContent=n[i]||x.textContent)
 }
 function setLanguage(v){lang=v;localStorage.setItem('planora_language',lang);applyLanguage();renderPeriodPicker();renderWrappedPicker();render();toastMsg(lang==='id'?'Bahasa diubah':'Language changed')}
@@ -1485,7 +1485,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=26').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=27').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1100);
 </script>
 <script>
