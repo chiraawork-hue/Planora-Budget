@@ -1736,14 +1736,7 @@ function openPeriodBox(prefix,kind){
  const popup=document.createElement('div');popup.id='periodBoxPopup';popup.className='period-box-popup period-box-popup-floating';popup.dataset.prefix=prefix;popup.dataset.kind=kind;
  const d=periodBoxDate(prefix),current=d.getFullYear();
  const names=lang==='en'?MONTHS_FULL_EN:MONTHS_FULL_ID;
- const values=kind==='month'?names.map((name,i)=>({label:name,value:i})):[];
- if(kind==='year'){
-  popup.classList.add('period-year-popup');
-  popup.innerHTML='<label class="period-year-label" for="periodYearInput">'+(lang==='en'?'Enter a year':'Masukkan tahun')+'</label><form id="periodYearForm" class="period-year-form"><input id="periodYearInput" type="number" inputmode="numeric" pattern="[0-9]*" min="1" max="9999" step="1" required value="'+current+'" aria-label="'+(lang==='en'?'Year':'Tahun')+'"><button type="submit">'+(lang==='en'?'Apply':'Pilih')+'</button></form>';
-  popup.querySelector('form').addEventListener('submit',e=>{e.preventDefault();const input=popup.querySelector('input');const year=Number(input.value);if(!Number.isInteger(year)||year<1||year>9999){input.setCustomValidity(lang==='en'?'Enter a valid year':'Masukkan tahun yang valid');input.reportValidity();return}input.setCustomValidity('');choosePeriodBox(prefix,'year',year);closePeriodBox()});
- }else{
-  popup.innerHTML=values.map(o=>'<button type="button" class="'+(d.getMonth()===o.value?'chosen':'')+'" data-value="'+o.value+'">'+o.label+'</button>').join('');
- }
+ const values=kind==='month'?names.map((name,i)=>({label:name,value:i})):Array.from({length:101},(_,i)=>({label:String(current-50+i),value:current-50+i}));
  popup.innerHTML=values.map(o=>'<button type="button" class="'+((kind==='month'?d.getMonth():current)===o.value?'chosen':'')+'" data-value="'+o.value+'">'+o.label+'</button>').join('');
  popup.addEventListener('click',e=>{const btn=e.target.closest('button[data-value]');if(!btn)return;choosePeriodBox(prefix,kind,Number(btn.dataset.value));closePeriodBox()});
  document.body.appendChild(popup);positionPeriodBox();
