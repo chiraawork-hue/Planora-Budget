@@ -1700,6 +1700,13 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 .tx-moment-hint[hidden]{display:none!important}
 .tx-hint-close{position:absolute;top:7px;right:8px;display:grid;place-items:center;width:27px;height:27px;border:0;border-radius:8px;background:transparent;color:#527262;font-size:21px;line-height:1;cursor:pointer}
 .tx-hint-close:hover{background:#e2eee5}
+
+/* V97: saved monthly budget switches to compact read-only display */
+.monthly-budget-read-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;font-size:12px;font-weight:750;color:#59675f}
+.monthly-budget-edit{border:1px solid #dce4de;background:white;color:#173c2b;border-radius:10px;padding:8px 13px;font:inherit;font-weight:750;cursor:pointer}
+#monthlyBudgetSaved{display:block;font-size:24px;line-height:1.25;color:#17271e;margin-bottom:5px}
+.monthly-budget-cancel{display:block;width:100%;border:0;background:transparent;color:#62766a;padding:12px;cursor:pointer;font-weight:700}
+#monthlyBudgetForm[hidden],#monthlyBudgetRead[hidden],#monthlyBudgetCancel[hidden]{display:none!important}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1788,7 +1795,7 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 <div class="plan-tabs" role="tablist" aria-label="Menu perencanaan keuangan"><button type="button" class="plan-tab active" role="tab" aria-selected="true" aria-controls="planBudget" id="planTabBudget" onclick="selectPlanTab('budget')">▤ Budget</button><button type="button" class="plan-tab" role="tab" aria-selected="false" aria-controls="planBills" id="planTabBills" onclick="selectPlanTab('bills')">▧ Tagihan</button></div>
 <section id="planBudget" class="plan-tab-panel" role="tabpanel" aria-labelledby="planTabBudget">
 <div class="section-head"><h2 data-i18n="budget">Budget</h2><span class="sub">bulan berjalan</span></div>
-<div class="card"><label>Batas budget bulanan</label><input id="monthlyBudget" type="number" inputmode="numeric" placeholder="0"><button class="btn primary wide" style="margin-top:12px" onclick="saveMonthlyBudget()">Simpan budget</button></div>
+<div class="card monthly-budget-card"><div id="monthlyBudgetRead" hidden><div class="monthly-budget-read-head"><span>Batas budget bulanan</span><button type="button" class="monthly-budget-edit" onclick="editMonthlyBudget()">✎ Edit</button></div><b id="monthlyBudgetSaved">Rp0</b><div class="sub">Budget bulanan tersimpan</div></div><div id="monthlyBudgetForm"><label for="monthlyBudget">Batas budget bulanan</label><input id="monthlyBudget" type="number" inputmode="numeric" placeholder="0"><button class="btn primary wide" style="margin-top:12px" onclick="saveMonthlyBudget()">Save budget</button><button id="monthlyBudgetCancel" type="button" class="monthly-budget-cancel" onclick="cancelMonthlyBudgetEdit()" hidden>Batal</button></div></div>
 <div class="section-head"><div><h2>Budget per kategori</h2><div class="sub">Atur batas pengeluaran tiap kategori.</div></div><button class="pill" onclick="openCat()">+ Kategori</button></div>
 <div class="card summary"><div><small>Monthly Budget</small><b id="sumBudget">Rp0</b></div><div><small>Allocated</small><b id="sumAllocated">Rp0</b></div><div><small>Unallocated</small><b id="sumUnallocated">Rp0</b></div></div><div id="catList"></div>
 </section>
@@ -2291,7 +2298,7 @@ function render(){
  const waterFill=document.getElementById('safeWaterFill');if(waterFill)waterFill.style.height=usedPct+'%';
  const waterCard=document.getElementById('safeWaterCard');if(waterCard){waterCard.classList.toggle('safe-water-high',usedPct>=75);waterCard.classList.toggle('safe-water-full',usedPct>=100);waterCard.classList.toggle('sea-life-visible',budget>0&&expense/budget>=0.5);waterCard.classList.remove('safe-boat-sinking');waterCard.setAttribute('aria-label','Budget terpakai '+usedPct+' persen')}
  safeSpendNote.textContent=lang==='id'?(budget<=0?'Atur budget bulanan dulu':(expense>budget?'Budget bulan ini sudah terlewati':(safe===availableNow&&availableNow<budgetRemaining?'Dibatasi oleh uang yang benar-benar tersedia':'Sesuai sisa budget bulan ini'))):(budget<=0?'Set your monthly budget first':(expense>budget?'Monthly budget exceeded':(safe===availableNow&&availableNow<budgetRemaining?'Limited by your actual available money':'Based on your remaining monthly budget')));
- monthlyBudget.value=data.monthlyBudget||'';renderTx();renderWallets();renderBudget();renderGoals();renderBills();renderMoments();renderReports();
+ if(!monthlyBudgetForm.hidden)monthlyBudget.value=data.monthlyBudget||'';syncMonthlyBudgetView();renderTx();renderWallets();renderBudget();renderGoals();renderBills();renderMoments();renderReports();
 }
 function syncTxMonth(value){refreshPeriodBoxes();renderTx()}
 function renderTxCategoryChart(){
@@ -2365,7 +2372,7 @@ function editTx(id){let t=data.transactions.find(x=>x.id===id);if(!t)return;txId
 function changeTxType(type){txType.value=type;txHeading.textContent=type==='income'?'Pemasukan':'Pengeluaran';txNameLabel.textContent=type==='income'?'Nama Pemasukan':'Nama Pengeluaran';txName.placeholder=type==='income'?'Contoh: Gaji Oktober':'Contoh: Beli skincare';txCategory.innerHTML=(type==='expense'?expenseCats:incomeCats).map(c=>'<option>'+esc(c)+'</option>').join('')}
 function saveTx(){let amount=Number(txAmount.value),date=txDate.value;txType.value=txTypeSelect.value;if(amount<=0||!date)return toastMsg('Isi nominal dan tanggal');if(!txName.value.trim())return toastMsg('Isi nama transaksi terlebih dahulu');if(!txWallet.value||!data.wallets.some(w=>w.id===txWallet.value))return toastMsg('Tambahkan dan pilih sumber dana di menu Dana terlebih dahulu');let id=txId.value,prior=id?data.transactions.find(t=>t.id===id):null,obj={...(prior||{}),id:id||uid(),type:txType.value,amount,date,category:txCategory.value,name:txName.value.trim(),note:txNote.value.trim(),walletId:txWallet.value};if(id){let i=data.transactions.findIndex(x=>x.id===id);if(i>=0)data.transactions[i]=obj}else data.transactions.push(obj);persist();closeM('txModal');toastMsg('Transaksi tersimpan')}
 function deleteTx(){const id=txId.value;if(!id)return;confirmPlanoraTransactionDelete(id,true)}
-function saveMonthlyBudget(){let n=Number(monthlyBudget.value);if(n<0)return;data.monthlyBudget=n;persist();toastMsg('Budget tersimpan');if(n>0&&localStorage.getItem(PLANORA_GUIDE_KEY)==='active'&&(data.wallets||[]).some(w=>w.id!=='legacy')&&!Object.values(data.categoryBudgets||{}).some(v=>Number(v)>0)){renderPlanoraGuidedSetup();toastMsg('Lanjutkan dengan mengisi budget per kategori')}}
+function syncMonthlyBudgetView(){const saved=Number(data.monthlyBudget)>0;const editing=monthlyBudgetForm.dataset.editing==='true';monthlyBudgetRead.hidden=!saved||editing;monthlyBudgetForm.hidden=saved&&!editing;monthlyBudgetSaved.textContent=rp(Number(data.monthlyBudget)||0);monthlyBudgetCancel.hidden=!saved;}\nfunction editMonthlyBudget(){monthlyBudgetForm.dataset.editing='true';monthlyBudget.value=data.monthlyBudget||'';syncMonthlyBudgetView();monthlyBudget.focus()}\nfunction cancelMonthlyBudgetEdit(){monthlyBudgetForm.dataset.editing='false';monthlyBudget.value=data.monthlyBudget||'';syncMonthlyBudgetView()}\nfunction saveMonthlyBudget(){let n=Number(monthlyBudget.value);if(n<0)return;data.monthlyBudget=n;monthlyBudgetForm.dataset.editing='false';persist();syncMonthlyBudgetView();toastMsg('Budget tersimpan');if(n>0&&localStorage.getItem(PLANORA_GUIDE_KEY)==='active'&&(data.wallets||[]).some(w=>w.id!=='legacy')&&!Object.values(data.categoryBudgets||{}).some(v=>Number(v)>0)){renderPlanoraGuidedSetup();toastMsg('Lanjutkan dengan mengisi budget per kategori')}}
 function renderBudget(){
  const allocated=Object.values(data.categoryBudgets).reduce((sum,n)=>sum+Number(n||0),0);
  sumBudget.textContent=rp(data.monthlyBudget);sumAllocated.textContent=rp(allocated);
