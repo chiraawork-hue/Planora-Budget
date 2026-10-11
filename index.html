@@ -1564,6 +1564,34 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
  #home .planora-overview-main>b,
  #home .planora-overview-goals b{font-size:17px!important;font-weight:400!important}
 }
+
+/* V85 Home: lively editorial cards, without enlarging the financial figures */
+#home .planora-overview-card{position:relative!important;overflow:hidden!important;background:linear-gradient(120deg,#f1fbf5 0%,#ffffff 47%,#fff8eb 100%)!important;border:1px solid #d8eadf!important;border-radius:19px!important;padding:18px 20px!important;box-shadow:0 7px 23px rgba(31,83,56,.07)!important;gap:12px!important}
+#home .planora-overview-card:before{content:"";position:absolute;right:-35px;top:-60px;width:150px;height:150px;border:25px solid rgba(255,185,60,.10);border-radius:50%;pointer-events:none}
+#home .planora-overview-main,#home .planora-overview-goals{position:relative;z-index:1}
+#home .planora-overview-label{color:#24694a!important;font-weight:750!important}
+#home .planora-overview-symbol{display:grid!important;place-items:center!important;background:#d4f6df!important;width:29px!important;height:29px!important;border-radius:10px!important;color:#00a768!important;font-size:16px!important}
+#home .planora-overview-main>b,#home .planora-overview-goals b{font-size:17px!important;font-weight:400!important;color:#152e22!important}
+#home .planora-overview-goals{border-left:1px solid #dce9dc!important}
+#home .planora-overview-goals small{color:#97641b!important;font-weight:700!important}
+#home .planora-overview-goals button{background:#ffe9bc!important;color:#a66b00!important;border-radius:12px!important;transition:transform .18s ease!important}
+#home .planora-overview-goals button:hover{transform:translateX(3px)}
+#home .planora-quick-grid{gap:11px!important}
+#home .planora-quick-grid button{position:relative;overflow:hidden;min-height:83px!important;padding:12px 6px 10px!important;gap:8px!important;border-radius:16px!important;box-shadow:0 4px 12px rgba(31,56,42,.045)!important;transition:transform .18s ease,box-shadow .18s ease!important}
+#home .planora-quick-grid button:hover{transform:translateY(-3px);box-shadow:0 9px 20px rgba(31,56,42,.10)!important}
+#home .planora-quick-grid button:nth-child(1){background:linear-gradient(155deg,#e6fff0,#fff)!important;border-color:#b8eed1!important}
+#home .planora-quick-grid button:nth-child(2){background:linear-gradient(155deg,#f2e9ff,#fff)!important;border-color:#dfc8fc!important}
+#home .planora-quick-grid button:nth-child(3){background:linear-gradient(155deg,#fff1d7,#fff)!important;border-color:#ffe0a5!important}
+#home .planora-quick-grid button:nth-child(4){background:linear-gradient(155deg,#e4f2ff,#fff)!important;border-color:#c2e2ff!important}
+#home .pq-icon{width:35px!important;height:35px!important;border-radius:12px!important;font-size:21px!important}
+#home .planora-quick-grid button b{font-size:11px!important;color:#24382e!important}
+#home .home-clean-section{margin-top:17px!important}
+#home .home-clean-section>span{font-weight:850!important;letter-spacing:.09em!important}
+#home .home-memory-label{margin-top:23px!important}
+#home .home-moment-action{background:linear-gradient(100deg,#f1f9ff,#fff7f1)!important;border:1px solid #e5edf1!important;border-radius:15px!important;padding:13px 15px!important;margin-top:8px!important}
+#home .home-moment-action .moment-plus{background:#07865d!important;color:white!important;border:0!important}
+@media(max-width:520px){#home .planora-overview-card{padding:15px!important}#home .planora-overview-goals{border-left:0!important}#home .planora-quick-grid{gap:7px!important}#home .planora-quick-grid button{min-height:77px!important;padding:10px 3px!important}#home .planora-quick-grid button b{font-size:10px!important}}
+@media(prefers-reduced-motion:reduce){#home .planora-quick-grid button,#home .planora-overview-goals button{transition:none!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
