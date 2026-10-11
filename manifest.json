@@ -2,8 +2,8 @@
   "name": "Planora Budget",
   "short_name": "Planora Budget",
   "description": "Money, moments & little things.",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/Planora-Budget/",
+  "scope": "/Planora-Budget/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#087A5B",
@@ -38,5 +38,6 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ]
+  ],
+  "id": "/Planora-Budget/"
 }
