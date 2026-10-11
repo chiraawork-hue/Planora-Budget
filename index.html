@@ -1720,6 +1720,11 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 .monthly-budget-card #monthlyBudgetRead .monthly-budget-read-head{font-size:11px!important}
 .monthly-budget-card #monthlyBudgetRead .sub{font-size:10px!important}
 .monthly-budget-card .monthly-budget-edit{font-size:11px!important}
+
+/* V101: gentle sage tint for saved budget card */
+.monthly-budget-card:has(#monthlyBudgetRead:not([hidden])){background:linear-gradient(115deg,#eef7f0 0%,#f5faf6 65%,#ffffff 100%)!important;border:1px solid #cfe5d5!important;box-shadow:0 3px 12px rgba(35,102,65,.045)!important}
+.monthly-budget-card #monthlyBudgetSaved{color:#164b35!important}
+.monthly-budget-card .monthly-budget-edit{background:#ffffffd9!important;border-color:#cfe1d4!important}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
