@@ -1516,6 +1516,24 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 .planora-next-step{margin:14px 0 18px;padding:16px;border:1px solid #dcebe0;border-radius:18px;background:#f5fbf6;color:#203b2a;display:flex;align-items:center;gap:12px;box-shadow:0 3px 12px #164d2910}
 .planora-next-step[hidden]{display:none!important}.planora-next-step-copy{flex:1;min-width:0}.planora-next-step small{display:block;font-size:10px;font-weight:800;letter-spacing:.08em;color:#398060;margin-bottom:5px}.planora-next-step strong{display:block;font-size:14px;line-height:1.4}.planora-next-step p{font-size:12px;line-height:1.55;margin:5px 0 0;color:#607569}.planora-next-step button{border:0;background:#176b4c;color:#fff;border-radius:11px;padding:10px 12px;font-size:12px;font-weight:750;cursor:pointer;white-space:nowrap}.planora-next-step .guide-dismiss{background:transparent;color:#657b6c;padding:7px;font-size:19px;align-self:flex-start}@media(max-width:440px){.planora-next-step{flex-wrap:wrap}.planora-next-step .guide-action{margin-left:auto}}
 .tx-moment-hint{margin:0 0 14px;padding:12px 14px;border-radius:13px;background:#f3f8f4;border:1px solid #dcebe0;color:#375b46;font-size:12px;line-height:1.65}.tx-moment-hint strong{color:#1b6245}.tx-moment-link{display:inline-flex;align-items:center;margin:8px 0 0;padding:9px 12px;border:0;border-radius:10px;background:#176b4c;color:white;font-size:12px;font-weight:800;cursor:pointer}
+
+/* Home overview and quick actions refresh */
+#home .planora-overview-card{background:#f7faf8;border:1px solid #e3ebe6;border-radius:20px;padding:19px 20px 16px;box-shadow:0 4px 18px rgba(22,69,44,.035);margin-bottom:20px}
+#home .planora-overview-main{min-width:0}#home .planora-overview-label{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:650;color:#63786a}
+#home .planora-overview-symbol{font-size:21px;color:#16a36c}
+#home .planora-overview-main>b{display:block;color:#172c21;font-size:clamp(23px,4.5vw,34px);letter-spacing:-.045em;line-height:1.25;margin:5px 0;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+#home .planora-overview-main>small{font-size:11px;color:#76867c}
+#home .planora-overview-goals{border-top:1px solid #e0e9e2;margin-top:17px;padding-top:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+#home .planora-overview-goals span{display:flex;flex-direction:column;gap:4px}
+#home .planora-overview-goals small{color:#687b6f;font-size:11px}
+#home .planora-overview-goals b{font-size:clamp(17px,3vw,22px);letter-spacing:-.025em;color:#243b2c}
+#home .planora-overview-goals button{border:0;background:#e4f2e9;color:#14744b;border-radius:12px;padding:10px 13px;font-size:16px;font-weight:800;cursor:pointer}
+#home .planora-quick-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:9px 0 20px}
+#home .planora-quick-grid button{min-width:0;border:1px solid #e4ebe6;background:#fff;border-radius:15px;padding:14px 5px 12px;display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;box-shadow:0 2px 9px rgba(0,0,0,.025)}
+#home .planora-quick-grid button b{font-size:11px;color:#28382e;font-weight:750}
+#home .pq-icon{display:grid;place-items:center;width:37px;height:37px;border-radius:12px;font-size:22px;font-weight:750}
+#home .pq-green{background:#e1f9ed;color:#00a96d}#home .pq-purple{background:#f0e6ff;color:#8a4dd4}#home .pq-orange{background:#fff0db;color:#ef8a13}#home .pq-blue{background:#e3f1ff;color:#1985d7}
+@media(max-width:360px){#home .planora-quick-grid{gap:6px}#home .planora-quick-grid button b{font-size:10px}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1552,12 +1570,19 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
  <div class="safe-progress" hidden aria-hidden="true"><i id="safeSpendBar"></i></div>
  <div class="safe-foot"><span id="safeSpent" hidden aria-hidden="true"></span><span id="safeBudget">Budget Rp0</span></div>
 </div>
-<div class="home-clean-section"><span>OVERVIEW</span><button type="button" onclick="page('wallets')">Lihat akun →</button></div><div class="money-strip">
- <div class="money-card dark"><small data-i18n="available">Uang tersedia</small><b id="available">Rp0</b><div class="note" data-i18n="availableNote">saldo akun di luar alokasi Goals</div></div>
- <div class="money-card"><small data-i18n="saved">Tersimpan</small><b id="saved">Rp0</b><div class="note" data-i18n="savedNote">sedang disisihkan di goals</div></div>
+<div class="home-clean-section"><span>OVERVIEW</span><button type="button" onclick="page('wallets')">Lihat akun →</button></div>
+<div class="planora-overview-card">
+ <div class="planora-overview-main"><div class="planora-overview-label"><span>Uang tersedia</span><span class="planora-overview-symbol">◉</span></div><b id="available">Rp0</b><small>Saldo akun setelah alokasi Goals</small></div>
+ <div class="planora-overview-goals"><span><small>Tersimpan di Goals</small><b id="saved">Rp0</b></span><button type="button" onclick="page('growth');selectGrowthTab('goals')" aria-label="Lihat Goals">◎ →</button></div>
 </div>
-<div class="home-clean-section"><span>QUICK ACTIONS</span></div><div class="home-actions-line"><button onclick="openTransferModal()"><span aria-hidden="true">⇄</span> Transfer akun</button><button onclick="page('growth');selectGrowthTab('goals')"><span aria-hidden="true">⚑</span> Nabung Goals</button><button onclick="page('plan');selectPlanTab('bills')"><span aria-hidden="true">▣</span> Cek tagihan</button></div>
-<button type="button" class="split-home-entry" onclick="openSplitBill()"><span class="split-entry-icon" aria-hidden="true">↗</span><span><strong>Split Bill</strong><small>Bagi tagihan bareng teman dari struk atau input manual</small></span><span class="split-arrow">→</span></button><div class="home-clean-section home-memory-label"><span>YOUR MOMENTS</span></div><div class="home-moment-action"><div><b>Life lately</b><div class="sub">Simpan cerita kecilmu.</div></div><button class="moment-plus" onclick="openMoment()" aria-label="Tambah Moment">＋</button></div>
+<div class="home-clean-section"><span>QUICK ACTIONS</span></div>
+<div class="planora-quick-grid">
+ <button type="button" onclick="openTransferModal()"><span class="pq-icon pq-green">⇄</span><b>Transfer</b></button>
+ <button type="button" onclick="page('growth');selectGrowthTab('goals')"><span class="pq-icon pq-purple">⚑</span><b>Goals</b></button>
+ <button type="button" onclick="page('plan');selectPlanTab('bills')"><span class="pq-icon pq-orange">▣</span><b>Tagihan</b></button>
+ <button type="button" onclick="openSplitBill()"><span class="pq-icon pq-blue">↗</span><b>Split Bill</b></button>
+</div>
+<div class="home-clean-section home-memory-label"><span>YOUR MOMENTS</span></div><div class="home-moment-action"><div><b>Life lately</b><div class="sub">Simpan cerita kecilmu.</div></div><button class="moment-plus" onclick="openMoment()" aria-label="Tambah Moment">＋</button></div>
 <div id="homeMoments"></div>
 <div id="recent" class="hidden"></div><button type="button" class="home-floating-add" onclick="openAdd()" aria-label="Catat transaksi baru" title="Catat transaksi baru">+</button>
 </main>
