@@ -1741,6 +1741,15 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 
 /* V105: slightly larger saved monthly budget amount */
 .monthly-budget-card #monthlyBudgetSaved{font-size:19px!important}
+
+/* V106: compact side-by-side budget editing actions */
+.monthly-budget-card #monthlyBudgetForm{padding:0}
+.monthly-budget-card #monthlyBudgetForm input{max-width:100%;box-sizing:border-box}
+.monthly-budget-actions{display:flex;justify-content:flex-end;align-items:center;gap:9px;margin-top:10px}
+.monthly-budget-actions .monthly-budget-save{width:auto!important;min-width:90px;padding:9px 17px!important;border-radius:10px!important;font-size:12px!important;line-height:1.25!important;margin:0!important}
+.monthly-budget-actions .monthly-budget-cancel{display:inline-flex!important;align-items:center;justify-content:center;width:auto!important;min-width:70px;padding:9px 12px!important;border:1px solid #e0e4e3!important;border-radius:10px!important;background:#fff!important;color:#5d6b62!important;font-size:12px!important;line-height:1.25!important;margin:0!important}
+.monthly-budget-actions .monthly-budget-cancel[hidden]{display:none!important}
+.monthly-budget-card:has(#monthlyBudgetForm:not([hidden])){padding:15px 17px!important}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1829,7 +1838,7 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 <div class="plan-tabs" role="tablist" aria-label="Menu perencanaan keuangan"><button type="button" class="plan-tab active" role="tab" aria-selected="true" aria-controls="planBudget" id="planTabBudget" onclick="selectPlanTab('budget')">▤ Budget</button><button type="button" class="plan-tab" role="tab" aria-selected="false" aria-controls="planBills" id="planTabBills" onclick="selectPlanTab('bills')">▧ Tagihan</button></div>
 <section id="planBudget" class="plan-tab-panel" role="tabpanel" aria-labelledby="planTabBudget">
 <div class="section-head"><h2 data-i18n="budget">Budget</h2><span class="sub">bulan berjalan</span></div>
-<div class="card monthly-budget-card"><div id="monthlyBudgetRead" hidden><div class="monthly-budget-read-head"><span>Batas budget bulanan</span><button type="button" class="monthly-budget-edit" onclick="editMonthlyBudget()">✎ Edit</button></div><b id="monthlyBudgetSaved">Rp0</b><div class="sub">Budget bulanan tersimpan</div></div><div id="monthlyBudgetForm"><label for="monthlyBudget">Batas budget bulanan</label><input id="monthlyBudget" type="number" inputmode="numeric" placeholder="0"><button class="btn primary wide" style="margin-top:12px" onclick="saveMonthlyBudget()">Save budget</button><button id="monthlyBudgetCancel" type="button" class="monthly-budget-cancel" onclick="cancelMonthlyBudgetEdit()" hidden>Batal</button></div></div>
+<div class="card monthly-budget-card"><div id="monthlyBudgetRead" hidden><div class="monthly-budget-read-head"><span>Batas budget bulanan</span><button type="button" class="monthly-budget-edit" onclick="editMonthlyBudget()">✎ Edit</button></div><b id="monthlyBudgetSaved">Rp0</b><div class="sub">Budget bulanan tersimpan</div></div><div id="monthlyBudgetForm"><label for="monthlyBudget">Batas budget bulanan</label><input id="monthlyBudget" type="number" inputmode="numeric" placeholder="0"><div class="monthly-budget-actions"><button id="monthlyBudgetCancel" type="button" class="monthly-budget-cancel" onclick="cancelMonthlyBudgetEdit()" hidden>Batal</button><button class="btn primary monthly-budget-save" type="button" onclick="saveMonthlyBudget()">Save</button></div></div></div>
 <div class="section-head"><div><h2>Budget per kategori</h2><div class="sub">Atur batas pengeluaran tiap kategori.</div></div><button class="pill" onclick="openCat()">+ Kategori</button></div>
 <div class="card summary"><div><small>Monthly Budget</small><b id="sumBudget">Rp0</b></div><div><small>Allocated</small><b id="sumAllocated">Rp0</b></div><div><small>Unallocated</small><b id="sumUnallocated">Rp0</b></div></div><div id="catList"></div>
 </section>
