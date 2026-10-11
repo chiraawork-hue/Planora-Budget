@@ -1652,6 +1652,28 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 @media(prefers-reduced-motion:reduce){
  #home #safeWaterCard.safe-boat-sinking .safe-little-boat{animation:none!important;transform:translate(-50%,108px) rotate(48deg)!important}
 }
+
+/* V90: subtle underwater sea life passing behind the boat */
+#home #safeWaterCard .planora-sea-life{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
+#home #safeWaterCard .sea-creature{position:absolute;display:block;width:max-content;font-size:19px;line-height:1;opacity:.84;filter:drop-shadow(0 2px 2px rgba(0,61,106,.12));will-change:transform}
+#home #safeWaterCard .sea-fish-one{top:33%;left:0;animation:planoraFishAcross 16s linear infinite}
+#home #safeWaterCard .sea-fish-two{top:64%;left:0;font-size:15px;animation:planoraFishAcross 23s linear -9s infinite}
+#home #safeWaterCard .sea-fish-three{top:83%;left:0;font-size:15px;animation:planoraFishAcross 29s linear -17s infinite}
+#home #safeWaterCard .sea-jelly{top:47%;left:75%;font-size:20px;animation:planoraJellyDrift 9s ease-in-out infinite}
+#home #safeWaterCard .sea-turtle{top:72%;left:0;font-size:18px;animation:planoraFishAcross 37s linear -20s infinite}
+@keyframes planoraFishAcross{
+ 0%{transform:translate3d(-50px,0,0) scaleX(1)}
+ 25%{transform:translate3d(23vw,-5px,0) scaleX(1)}
+ 50%{transform:translate3d(46vw,3px,0) scaleX(1)}
+ 75%{transform:translate3d(69vw,-4px,0) scaleX(1)}
+ 100%{transform:translate3d(110vw,0,0) scaleX(1)}
+}
+@keyframes planoraJellyDrift{
+ 0%,100%{transform:translate(0,8px) rotate(-5deg)}
+ 50%{transform:translate(-25px,-12px) rotate(5deg)}
+}
+@media(max-width:520px){#home #safeWaterCard .sea-creature{font-size:15px}#home #safeWaterCard .sea-jelly{font-size:18px}#home #safeWaterCard .sea-turtle{font-size:16px}}
+@media(prefers-reduced-motion:reduce){#home #safeWaterCard .sea-creature{animation:none!important;will-change:auto}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1683,7 +1705,13 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 
 <main id="home" class="active"><div class="planora-next-step" id="planoraGuideHome" hidden></div><div class="home-checkin-header"><div class="home-checkin-heading"><div class="eyebrow">Sail with Planora.</div><div class="home-checkin-sub">Arahkan uangmu, nikmati perjalanannya.</div></div><div class="home-period-selectors"><div class="period-boxes" id="homeBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="homeMonthBtn" onclick="openPeriodBox('home','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="homeYearBtn" onclick="openPeriodBox('home','year')">Tahun</button></div></div><label class="home-period-field"><span>BULAN</span><select id="homeMonthSelect" aria-label="Pilih bulan" onchange="setHomePeriodMonth(this.value)"></select></label><label class="home-period-field home-year-field"><span>TAHUN</span><select id="homeYearSelect" aria-label="Pilih tahun" onchange="setHomePeriodYear(this.value)"></select></label></div></div>
 <div class="safe-card" id="safeWaterCard">
- <div class="safe-water-fill" id="safeWaterFill" aria-hidden="true"><div class="safe-water-wave"></div><div class="safe-bubbles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="safe-little-boat"><svg viewBox="0 0 64 52" aria-hidden="true"><path d="M32 3v27" stroke="#334155" stroke-width="2.8" stroke-linecap="round"/><path d="M29 7 9 29h20Z" fill="#fffdf5" stroke="#d8e4eb" stroke-width="1.2"/><path d="m35 10 15 19H35Z" fill="#ffdc82" stroke="#e9b54c" stroke-width="1.2"/><path d="M5 32h54l-9 13H16Z" fill="#b85d40"/><path d="M13 36h39" stroke="#f9d1ad" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+ <div class="safe-water-fill" id="safeWaterFill" aria-hidden="true"><div class="safe-water-wave"></div><div class="safe-bubbles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="planora-sea-life" aria-hidden="true">
+ <span class="sea-creature sea-fish sea-fish-one">🐠</span>
+ <span class="sea-creature sea-fish sea-fish-two">🐟</span>
+ <span class="sea-creature sea-jelly">🪼</span>
+ <span class="sea-creature sea-turtle">🐢</span>
+ <span class="sea-creature sea-fish sea-fish-three">🐡</span>
+ </div><div class="safe-little-boat"><svg viewBox="0 0 64 52" aria-hidden="true"><path d="M32 3v27" stroke="#334155" stroke-width="2.8" stroke-linecap="round"/><path d="M29 7 9 29h20Z" fill="#fffdf5" stroke="#d8e4eb" stroke-width="1.2"/><path d="m35 10 15 19H35Z" fill="#ffdc82" stroke="#e9b54c" stroke-width="1.2"/><path d="M5 32h54l-9 13H16Z" fill="#b85d40"/><path d="M13 36h39" stroke="#f9d1ad" stroke-width="2" stroke-linecap="round"/></svg></div></div>
  <div class="safe-top"><div><div class="safe-label" data-i18n="safe">AMAN DIBELANJAKAN</div><b id="safeToSpend">Rp0</b></div><div class="safe-leaf">⌁</div></div>
  <div class="safe-note" id="safeSpendNote" hidden aria-hidden="true"></div>
  <div class="safe-progress" hidden aria-hidden="true"><i id="safeSpendBar"></i></div>
