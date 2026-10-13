@@ -1813,6 +1813,8 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 #walletModal,#walletDetailModal,#transferModal,#deleteWalletConfirmModal{align-items:center;justify-content:center;padding:16px;box-sizing:border-box}#walletModal>.sheet,#walletDetailModal>.sheet,#transferModal>.sheet,#deleteWalletConfirmModal>.sheet{width:min(620px,100%);max-height:86dvh;box-sizing:border-box;border-radius:22px;background:#fff;box-shadow:0 20px 60px #121c2c35}@media(max-width:560px){#walletModal,#walletDetailModal,#transferModal,#deleteWalletConfirmModal{padding:12px}#walletModal>.sheet,#walletDetailModal>.sheet,#transferModal>.sheet,#deleteWalletConfirmModal>.sheet{max-height:85dvh;border-radius:19px;padding:16px}}
 
 .home-upcoming-head>span{display:inline-flex;align-items:center;gap:7px}.upcoming-heading-icon{width:17px;height:17px;flex:none}.upcoming-bill .upcoming-heading-icon{color:#ec7c23}.upcoming-goal .upcoming-heading-icon{color:#8d19f6}
+
+.tx-income-expand{display:block!important}.tx-income-expand>summary{display:flex;align-items:center;gap:9px;cursor:pointer;list-style:none}.tx-income-expand>summary::-webkit-details-marker{display:none}.tx-income-expand .tx-income-source-label{flex:1}.tx-income-chevron{font-size:18px;color:#657084;transition:transform .2s}.tx-income-expand[open] .tx-income-chevron{transform:rotate(180deg)}.tx-income-details{display:grid;gap:5px;padding:9px 0 0}.tx-income-entry{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;border:0;border-radius:10px;background:#f5f8ff;padding:10px;text-align:left;cursor:pointer;color:#1e293b}.tx-income-entry>span:first-child{flex:1;min-width:0;display:grid;gap:3px}.tx-income-entry b{font-size:12px;overflow-wrap:anywhere}.tx-income-entry small{font-size:10px;color:#64748b}.tx-income-entry strong{font-size:12px;white-space:nowrap}.tx-income-edit-mark{color:#6273a2;font-size:15px}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -2446,7 +2448,7 @@ function renderTxCategoryChart(){
  data.transactions.filter(t=>t.type==='income'&&String(t.date||'').startsWith(incomeMonth)).forEach(t=>{const key=t.category||'Lainnya';incomeGroups[key]=(incomeGroups[key]||0)+(Number(t.amount)||0)});
  const entries=Object.entries(incomeGroups).sort((a,b)=>b[1]-a[1]);
  refreshPeriodBoxes();
- document.getElementById('txIncomeBreakdown').innerHTML=entries.length?entries.map(([name,value])=>'<div class="tx-income-source"><span class="tx-income-source-icon">'+categoryIconSvg(categoryVisual(name)[0])+'</span><div class="tx-income-source-label"><span>'+esc(name)+'</span><b>'+rp(value)+'</b></div></div>').join(''):'<div class="sub">'+(lang==='en'?'No income recorded this month.':'Belum ada pemasukan pada bulan ini.')+'</div>';
+ document.getElementById('txIncomeBreakdown').innerHTML=entries.length?entries.map(([name,value])=>{const items=data.transactions.filter(t=>t.type==='income'&&String(t.date||'').startsWith(incomeMonth)&&(t.category||'Lainnya')===name).sort((a,b)=>String(b.date).localeCompare(String(a.date)));return '<details class="tx-income-source tx-income-expand"><summary><span class="tx-income-source-icon">'+categoryIconSvg(categoryVisual(name)[0])+'</span><div class="tx-income-source-label"><span>'+esc(name)+'</span><b>'+rp(value)+'</b></div><span class="tx-income-chevron">⌄</span></summary><div class="tx-income-details">'+items.map(t=>'<button type="button" class="tx-income-entry" data-tx-id="'+esc(String(t.id))+'" onclick="editTx(this.dataset.txId)"><span><b>'+esc(t.name||t.note||t.category||'Pemasukan')+'</b><small>'+esc(t.date)+' · '+esc(walletName(t.walletId))+'</small></span><strong>+'+rp(t.amount)+'</strong><span class="tx-income-edit-mark" aria-label="Edit pemasukan">✎</span></button>').join('')+'</div></details>'}).join(''):'<div class="sub">'+(lang==='en'?'No income recorded this month.':'Belum ada pemasukan pada bulan ini.')+'</div>';
  if(!total){chart.innerHTML='<p class="sub" style="padding:20px 0">'+(lang==='en'?'No expenses recorded this month.':'Belum ada pengeluaran pada bulan ini.')+'</p>';return}
  const sorted=Object.entries(groups).sort((a,b)=>b[1]-a[1]);let start=0;
  const stops=sorted.map(([k,v])=>{const end=start+v/total*100,part=categoryVisual(k)[1]+' '+start.toFixed(4)+'% '+end.toFixed(4)+'%';start=end;return part});
@@ -3113,7 +3115,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=145').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=146').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
