@@ -2402,11 +2402,13 @@ function renderPlanoraGuidedSetup(){const ids=['planoraGuideWallet','planoraGuid
 function renderHomeUpcoming(){
  const billBox=document.getElementById('homeUpcomingBills'),goalBox=document.getElementById('homeUpcomingGoals');if(!billBox||!goalBox)return;
  const today=new Date().toLocaleDateString('en-CA');
- const bills=(data.bills||[]).flatMap(b=>{const d=new Date(String(b.date||'')+'T12:00:00');if(Number.isNaN(d.getTime()))return[];const kind=b.kind||'once',results=[];for(let n=0;n<13;n++){const m=new Date(d.getFullYear(),d.getMonth()+n,1);const day=Math.min(d.getDate(),new Date(m.getFullYear(),m.getMonth()+1,0).getDate());const due=m.getFullYear()+'-'+String(m.getMonth()+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');if(kind==='once'&&n>0||kind==='installment'&&n>=Number(b.installments||1))break;if((b.payments||[]).some(x=>Number(x.period)===n)||(kind==='once'&&b.paid))continue;if(due>=today||n===0)results.push({name:b.name||'Tagihan',date:due,amount:Number(b.amount)||0});}return results}).filter(x=>x.date>=today).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,2);
- billBox.innerHTML=bills.length?bills.map(b=>'<div class="home-upcoming-item"><div><b>'+esc(b.name)+'</b><small>Jatuh tempo '+esc(b.date)+'</small></div><strong>'+rp(b.amount)+'</strong></div>').join(''):'<div class="home-upcoming-empty">Yeay! Belum ada tagihan mendatang 🎉</div>';
- const goals=(data.goals||[]).filter(g=>Number(g.target)>Number(g.current||0)).sort((a,b)=>{const da=a.deadline||a.tripStart||'9999-12-31',db=b.deadline||b.tripStart||'9999-12-31';return da.localeCompare(db)}).slice(0,2);
- goalBox.innerHTML=goals.length?goals.map(g=>{const pct=Math.max(0,Math.min(100,Math.round(100*(Number(g.current)||0)/Math.max(1,Number(g.target)||0))));return '<div class="home-upcoming-goal"><div class="home-upcoming-item"><div><b>'+(g.type==='travel'?'✈ ':'')+esc(g.name)+'</b><small>'+(g.deadline?'Target '+esc(g.deadline):g.tripStart?'Berangkat '+esc(g.tripStart):'Sedikit lagi, kamu pasti bisa!')+'</small></div><strong>'+pct+'%</strong></div><div class="home-upcoming-track"><i style="width:'+pct+'%"></i></div><small>'+rp(g.current||0)+' / '+rp(g.target)+'</small></div>'}).join(''):'<div class="home-upcoming-empty">Buat goal baru dan mulai wujudkan mimpimu ✨</div>';
+ const dateLabel=value=>{if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(value||''))return '';return new Date(value+'T12:00:00').toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})};
+ const bills=(data.bills||[]).flatMap(b=>{const start=new Date(String(b.date||'')+'T12:00:00');if(Number.isNaN(start.getTime()))return[];const kind=b.kind||'once',result=[];const months=kind==='once'?1:kind==='installment'?Math.min(600,Math.max(0,Number(b.installments)||0)):Math.min(600,Math.max(1,(new Date().getFullYear()-start.getFullYear())*12+new Date().getMonth()-start.getMonth()+4));for(let p=0;p<months;p++){const date=billDue(b,p),paid=(b.payments||[]).some(x=>Number(x.period)===p)||(kind==='once'&&b.paid);if(!paid)result.push({name:b.name||'Tagihan',date,amount:Number(b.amount)||0})}return result}).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,2);
+ billBox.innerHTML=bills.length?bills.map(b=>'<div class="home-upcoming-item"><div><b>'+esc(b.name)+'</b><small>'+(b.date<today?'Lewat jatuh tempo · ':'Jatuh tempo ')+esc(dateLabel(b.date))+'</small></div><strong>'+rp(b.amount)+'</strong></div>').join(''):'<div class="home-upcoming-empty">Yeay! Belum ada tagihan yang perlu dibayar 🎉</div>';
+ const goals=(data.goals||[]).filter(g=>Number(g.target)>Number(g.current||0)).sort((a,b)=>{const da=a.deadline||a.tripStart||'9999-12-31',db=b.deadline||b.tripStart||'9999-12-31';return da.localeCompare(db)||((Number(b.current)||0)/Math.max(1,Number(b.target)||0))-((Number(a.current)||0)/Math.max(1,Number(a.target)||0))}).slice(0,2);
+ goalBox.innerHTML=goals.length?goals.map(g=>{const pct=Math.max(0,Math.min(100,Math.round(100*(Number(g.current)||0)/Math.max(1,Number(g.target)||0))));const when=g.deadline||g.tripStart;return '<div class="home-upcoming-goal"><div class="home-upcoming-item"><div><b>'+(g.type==='travel'?'✈ ':'')+esc(g.name)+'</b><small>'+(when?(when<today?'Target terlewat · ':'Target ')+esc(dateLabel(when)):'Sedikit lagi, kamu pasti bisa!')+'</small></div><strong>'+pct+'%</strong></div><div class="home-upcoming-track"><i style="width:'+pct+'%"></i></div><small>'+rp(g.current||0)+' / '+rp(g.target)+'</small></div>'}).join(''):'<div class="home-upcoming-empty">Buat goal baru dan mulai wujudkan mimpimu ✨</div>';
 }
+
 function render(){
  renderPlanoraGuidedSetup();
  const tx=periodTx(),income=tx.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0),expense=tx.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
@@ -3109,7 +3111,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=139').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=140').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
