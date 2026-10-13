@@ -1928,13 +1928,13 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 <input id="momentGallery" class="hidden" type="file" accept="image/*" multiple onchange="setMomentPhotos(this)">
 <input id="momentPhoto" class="hidden" type="file" accept="image/*">
 <div id="momentPhotoPreview" class="moment-photo-preview hidden"><img id="momentPreviewImg"><div><b id="momentPreviewName">Foto dipilih</b><button type="button" class="mini-remove" onclick="clearMomentPhoto()">Ganti foto</button></div></div>
-<label>Tanggal Moment</label><input id="momentDate" type="date" onchange="syncMomentExpenseDate()">
+<label>Tanggal Moment</label><input id="momentDate" type="date">
 <label>Caption</label><input id="momentCaption" placeholder="Apa yang ingin kamu ingat?">
 <div class="moment-quick-row moment-optional-field">
  <div class="moment-quick"><span class="sub">Mood</span><div id="momentMood" class="mood-pills"><button type="button" class="mood active" data-value="happy" onclick="pickMood(this)">☺</button><button type="button" class="mood" data-value="grateful" onclick="pickMood(this)">♡</button><button type="button" class="mood" data-value="proud" onclick="pickMood(this)">✦</button><button type="button" class="mood" data-value="peaceful" onclick="pickMood(this)">☘</button></div></div>
 </div>
 <label>Kategori</label><select id="momentKind" onchange="syncMomentMoney()"><option>Self Reward</option><option>Food & Drinks</option><option>Wellness</option><option>Hangout</option><option>Hobby</option><option>Achievement</option><option>No Spend</option></select>
-<div id="momentMoneyBox"><label>Tanggal pengeluaran <span style="font-weight:500;color:var(--muted)">(otomatis mengikuti Moment, bisa diubah)</span></label><input id="momentExpenseDate" type="date" onchange="momentExpenseDate.dataset.manual='true'"><label>Nominal <span style="font-weight:500;color:var(--muted)">(opsional)</span></label><input id="momentAmount" type="number" inputmode="numeric" placeholder="Rp0">
+<div id="momentMoneyBox"><label>Nominal <span style="font-weight:500;color:var(--muted)">(opsional)</span></label><input id="momentAmount" type="number" inputmode="numeric" placeholder="Rp0">
 <div id="moneyFeelingWrap" class="money-feeling moment-optional-field"><button type="button" class="feeling active" data-value="worth" onclick="pickFeeling(this)">Worth it ♡</button><button type="button" class="feeling" data-value="necessary" onclick="pickFeeling(this)">Necessary</button><button type="button" class="feeling" data-value="treat" onclick="pickFeeling(this)">Treat myself</button><button type="button" class="feeling" data-value="skip" onclick="pickFeeling(this)">Could skip</button></div></div>
 <button type="button" class="details-toggle moment-optional-field" id="momentDetailsToggle" onclick="toggleMomentDetails()">＋ Add details</button>
 <div id="momentDetails" class="moment-details hidden"><div class="two-fields"><div><label>With</label><input id="momentWith" placeholder="Siapa?"></div></div>
@@ -2601,10 +2601,9 @@ function pickFeeling(btn){document.querySelectorAll('#moneyFeelingWrap .feeling'
 function toggleMomentDetails(){const open=momentDetails.classList.toggle('hidden');momentDetailsToggle.textContent=open?'＋ Add details':'− Hide details'}
 let editingMomentId=null;
 function localMomentDate(){const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")}
-function syncMomentExpenseDate(){const e=document.getElementById("momentExpenseDate");if(e&&e.dataset.manual!=="true")e.value=document.getElementById("momentDate").value}
 function openMoment(){
  editingMomentId=null;document.getElementById('momentSaveButton').textContent='Simpan Moment';
- closeM('addModal');clearMomentPhoto();momentCaption.value='';momentAmount.value='';momentDate.value=localMomentDate();momentExpenseDate.value=momentDate.value;momentExpenseDate.dataset.manual='false';
+ closeM('addModal');clearMomentPhoto();momentCaption.value='';momentAmount.value='';momentDate.value=localMomentDate();
  momentKind.value='Self Reward';
  selectedMomentMood='happy';selectedMoneyFeeling='worth';
  document.querySelectorAll('#momentMood .mood').forEach((x,i)=>x.classList.toggle('active',i===0));
@@ -2616,7 +2615,7 @@ function editMoment(id){
  const m=data.moments.find(x=>String(x.id)===String(id));if(!m)return;
  openMoment();editingMomentId=m.id;
  document.getElementById('momentSaveButton').textContent='Simpan Perubahan';
- momentCaption.value=m.caption||'';momentKind.value=m.kind||'Self Reward';momentAmount.value=Number(m.amount||0)||'';momentDate.value=m.date||localMomentDate();const linkedTx=data.transactions.find(t=>String(t.id)===String(m.transactionId));momentExpenseDate.value=linkedTx?.date||m.date||localMomentDate();momentExpenseDate.dataset.manual=String(momentExpenseDate.value!==momentDate.value);
+ momentCaption.value=m.caption||'';momentKind.value=m.kind||'Self Reward';momentAmount.value=Number(m.amount||0)||'';momentDate.value=m.date||localMomentDate();
  selectedMomentPhotos=momentImages(m).slice(0,3).map((data,i)=>({data,name:'Foto '+(i+1)}));renderSelectedMomentPhotos();
  selectedMomentMood=m.mood||'happy';selectedMoneyFeeling=m.moneyFeeling||'worth';
  document.querySelectorAll('#momentMood .mood').forEach(x=>x.classList.toggle('active',x.dataset.value===selectedMomentMood));
@@ -2741,8 +2740,8 @@ function saveMoment(){
  const oldMoments=data.moments,oldTransactions=data.transactions;
  const existing=editingMomentId?data.moments.find(m=>String(m.id)===String(editingMomentId)):null;
  const now=new Date(),localDate=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
- const id=existing?existing.id:uid(),date=momentDate.value||localDate,expenseDate=momentExpenseDate.value||date;
- if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!/^\d{4}-\d{2}-\d{2}$/.test(expenseDate))return toastMsg('Pilih tanggal yang valid');
+ const id=existing?existing.id:uid(),date=momentDate.value||localDate,expenseDate=date;
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(date))return toastMsg('Pilih tanggal yang valid');
  const images=selectedMomentPhotos.slice(0,3).map(x=>typeof x==='string'?x:x.data).filter(Boolean);
  let txId=existing?(existing.transactionId||''):'';
  data.transactions=data.transactions.map(t=>({...t}));
