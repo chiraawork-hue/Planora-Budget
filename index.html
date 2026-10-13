@@ -1993,8 +1993,8 @@ function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 let periodMode='month',selectedPeriod=new Date();
 function togglePeriodPicker(){periodPicker.classList.toggle('hidden');renderPeriodPicker()}
 function setPeriodMode(m){periodMode=m;renderPeriodPicker();render()}
-function shiftPeriod(d){selectedPeriod=periodMode==='month'?new Date(selectedPeriod.getFullYear(),selectedPeriod.getMonth()+d,1):new Date(selectedPeriod.getFullYear()+d,selectedPeriod.getMonth(),1);renderPeriodPicker();render()}
-function setHomePeriodMonth(value){const month=Number(value);if(!Number.isInteger(month)||month<0||month>11)return;selectedPeriod=new Date(selectedPeriod.getFullYear(),month,1);periodMode='month';renderPeriodPicker();render()}
+function shiftPeriod(d){setGlobalHistoryPeriod(periodMode==='month'?new Date(selectedPeriod.getFullYear(),selectedPeriod.getMonth()+d,1):new Date(selectedPeriod.getFullYear()+d,selectedPeriod.getMonth(),1))}
+function setHomePeriodMonth(value){const month=Number(value);if(!Number.isInteger(month)||month<0||month>11)return;selectedPeriod=new Date(selectedPeriod.getFullYear(),month,1);periodMode='month';setGlobalHistoryPeriod(selectedPeriod)}
 function setHomePeriodYear(value){const year=Number(value);if(!Number.isInteger(year)||year<1||year>9999)return;selectedPeriod=new Date(year,selectedPeriod.getMonth(),1);periodMode='month';renderPeriodPicker();render()}
 function renderPeriodPicker(){
  const monthSelect=document.getElementById('homeMonthSelect'),yearSelect=document.getElementById('homeYearSelect');
@@ -2038,12 +2038,17 @@ function openPeriodBox(prefix,kind){
  window.addEventListener('resize',positionPeriodBox);window.addEventListener('scroll',positionPeriodBox,true);
  const chosen=popup.querySelector('.chosen');if(chosen)requestAnimationFrame(()=>{popup.scrollTop=Math.max(0,chosen.offsetTop-popup.offsetTop-popup.clientHeight/2+chosen.clientHeight/2)});
 }
+function setGlobalHistoryPeriod(value){
+ const d=new Date(value.getFullYear(),value.getMonth(),1);
+ if(Number.isNaN(d.getTime()))return;
+ selectedPeriod=new Date(d);wrappedPeriod=new Date(d);timelineYear=d.getFullYear();timelineMonth=d.getMonth();
+ const txMonth=document.getElementById('txChartMonth');if(txMonth)txMonth.value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+ periodMode='month';wrappedMode='month';
+ renderPeriodPicker();renderWrappedPicker();refreshPeriodBoxes();render();renderReports();
+}
 function choosePeriodBox(prefix,kind,value){
  const d=periodBoxDate(prefix),month=kind==='month'?value:d.getMonth(),year=kind==='year'?value:d.getFullYear();
- if(prefix==='home'){if(kind==='month')setHomePeriodMonth(month);else setHomePeriodYear(year)}
-
- else if(prefix==='wrapped'){wrappedPeriod=new Date(year,month,1);wrappedMode='month';renderWrappedPicker();renderReports()}
- else{const input=document.getElementById('txChartMonth');input.value=year+'-'+String(month+1).padStart(2,'0');syncTxMonth(input.value)}
+ setGlobalHistoryPeriod(new Date(year,month,1))
  refreshPeriodBoxes();
 }
 document.addEventListener('click',e=>{const p=document.getElementById('periodBoxPopup');if(p&&!e.target.closest('.period-box')&&!e.target.closest('#periodBoxPopup'))closePeriodBox()});
@@ -2367,7 +2372,7 @@ function render(){
  safeSpendNote.textContent=lang==='id'?(budget<=0?'Atur budget bulanan dulu':(expense>budget?'Budget bulan ini sudah terlewati':(safe===availableNow&&availableNow<budgetRemaining?'Dibatasi oleh uang yang benar-benar tersedia':'Sesuai sisa budget bulan ini'))):(budget<=0?'Set your monthly budget first':(expense>budget?'Monthly budget exceeded':(safe===availableNow&&availableNow<budgetRemaining?'Limited by your actual available money':'Based on your remaining monthly budget')));
  if(!monthlyBudgetForm.hidden)monthlyBudget.value=data.monthlyBudget||'';syncMonthlyBudgetView();renderTx();renderWallets();renderBudget();renderGoals();renderBills();renderMoments();renderReports();
 }
-function syncTxMonth(value){refreshPeriodBoxes();renderTx()}
+function syncTxMonth(value){if(/^\d{4}-\d{2}$/.test(value||''))setGlobalHistoryPeriod(new Date(value+'-01T12:00:00'));else{refreshPeriodBoxes();renderTx()}}
 function renderTxCategoryChart(){
  const chart=document.getElementById('txCategoryChart');if(!chart)return;
  const month=document.getElementById('txChartMonth').value||new Date().toLocaleDateString('en-CA').slice(0,7);
@@ -2787,10 +2792,10 @@ function renderTimelineControls(){
  momentMonthStrip.innerHTML=names.map((m,i)=>`<button class="month-pill ${i===timelineMonth?'active':''}" onclick="selectTimelineMonth(${i})">${m}</button>`).join('');
  requestAnimationFrame(()=>momentMonthStrip.querySelector('.active')?.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'}));
 }
-function selectTimelineMonth(m){timelineMonth=m;renderMoments()}
+function selectTimelineMonth(m){setGlobalHistoryPeriod(new Date(timelineYear,m,1))}
 function cycleMomentYear(){
  const years=[...new Set(data.moments.map(x=>momentTimestamp(x).getFullYear()).concat([new Date().getFullYear()]))].sort((a,b)=>b-a);
- let i=years.indexOf(timelineYear);timelineYear=years[(i+1)%years.length];renderMoments()
+ let i=years.indexOf(timelineYear);setGlobalHistoryPeriod(new Date(years[(i+1)%years.length],timelineMonth,1))
 }
 function monthMoments(){
  return [...data.moments].filter(m=>{let d=momentTimestamp(m);return d.getFullYear()===timelineYear&&d.getMonth()===timelineMonth}).sort((a,b)=>momentTimestamp(b)-momentTimestamp(a))
@@ -2854,7 +2859,7 @@ function moveMoment(d){
 let wrappedMode='month',wrappedPeriod=new Date();
 function toggleWrappedPicker(){wrappedPicker.classList.toggle('hidden');renderWrappedPicker()}
 function setWrappedMode(m){wrappedMode=m;renderWrappedPicker();renderReports()}
-function shiftWrapped(d){wrappedPeriod=wrappedMode==='month'?new Date(wrappedPeriod.getFullYear(),wrappedPeriod.getMonth()+d,1):new Date(wrappedPeriod.getFullYear()+d,wrappedPeriod.getMonth(),1);renderWrappedPicker();renderReports()}
+function shiftWrapped(d){setGlobalHistoryPeriod(wrappedMode==='month'?new Date(wrappedPeriod.getFullYear(),wrappedPeriod.getMonth()+d,1):new Date(wrappedPeriod.getFullYear()+d,wrappedPeriod.getMonth(),1))}
 function wrappedTx(){return data.transactions.filter(t=>{let d=new Date(t.date+'T00:00:00');return d.getFullYear()===wrappedPeriod.getFullYear()&&(wrappedMode==='year'||d.getMonth()===wrappedPeriod.getMonth())})}
 function renderWrappedPicker(){
  if(!document.getElementById('wrappedPeriodLabel'))return;
