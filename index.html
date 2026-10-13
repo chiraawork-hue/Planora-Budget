@@ -1808,6 +1808,9 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 
 /* Travel itinerary opens as a centered dialog instead of a bottom sheet. */
 #tripPlannerModal{align-items:center;justify-content:center;padding:16px;box-sizing:border-box}#tripPlannerModal>.sheet{width:min(680px,100%);max-height:min(86dvh,760px);box-sizing:border-box;border-radius:22px;box-shadow:0 20px 60px #121c2c35;background:#fff}@media(max-width:560px){#tripPlannerModal{padding:12px}#tripPlannerModal>.sheet{width:100%;max-height:85dvh;border-radius:19px;padding:16px}}
+
+/* Center account-related dialogs, including add/edit, details, transfer and delete confirmation. */
+#walletModal,#walletDetailModal,#transferModal,#deleteWalletConfirmModal{align-items:center;justify-content:center;padding:16px;box-sizing:border-box}#walletModal>.sheet,#walletDetailModal>.sheet,#transferModal>.sheet,#deleteWalletConfirmModal>.sheet{width:min(620px,100%);max-height:86dvh;box-sizing:border-box;border-radius:22px;background:#fff;box-shadow:0 20px 60px #121c2c35}@media(max-width:560px){#walletModal,#walletDetailModal,#transferModal,#deleteWalletConfirmModal{padding:12px}#walletModal>.sheet,#walletDetailModal>.sheet,#transferModal>.sheet,#deleteWalletConfirmModal>.sheet{max-height:85dvh;border-radius:19px;padding:16px}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -3106,7 +3109,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=138').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=139').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
