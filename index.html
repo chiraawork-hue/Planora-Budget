@@ -1805,6 +1805,9 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 .trip-table-card{border:1px solid #e6eaf3;border-radius:16px;margin-top:14px;overflow:hidden;background:#fff}.trip-table-title{padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}.trip-editor-actions{display:flex;justify-content:flex-end;gap:8px;margin:10px 0 15px}.trip-editor-actions button[hidden]{display:none}#tripActivityEditor{background:#f6f8ff;padding:13px;border-radius:14px;margin-top:12px}#tripActivityEditor[hidden]{display:none}.trip-simple-table{margin-top:0;border:0;border-radius:0}
 
 .wallet-account-actions .wallet-delete-btn{display:inline-flex;align-items:center;justify-content:center;width:27px;height:27px;border-radius:50%;background:#fff0f1;color:#e23d52;font-size:20px;font-weight:700;cursor:pointer}.wallet-account-actions .wallet-delete-btn:hover{background:#ffdce0}.wallet-account-actions .wallet-delete-btn:focus-visible{outline:2px solid #e23d52;outline-offset:2px}
+
+/* Travel itinerary opens as a centered dialog instead of a bottom sheet. */
+#tripPlannerModal{align-items:center;justify-content:center;padding:16px;box-sizing:border-box}#tripPlannerModal>.sheet{width:min(680px,100%);max-height:min(86dvh,760px);box-sizing:border-box;border-radius:22px;box-shadow:0 20px 60px #121c2c35;background:#fff}@media(max-width:560px){#tripPlannerModal{padding:12px}#tripPlannerModal>.sheet{width:100%;max-height:85dvh;border-radius:19px;padding:16px}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -3103,7 +3106,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=137').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=138').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
