@@ -1797,7 +1797,7 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 <path d="M48 21c1-6 5-9 10-9-1 6-4 10-10 11z" fill="#D6B66F"/>
 </svg></div><div class="onboarding-count" id="onboardCount">01 / 09</div><h2 id="onboardTitle">Welcome to Planora Budget</h2><p id="onboardDescription">Kelola keuangan dan momen kecilmu dalam satu tempat.</p><div class="onboarding-dots" id="onboardDots"></div></div><div class="onboarding-actions"><button type="button" id="onboardBack" onclick="movePlanoraOnboarding(-1)">Kembali</button><button type="button" id="onboardNext" onclick="movePlanoraOnboarding(1)">Lanjut →</button></div></div></div>
 <div id="planoraDeleteConfirm" class="planora-confirm-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="planoraConfirmTitle"><div class="planora-confirm-card"><div class="planora-confirm-symbol">×</div><h2 id="planoraConfirmTitle">Hapus transaksi ini?</h2><p id="planoraConfirmDescription">Transaksi akan dihapus dari catatan dan saldo serta ringkasan keuangan akan diperbarui.</p><div class="planora-confirm-actions"><button type="button" onclick="closePlanoraDeleteConfirm()">Batal</button><button type="button" class="confirm-danger" onclick="approvePlanoraDeleteConfirm()">Ya, hapus</button></div></div></div>
-<div id="planoraMomentConfirm" class="planora-confirm-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="planoraMomentConfirmTitle"><div class="planora-confirm-card"><div class="planora-confirm-symbol">×</div><h2 id="planoraMomentConfirmTitle">Hapus Moment ini?</h2><p>Foto dan ceritanya akan dihapus, tetapi transaksi keuangan yang terhubung tetap tersimpan.</p><div class="planora-confirm-actions"><button type="button" onclick="closePlanoraMomentDelete()">Batal</button><button type="button" class="confirm-danger" onclick="approvePlanoraMomentDelete()">Ya, hapus</button></div></div></div>
+<div id="planoraMomentConfirm" class="planora-confirm-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="planoraMomentConfirmTitle"><div class="planora-confirm-card"><div class="planora-confirm-symbol">×</div><h2 id="planoraMomentConfirmTitle">Hapus Moment ini?</h2><p>Foto, cerita, dan transaksi pengeluaran yang terhubung akan ikut dihapus. Saldo serta ringkasan keuangan akan diperbarui. Tindakan ini tidak dapat dibatalkan.</p><div class="planora-confirm-actions"><button type="button" onclick="closePlanoraMomentDelete()">Batal</button><button type="button" class="confirm-danger" onclick="approvePlanoraMomentDelete()">Ya, hapus</button></div></div></div>
 <div id="planoraSplash" role="status" aria-label="Memuat Planora Budget"><div class="splash-lockup"><div class="splash-mark"><img src="./planora-budget-ch-approved.webp" alt="CH" onerror="this.onerror=null;this.src='./icon.svg'"></div><div class="splash-wordmark" aria-label="Planora Budget"><strong>Planora</strong><span>Budget</span></div></div></div>
 <div class="app">
 <header><div class="brand-lockup"><img class="planora-header-logo" src="./planora-budget-ch-approved.webp" alt="Logo CH Planora" onerror="this.onerror=null;this.src='./icon.svg'"><div class="brand-wordmark"><div class="brand">Planora <span>Budget</span></div><div class="sub">money, moments & little things.</div></div></div><button class="iconbtn" onclick="page('settings')">⚙</button></header>
@@ -2652,9 +2652,12 @@ function confirmPlanoraMomentDelete(id){
 function closePlanoraMomentDelete(){pendingPlanoraMomentDelete=null;document.getElementById('planoraMomentConfirm').hidden=true}
 function approvePlanoraMomentDelete(){
  const id=pendingPlanoraMomentDelete;if(!id)return;
- const before=data.moments;
+ const before=data.moments,oldTransactions=data.transactions;
+ const target=before.find(x=>String(x.id)===id);
+ const linkedId=target?.transactionId?String(target.transactionId):'';
  data.moments=before.filter(x=>String(x.id)!==id);
- if(!persist()){data.moments=before;render();closePlanoraMomentDelete();return}
+ data.transactions=oldTransactions.filter(t=>!(linkedId&&String(t.id)===linkedId)&&String(t.momentId||'')!==id);
+ if(!persist()){data.moments=before;data.transactions=oldTransactions;render();closePlanoraMomentDelete();return}
  closePlanoraMomentDelete();toastMsg('Moment berhasil dihapus');
 }
 function approvePlanoraDeleteConfirm(){
