@@ -2454,7 +2454,23 @@ function openAdd(){openM('addModal')}
 function openTx(type){closeM('addModal');txId.value='';txType.value=type;txTypeSelect.value=type;txHeading.textContent=type==='expense'?(lang==='en'?'Add expense':'Tambah pengeluaran'):(lang==='en'?'Add income':'Tambah pemasukan');txNameLabel.textContent=type==='expense'?(lang==='en'?'Expense name':'Nama Pengeluaran'):(lang==='en'?'Income name':'Nama Pemasukan');txName.placeholder=type==='expense'?(lang==='en'?'Example: Buy skincare':'Contoh: Beli skincare'):(lang==='en'?'Example: October salary':'Contoh: Gaji Oktober');txName.value='';txAmount.value='';txDate.value=new Date().toLocaleDateString('en-CA');txNote.value='';txDelete.classList.add('hidden');txCategory.innerHTML=(type==='expense'?expenseCats:incomeCats).map(c=>`<option>${c}</option>`).join('');populateTxWallet('');openM('txModal')}
 function editTx(id){let t=data.transactions.find(x=>x.id===id);if(!t)return;txId.value=t.id;txType.value=t.type;txTypeSelect.value=t.type;txHeading.textContent='Edit transaksi';txNameLabel.textContent=t.type==='expense'?'Nama Pengeluaran':'Nama Pemasukan';txName.placeholder=t.type==='expense'?'Contoh: Beli skincare':'Contoh: Gaji Oktober';txName.value=t.name||t.note||t.category||'';txAmount.value=t.amount;txDate.value=t.date;txNote.value=t.note||'';txCategory.innerHTML=(t.type==='expense'?expenseCats:incomeCats).map(c=>`<option ${c===t.category?'selected':''}>${c}</option>`).join('');txDelete.classList.remove('hidden');populateTxWallet(t.walletId||'legacy');openM('txModal')}
 function changeTxType(type){txType.value=type;txHeading.textContent=type==='income'?'Pemasukan':'Pengeluaran';txNameLabel.textContent=type==='income'?'Nama Pemasukan':'Nama Pengeluaran';txName.placeholder=type==='income'?'Contoh: Gaji Oktober':'Contoh: Beli skincare';txCategory.innerHTML=(type==='expense'?expenseCats:incomeCats).map(c=>'<option>'+esc(c)+'</option>').join('')}
-function saveTx(){let amount=Number(txAmount.value),date=txDate.value;txType.value=txTypeSelect.value;if(amount<=0||!date)return toastMsg('Isi nominal dan tanggal');if(!txName.value.trim())return toastMsg('Isi nama transaksi terlebih dahulu');if(!txWallet.value||!data.wallets.some(w=>w.id===txWallet.value))return toastMsg('Tambahkan dan pilih sumber dana di menu Dana terlebih dahulu');let id=txId.value,prior=id?data.transactions.find(t=>t.id===id):null,obj={...(prior||{}),id:id||uid(),type:txType.value,amount,date,category:txCategory.value,name:txName.value.trim(),note:txNote.value.trim(),walletId:txWallet.value};if(id){let i=data.transactions.findIndex(x=>x.id===id);if(i>=0)data.transactions[i]=obj}else data.transactions.push(obj);persist();closeM('txModal');toastMsg('Transaksi tersimpan')}
+function saveTx(){
+ try{
+  const amount=Number(txAmount.value),date=txDate.value,type=txTypeSelect.value,name=txName.value.trim(),walletId=txWallet.value;
+  if(!name){toastMsg('Isi nama transaksi terlebih dahulu');txName.focus();return}
+  if(!Number.isFinite(amount)||amount<=0){toastMsg('Masukkan nominal lebih dari Rp0');txAmount.focus();return}
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){toastMsg('Pilih tanggal transaksi');txDate.focus();return}
+  if(!walletId||!(data.wallets||[]).some(w=>w.id===walletId)){toastMsg('Pilih sumber dana. Jika belum ada, tambahkan di Account.');document.getElementById('txWalletChoices')?.scrollIntoView({block:'nearest'});return}
+  const id=txId.value,prior=id?data.transactions.find(t=>String(t.id)===String(id)):null;
+  const obj={...(prior||{}),id:id||uid(),type,amount,date,category:txCategory.value,name,note:txNote.value.trim(),walletId};
+  const before=data.transactions.slice();
+  if(id&&prior){data.transactions=data.transactions.map(t=>String(t.id)===String(id)?obj:t)}
+  else data.transactions.push(obj);
+  if(!persist()){data.transactions=before;render();return}
+  closeM('txModal');
+  toastMsg('Transaksi berhasil disimpan');
+ }catch(err){console.error('saveTx error',err);toastMsg('Transaksi gagal disimpan. Coba lagi.')}
+}
 function deleteTx(){const id=txId.value;if(!id)return;confirmPlanoraTransactionDelete(id,true)}
 function syncMonthlyBudgetView(){const saved=Number(data.monthlyBudget)>0;const editing=monthlyBudgetForm.dataset.editing==='true';monthlyBudgetRead.hidden=!saved||editing;monthlyBudgetForm.hidden=saved&&!editing;monthlyBudgetSaved.textContent=rp(Number(data.monthlyBudget)||0);monthlyBudgetCancel.hidden=!saved;}
 function editMonthlyBudget(){monthlyBudgetForm.dataset.editing='true';monthlyBudget.value=data.monthlyBudget||'';syncMonthlyBudgetView();monthlyBudget.focus()}
@@ -3036,7 +3052,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=128').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=129').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
