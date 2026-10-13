@@ -1785,6 +1785,14 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 #momentWallet option{background:#fff!important;color:#19221f!important;font-size:14px!important}
 
 #goalTravelFields[hidden]{display:none!important}.goal-travel-budget-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.goal-travel-budget-grid label{font-size:12px}.goal-trip-detail{margin:10px 0;padding:10px 12px;border-radius:12px;background:#f1f7ff;display:grid;gap:4px;color:#245784}.goal-trip-detail small{font-size:11px;color:#56718a}
+
+/* Force the six navigation positions independently of older DOM order. */
+.nav .nav-item[data-page="home"]{order:0!important}
+.nav .nav-item[data-page="transactions"]{order:1!important}
+.nav .nav-item[data-page="wallets"]{order:2!important}
+.nav .nav-item[data-page="plan"]{order:3!important}
+.nav .nav-item[data-page="growth"]{order:4!important}
+.nav .nav-item[data-page="reports"]{order:5!important}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -2355,6 +2363,21 @@ function splitCopy(){
  if(navigator.clipboard?.writeText)navigator.clipboard.writeText(result).then(()=>toastMsg('Hasil split bill disalin')).catch(()=>toastMsg('Gagal menyalin'));else toastMsg('Salin tidak tersedia');
 }
 
+function normalizePlanoraNavigation(){
+ const nav=document.querySelector('nav.nav');if(!nav)return;
+ const order=[['home','Home'],['transactions','Transaction'],['wallets','Account'],['plan','Budget'],['growth','Growth'],['reports','Wrapped']];
+ const buttons=[...nav.querySelectorAll('.nav-item')];
+ order.forEach(([id,label],index)=>{
+  const button=buttons.find(b=>b.dataset.page===id);
+  if(!button)return;
+  button.style.order=String(index);
+  button.setAttribute('aria-label',label);
+  const caption=button.querySelector('span:last-child');
+  if(caption)caption.textContent=label;
+  nav.appendChild(button);
+ });
+}
+document.addEventListener('DOMContentLoaded',normalizePlanoraNavigation);
 function page(id){if(document.getElementById('splitbill')?.classList.contains('active')&&id!=='splitbill'&&splitHasStarted){splitRequestExit(id);return}if(id==='growth')selectGrowthTab('assets');if(id==='moments')id='home';if(id==='assets'){id='growth';selectGrowthTab('assets')}if(id==='goals'){id='growth';selectGrowthTab('goals')}document.querySelectorAll('main').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.page===id));if(id==='home'){const boatCard=document.getElementById('safeWaterCard');if(boatCard){boatCard.classList.remove('safe-boat-sinking');void boatCard.offsetWidth}}render()}
 function openM(id){document.getElementById(id).classList.add('open')}function closeM(id){document.getElementById(id).classList.remove('open')}
 const PLANORA_GUIDE_KEY='planora_budget_guided_setup_v1';
@@ -3052,7 +3075,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=129').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=130').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
