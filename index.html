@@ -1928,12 +1928,13 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 <input id="momentGallery" class="hidden" type="file" accept="image/*" multiple onchange="setMomentPhotos(this)">
 <input id="momentPhoto" class="hidden" type="file" accept="image/*">
 <div id="momentPhotoPreview" class="moment-photo-preview hidden"><img id="momentPreviewImg"><div><b id="momentPreviewName">Foto dipilih</b><button type="button" class="mini-remove" onclick="clearMomentPhoto()">Ganti foto</button></div></div>
+<label>Tanggal Moment</label><input id="momentDate" type="date" onchange="syncMomentExpenseDate()">
 <label>Caption</label><input id="momentCaption" placeholder="Apa yang ingin kamu ingat?">
 <div class="moment-quick-row moment-optional-field">
  <div class="moment-quick"><span class="sub">Mood</span><div id="momentMood" class="mood-pills"><button type="button" class="mood active" data-value="happy" onclick="pickMood(this)">☺</button><button type="button" class="mood" data-value="grateful" onclick="pickMood(this)">♡</button><button type="button" class="mood" data-value="proud" onclick="pickMood(this)">✦</button><button type="button" class="mood" data-value="peaceful" onclick="pickMood(this)">☘</button></div></div>
 </div>
 <label>Kategori</label><select id="momentKind" onchange="syncMomentMoney()"><option>Self Reward</option><option>Food & Drinks</option><option>Wellness</option><option>Hangout</option><option>Hobby</option><option>Achievement</option><option>No Spend</option></select>
-<div id="momentMoneyBox"><label>Nominal <span style="font-weight:500;color:var(--muted)">(opsional)</span></label><input id="momentAmount" type="number" inputmode="numeric" placeholder="Rp0">
+<div id="momentMoneyBox"><label>Tanggal pengeluaran <span style="font-weight:500;color:var(--muted)">(otomatis mengikuti Moment, bisa diubah)</span></label><input id="momentExpenseDate" type="date" onchange="momentExpenseDate.dataset.manual='true'"><label>Nominal <span style="font-weight:500;color:var(--muted)">(opsional)</span></label><input id="momentAmount" type="number" inputmode="numeric" placeholder="Rp0">
 <div id="moneyFeelingWrap" class="money-feeling moment-optional-field"><button type="button" class="feeling active" data-value="worth" onclick="pickFeeling(this)">Worth it ♡</button><button type="button" class="feeling" data-value="necessary" onclick="pickFeeling(this)">Necessary</button><button type="button" class="feeling" data-value="treat" onclick="pickFeeling(this)">Treat myself</button><button type="button" class="feeling" data-value="skip" onclick="pickFeeling(this)">Could skip</button></div></div>
 <button type="button" class="details-toggle moment-optional-field" id="momentDetailsToggle" onclick="toggleMomentDetails()">＋ Add details</button>
 <div id="momentDetails" class="moment-details hidden"><div class="two-fields"><div><label>With</label><input id="momentWith" placeholder="Siapa?"></div></div>
@@ -2599,9 +2600,11 @@ function pickMood(btn){document.querySelectorAll('#momentMood .mood').forEach(x=
 function pickFeeling(btn){document.querySelectorAll('#moneyFeelingWrap .feeling').forEach(x=>x.classList.remove('active'));btn.classList.add('active');selectedMoneyFeeling=btn.dataset.value}
 function toggleMomentDetails(){const open=momentDetails.classList.toggle('hidden');momentDetailsToggle.textContent=open?'＋ Add details':'− Hide details'}
 let editingMomentId=null;
+function localMomentDate(){const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")}
+function syncMomentExpenseDate(){const e=document.getElementById("momentExpenseDate");if(e&&e.dataset.manual!=="true")e.value=document.getElementById("momentDate").value}
 function openMoment(){
  editingMomentId=null;document.getElementById('momentSaveButton').textContent='Simpan Moment';
- closeM('addModal');clearMomentPhoto();momentCaption.value='';momentAmount.value='';
+ closeM('addModal');clearMomentPhoto();momentCaption.value='';momentAmount.value='';momentDate.value=localMomentDate();momentExpenseDate.value=momentDate.value;momentExpenseDate.dataset.manual='false';
  momentKind.value='Self Reward';
  selectedMomentMood='happy';selectedMoneyFeeling='worth';
  document.querySelectorAll('#momentMood .mood').forEach((x,i)=>x.classList.toggle('active',i===0));
@@ -2613,7 +2616,7 @@ function editMoment(id){
  const m=data.moments.find(x=>String(x.id)===String(id));if(!m)return;
  openMoment();editingMomentId=m.id;
  document.getElementById('momentSaveButton').textContent='Simpan Perubahan';
- momentCaption.value=m.caption||'';momentKind.value=m.kind||'Self Reward';momentAmount.value=Number(m.amount||0)||'';
+ momentCaption.value=m.caption||'';momentKind.value=m.kind||'Self Reward';momentAmount.value=Number(m.amount||0)||'';momentDate.value=m.date||localMomentDate();const linkedTx=data.transactions.find(t=>String(t.id)===String(m.transactionId));momentExpenseDate.value=linkedTx?.date||m.date||localMomentDate();momentExpenseDate.dataset.manual=String(momentExpenseDate.value!==momentDate.value);
  selectedMomentPhotos=momentImages(m).slice(0,3).map((data,i)=>({data,name:'Foto '+(i+1)}));renderSelectedMomentPhotos();
  selectedMomentMood=m.mood||'happy';selectedMoneyFeeling=m.moneyFeeling||'worth';
  document.querySelectorAll('#momentMood .mood').forEach(x=>x.classList.toggle('active',x.dataset.value===selectedMomentMood));
@@ -2738,16 +2741,17 @@ function saveMoment(){
  const oldMoments=data.moments,oldTransactions=data.transactions;
  const existing=editingMomentId?data.moments.find(m=>String(m.id)===String(editingMomentId)):null;
  const now=new Date(),localDate=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
- const id=existing?existing.id:uid(),date=existing?(existing.date||localDate):localDate;
+ const id=existing?existing.id:uid(),date=momentDate.value||localDate,expenseDate=momentExpenseDate.value||date;
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!/^\d{4}-\d{2}-\d{2}$/.test(expenseDate))return toastMsg('Pilih tanggal yang valid');
  const images=selectedMomentPhotos.slice(0,3).map(x=>typeof x==='string'?x:x.data).filter(Boolean);
  let txId=existing?(existing.transactionId||''):'';
  data.transactions=data.transactions.map(t=>({...t}));
  if(txId){
    const tx=data.transactions.find(t=>String(t.id)===String(txId));
-   if(tx){if(amount>0){tx.amount=amount;tx.category=momentExpenseCategory(kind);tx.note='Moment: '+caption}else{data.transactions=data.transactions.filter(t=>String(t.id)!==String(txId));txId=''}}
+   if(tx){if(amount>0){tx.amount=amount;tx.date=expenseDate;tx.category=momentExpenseCategory(kind);tx.note='Moment: '+caption}else{data.transactions=data.transactions.filter(t=>String(t.id)!==String(txId));txId=''}}
    else txId='';
  }
- if(amount>0&&!txId){txId=uid();data.transactions.push({id:txId,type:'expense',amount,date,category:momentExpenseCategory(kind),note:'Moment: '+caption,momentId:id,walletId:'legacy'})}
+ if(amount>0&&!txId){txId=uid();data.transactions.push({id:txId,type:'expense',amount,date:expenseDate,category:momentExpenseCategory(kind),note:'Moment: '+caption,momentId:id,walletId:'legacy'})}
  const record={...(existing||{}),id,image:images[0]||'',images,caption,kind,date,createdAt:existing?.createdAt||now.toISOString(),amount,transactionId:txId,mood:selectedMomentMood||'happy',moneyFeeling:amount>0?(selectedMoneyFeeling||'worth'):'',withPerson:momentWith.value.trim(),place:momentPlace.value.trim(),mapUrl:normalizeMapUrl(momentMapUrl.value.trim()),littleNote:momentNote.value.trim(),favorite:existing?.favorite||false};
  data.moments=existing?data.moments.map(m=>String(m.id)===String(id)?record:m):[...data.moments,record];
  if(!persist()){data.moments=oldMoments;data.transactions=oldTransactions;render();return}
@@ -2760,7 +2764,7 @@ const MONTHS_ID=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','No
 const MONTHS_EN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const MONTHS_FULL_ID=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 const MONTHS_FULL_EN=['January','February','March','April','May','June','July','August','September','October','November','December'];
-function momentTimestamp(m){return m.createdAt?new Date(m.createdAt):new Date((m.date||'1970-01-01')+'T12:00:00')}
+function momentTimestamp(m){return new Date((m.date||m.createdAt?.slice(0,10)||'1970-01-01')+'T12:00:00')}
 function formatMomentDay(m){
  const d=momentTimestamp(m),daysId=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'],daysEn=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
  return `${String(d.getDate()).padStart(2,'0')} ${(lang==='id'?MONTHS_ID:MONTHS_EN)[d.getMonth()].toUpperCase()} · ${(lang==='id'?daysId:daysEn)[d.getDay()]}`;
