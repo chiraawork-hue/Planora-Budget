@@ -1943,7 +1943,7 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
  <div class="moment-quick"><span class="sub">Mood</span><div id="momentMood" class="mood-pills"><button type="button" class="mood active" data-value="happy" onclick="pickMood(this)">☺</button><button type="button" class="mood" data-value="grateful" onclick="pickMood(this)">♡</button><button type="button" class="mood" data-value="proud" onclick="pickMood(this)">✦</button><button type="button" class="mood" data-value="peaceful" onclick="pickMood(this)">☘</button></div></div>
 </div>
 <label>Kategori</label><select id="momentKind" onchange="syncMomentMoney()"><option>Self Reward</option><option>Food & Drinks</option><option>Wellness</option><option>Hangout</option><option>Hobby</option><option>Achievement</option><option>No Spend</option></select>
-<div id="momentMoneyBox"><label>Nominal <span style="font-weight:500;color:var(--muted)">(opsional)</span></label><input id="momentAmount" type="number" inputmode="numeric" placeholder="Rp0">
+<div id="momentMoneyBox"><label>Nominal <span style="font-weight:500;color:var(--muted)">(opsional)</span></label><input id="momentAmount" type="number" inputmode="numeric" placeholder="Rp0"><label for="momentWallet">Sumber Dana</label><select id="momentWallet" aria-label="Pilih akun sumber dana"></select>
 <div id="moneyFeelingWrap" class="money-feeling moment-optional-field"><button type="button" class="feeling active" data-value="worth" onclick="pickFeeling(this)">Worth it ♡</button><button type="button" class="feeling" data-value="necessary" onclick="pickFeeling(this)">Necessary</button><button type="button" class="feeling" data-value="treat" onclick="pickFeeling(this)">Treat myself</button><button type="button" class="feeling" data-value="skip" onclick="pickFeeling(this)">Could skip</button></div></div>
 <button type="button" class="details-toggle moment-optional-field" id="momentDetailsToggle" onclick="toggleMomentDetails()">＋ Add details</button>
 <div id="momentDetails" class="moment-details hidden"><div class="two-fields"><div><label>With</label><input id="momentWith" placeholder="Siapa?"></div></div>
@@ -2615,10 +2615,11 @@ function pickFeeling(btn){document.querySelectorAll('#moneyFeelingWrap .feeling'
 function toggleMomentDetails(){const open=momentDetails.classList.toggle('hidden');momentDetailsToggle.textContent=open?'＋ Add details':'− Hide details'}
 let editingMomentId=null;
 function localMomentDate(){const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")}
+function populateMomentWallet(selected){const el=document.getElementById('momentWallet');if(!el)return;const wallets=(data.wallets||[]);el.innerHTML='<option value="">Pilih sumber dana</option>'+wallets.map(w=>'<option value="'+esc(w.id)+'">'+esc(w.name)+'</option>').join('');el.value=wallets.some(w=>w.id===selected)?selected:'';}
 function openMoment(){
  editingMomentId=null;document.getElementById('momentSaveButton').textContent='Simpan Moment';
  closeM('addModal');clearMomentPhoto();momentCaption.value='';momentAmount.value='';momentDate.value=localMomentDate();
- momentKind.value='Self Reward';
+ momentKind.value='Self Reward';populateMomentWallet('');
  selectedMomentMood='happy';selectedMoneyFeeling='worth';
  document.querySelectorAll('#momentMood .mood').forEach((x,i)=>x.classList.toggle('active',i===0));
  document.querySelectorAll('#moneyFeelingWrap .feeling').forEach((x,i)=>x.classList.toggle('active',i===0));
@@ -2629,7 +2630,7 @@ function editMoment(id){
  const m=data.moments.find(x=>String(x.id)===String(id));if(!m)return;
  openMoment();editingMomentId=m.id;
  document.getElementById('momentSaveButton').textContent='Simpan Perubahan';
- momentCaption.value=m.caption||'';momentKind.value=m.kind||'Self Reward';momentAmount.value=Number(m.amount||0)||'';momentDate.value=m.date||localMomentDate();
+ momentCaption.value=m.caption||'';momentKind.value=m.kind||'Self Reward';momentAmount.value=Number(m.amount||0)||'';momentDate.value=m.date||localMomentDate();populateMomentWallet(data.transactions.find(t=>String(t.id)===String(m.transactionId))?.walletId||m.walletId||'');
  selectedMomentPhotos=momentImages(m).slice(0,3).map((data,i)=>({data,name:'Foto '+(i+1)}));renderSelectedMomentPhotos();
  selectedMomentMood=m.mood||'happy';selectedMoneyFeeling=m.moneyFeeling||'worth';
  document.querySelectorAll('#momentMood .mood').forEach(x=>x.classList.toggle('active',x.dataset.value===selectedMomentMood));
@@ -2754,6 +2755,8 @@ function saveMoment(){
  const caption=momentCaption.value.trim(),kind=momentKind.value,amount=kind==='No Spend'?0:Number(momentAmount.value||0);
  if(!caption)return toastMsg('Isi caption dulu');
  if(!Number.isFinite(amount)||amount<0)return toastMsg('Nominal tidak valid');
+ const walletId=document.getElementById('momentWallet').value;
+ if(amount>0&&(!walletId||!(data.wallets||[]).some(w=>w.id===walletId)))return toastMsg('Pilih sumber dana untuk pengeluaran Moment');
  const oldMoments=data.moments,oldTransactions=data.transactions;
  const existing=editingMomentId?data.moments.find(m=>String(m.id)===String(editingMomentId)):null;
  const now=new Date(),localDate=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
@@ -2764,11 +2767,11 @@ function saveMoment(){
  data.transactions=data.transactions.map(t=>({...t}));
  if(txId){
    const tx=data.transactions.find(t=>String(t.id)===String(txId));
-   if(tx){if(amount>0){tx.amount=amount;tx.date=expenseDate;tx.category=momentExpenseCategory(kind);tx.note='Moment: '+caption}else{data.transactions=data.transactions.filter(t=>String(t.id)!==String(txId));txId=''}}
+   if(tx){if(amount>0){tx.amount=amount;tx.date=expenseDate;tx.category=momentExpenseCategory(kind);tx.walletId=walletId;tx.note='Moment: '+caption}else{data.transactions=data.transactions.filter(t=>String(t.id)!==String(txId));txId=''}}
    else txId='';
  }
- if(amount>0&&!txId){txId=uid();data.transactions.push({id:txId,type:'expense',amount,date:expenseDate,category:momentExpenseCategory(kind),note:'Moment: '+caption,momentId:id,walletId:'legacy'})}
- const record={...(existing||{}),id,image:images[0]||'',images,caption,kind,date,createdAt:existing?.createdAt||now.toISOString(),amount,transactionId:txId,mood:selectedMomentMood||'happy',moneyFeeling:amount>0?(selectedMoneyFeeling||'worth'):'',withPerson:momentWith.value.trim(),place:momentPlace.value.trim(),mapUrl:normalizeMapUrl(momentMapUrl.value.trim()),littleNote:momentNote.value.trim(),favorite:existing?.favorite||false};
+ if(amount>0&&!txId){txId=uid();data.transactions.push({id:txId,type:'expense',amount,date:expenseDate,category:momentExpenseCategory(kind),note:'Moment: '+caption,momentId:id,walletId:walletId})}
+ const record={...(existing||{}),id,image:images[0]||'',images,caption,kind,date,createdAt:existing?.createdAt||now.toISOString(),amount,transactionId:txId,walletId:amount>0?walletId:'',mood:selectedMomentMood||'happy',moneyFeeling:amount>0?(selectedMoneyFeeling||'worth'):'',withPerson:momentWith.value.trim(),place:momentPlace.value.trim(),mapUrl:normalizeMapUrl(momentMapUrl.value.trim()),littleNote:momentNote.value.trim(),favorite:existing?.favorite||false};
  data.moments=existing?data.moments.map(m=>String(m.id)===String(id)?record:m):[...data.moments,record];
  if(!persist()){data.moments=oldMoments;data.transactions=oldTransactions;render();return}
  editingMomentId=null;closeM('momentModal');toastMsg(existing?'Moment diperbarui':'Moment tersimpan');
