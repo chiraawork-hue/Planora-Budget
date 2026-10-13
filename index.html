@@ -2,6 +2,9 @@
 <html lang="id">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script>/* Startup fallback: never leave the splash blocking the app if initialization fails. */
+window.addEventListener('DOMContentLoaded',function(){setTimeout(function(){var splash=document.getElementById('planoraSplash');if(splash){splash.style.setProperty('display','none','important');splash.remove()}},3200)});
+</script>
 <meta name="theme-color" content="#087A5B"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Planora Budget"><title>Planora Budget</title>
 <link rel="manifest" href="./manifest.json?v=95">
 <link rel="icon" type="image/svg+xml" href="./icon.svg?v=brand-20261010">
@@ -3017,7 +3020,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=121').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=122').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
