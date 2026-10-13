@@ -2777,13 +2777,21 @@ function saveMoment(){
  if(!/^\d{4}-\d{2}-\d{2}$/.test(date))return toastMsg('Pilih tanggal yang valid');
  const images=selectedMomentPhotos.slice(0,3).map(x=>typeof x==='string'?x:x.data).filter(Boolean);
  let txId=existing?(existing.transactionId||''):'';
- data.transactions=data.transactions.map(t=>({...t}));
- if(txId){
-   const tx=data.transactions.find(t=>String(t.id)===String(txId));
-   if(tx){if(amount>0){tx.amount=amount;tx.date=expenseDate;tx.category=momentExpenseCategory(kind);tx.walletId=walletId;tx.note='Moment: '+caption}else{data.transactions=data.transactions.filter(t=>String(t.id)!==String(txId));txId=''}}
-   else txId='';
+ const related=data.transactions.filter(t=>String(t.momentId||'')===String(id));
+ const linked=data.transactions.find(t=>String(t.id)===String(txId))||related[0]||null;
+ if(linked)txId=linked.id;
+ if(amount>0){
+   if(linked){
+     Object.assign(linked,{type:'expense',amount,date:expenseDate,category:momentExpenseCategory(kind),name:caption,note:'Moment: '+caption,momentId:id,walletId});
+   }else{
+     txId=uid();
+     data.transactions.push({id:txId,type:'expense',amount,date:expenseDate,category:momentExpenseCategory(kind),name:caption,note:'Moment: '+caption,momentId:id,walletId});
+   }
+   if(related.length>1)data.transactions=data.transactions.filter(t=>String(t.momentId||'')!==String(id)||String(t.id)===String(txId));
+ }else{
+   data.transactions=data.transactions.filter(t=>!(txId&&String(t.id)===String(txId))&&String(t.momentId||'')!==String(id));
+   txId='';
  }
- if(amount>0&&!txId){txId=uid();data.transactions.push({id:txId,type:'expense',amount,date:expenseDate,category:momentExpenseCategory(kind),note:'Moment: '+caption,momentId:id,walletId:walletId})}
  const record={...(existing||{}),id,image:images[0]||'',images,caption,kind,date,createdAt:existing?.createdAt||now.toISOString(),amount,transactionId:txId,walletId:amount>0?walletId:'',mood:selectedMomentMood||'happy',moneyFeeling:amount>0?(selectedMoneyFeeling||'worth'):'',withPerson:momentWith.value.trim(),place:momentPlace.value.trim(),mapUrl:normalizeMapUrl(momentMapUrl.value.trim()),littleNote:momentNote.value.trim(),favorite:existing?.favorite||false};
  data.moments=existing?data.moments.map(m=>String(m.id)===String(id)?record:m):[...data.moments,record];
  if(!persist()){data.moments=oldMoments;data.transactions=oldTransactions;render();return}
@@ -3028,7 +3036,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=126').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=127').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
