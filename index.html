@@ -1755,6 +1755,15 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 .monthly-budget-card:has(#monthlyBudgetRead:not([hidden])){background:#F0E9FF!important;border:1px solid #DFD0FB!important;box-shadow:0 3px 12px rgba(101,71,152,.045)!important}
 .monthly-budget-card #monthlyBudgetSaved{color:#251C34!important}
 .monthly-budget-card .monthly-budget-edit{background:#FFFFFF!important;border-color:#DCCBF7!important;color:#332747!important}
+
+/* V108 moment photo viewer */
+.moment-photo-view{position:relative;cursor:zoom-in}
+.moment-pencil{position:absolute;right:9px;top:9px;z-index:6;width:29px;height:29px;border:1px solid rgba(255,255,255,.85);border-radius:50%;background:rgba(255,255,255,.94);color:#252525;font-size:16px;display:grid;place-items:center;box-shadow:0 2px 9px #0002;cursor:pointer}
+.moment-photo-view .moment-pencil{right:9px;top:9px}
+#momentPhotoViewer{position:fixed;inset:0;z-index:99999;background:rgba(9,10,15,.94);display:none;align-items:center;justify-content:center;flex-direction:column;padding:48px 15px 30px;box-sizing:border-box}
+#momentPhotoViewer.open{display:flex}
+#momentPhotoViewer img{max-width:100%;max-height:calc(100dvh - 100px);object-fit:contain;border-radius:5px}
+#momentPhotoViewer .photo-close{position:absolute;top:15px;right:17px;color:#fff;background:#ffffff24;border:0;border-radius:50%;width:38px;height:38px;font-size:25px;cursor:pointer}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -2781,12 +2790,12 @@ function momentGalleryHTML(m,home=false){
 function momentCard(m,i,active=false,vertical=false){
  if(vertical)return `<article class="journal-entry">
    <div class="journal-head"><div><div class="journal-date">${formatMomentDay(m)}</div><div class="journal-mood">${moodSymbol(m.mood)}</div></div><div class="journal-actions"><button class="moment-delete-btn" onclick="deleteMoment('${m.id}')" aria-label="Hapus Moment" title="Hapus Moment">×</button><button class="favorite-btn ${m.favorite?'active':''}" onclick="toggleFavorite('${m.id}')" aria-label="Favorite">${m.favorite?'♥':'♡'}</button></div></div>
-   <div class="journal-gallery">${momentGalleryHTML(m,false)}</div>
+   <div class="journal-gallery moment-photo-view" onclick="showMomentPhoto(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'){showMomentPhoto(this)}">${momentGalleryHTML(m,false)}<button class="moment-pencil" type="button" onclick="event.stopPropagation();editMoment(\'${m.id}\')" aria-label="Edit Moment" title="Edit Moment">✎</button></div>
    <div class="journal-copy"><div class="journal-title">${esc(m.caption)}</div>${m.place?`<div class="caption-location ${m.mapUrl?'linked':''}" ${m.mapUrl?`onclick="openMomentMap('${esc(m.mapUrl)}')"`:''}>📍 ${esc(m.place)}${m.mapUrl?' ↗':''}</div>`:''}
     <div class="journal-tags"><span>${esc(m.kind)}</span>${Number(m.amount||0)>0?`<span>${rp(m.amount)}</span><span>${feelingLabel(m.moneyFeeling)||'Worth it'}</span>`:`<span>${lang==='id'?'Tanpa pengeluaran':'No spend'}</span>`}</div>
     ${m.withPerson?`<div class="journal-with">${lang==='id'?'Bersama':'With'} ${esc(m.withPerson)}</div>`:''}${m.littleNote?`<div class="journal-note">“${esc(m.littleNote)}”</div>`:''}
    </div></article>`;
- return `<article onclick="editMoment(\'${m.id}\')" tabindex="0" role="button" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();editMoment(\'${m.id}\')}" aria-label="Edit Moment" class="moment ${active?'active':''}"><button type="button" class="home-moment-delete" onclick="event.stopPropagation();deleteMoment(\'${m.id}\')" aria-label="Hapus Moment" title="Hapus Moment">×</button><div class="moment-photo">${momentGalleryHTML(m,true)}<div class="moment-chip">${esc(m.kind)}</div></div><div class="moment-copy"><div class="moment-date">${formatMomentDay(m)}</div><div class="moment-caption">${esc(m.caption)}</div><div class="moment-meta">${Number(m.amount||0)>0?`<b>${rp(m.amount)}</b><span> · ${feelingLabel(m.moneyFeeling)||''}</span>`:`<span>${lang==='id'?'tanpa pengeluaran':'no spend'}</span>`}</div></div></article>`
+ return `<article class="moment ${active?'active':''}"><button type="button" class="home-moment-delete" onclick="event.stopPropagation();deleteMoment(\'${m.id}\')" aria-label="Hapus Moment" title="Hapus Moment">×</button><div class="moment-photo moment-photo-view" onclick="showMomentPhoto(this)">${momentGalleryHTML(m,true)}<button class="moment-pencil" type="button" onclick="event.stopPropagation();editMoment(\'${m.id}\')" aria-label="Edit Moment" title="Edit Moment">✎</button><div class="moment-chip">${esc(m.kind)}</div></div><div class="moment-copy"><div class="moment-date">${formatMomentDay(m)}</div><div class="moment-caption">${esc(m.caption)}</div><div class="moment-meta">${Number(m.amount||0)>0?`<b>${rp(m.amount)}</b><span> · ${feelingLabel(m.moneyFeeling)||''}</span>`:`<span>${lang==='id'?'tanpa pengeluaran':'no spend'}</span>`}</div></div></article>`
 }
 function feelingLabel(v){const x={worth:'Worth it',necessary:'Necessary',treat:'Treat myself',skip:'Could skip'};return x[v]||''}
 function deleteMoment(id){confirmPlanoraMomentDelete(id)}
@@ -3019,4 +3028,9 @@ const _originalApplyLanguage=applyLanguage;applyLanguage=function(){_originalApp
 applyPlanoraTheme();refreshPlanoraMemberCard();
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if((localStorage.getItem('planora_theme')||'system')==='system')applyPlanoraTheme()})}catch(e){}
 
+</script><div id="momentPhotoViewer" onclick="closeMomentPhoto(event)" role="dialog" aria-modal="true" aria-label="Foto Moment"><button class="photo-close" onclick="closeMomentPhoto()" aria-label="Tutup">×</button><img id="momentPhotoFull" alt="Foto Moment"></div>
+<script>
+function showMomentPhoto(el){const img=el.querySelector('img');if(!img)return;document.getElementById('momentPhotoFull').src=img.currentSrc||img.src;document.getElementById('momentPhotoViewer').classList.add('open')}
+function closeMomentPhoto(e){if(e&&e.target&&e.target.id!=='momentPhotoViewer')return;document.getElementById('momentPhotoViewer').classList.remove('open')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('momentPhotoViewer')?.classList.remove('open')});
 </script></body></html>
