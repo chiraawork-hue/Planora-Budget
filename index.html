@@ -2959,7 +2959,7 @@ function renderInsights(){
  const values=months.map(d=>{const key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');const tx=data.transactions.filter(t=>String(t.date||'').startsWith(key));return {label:d.toLocaleDateString(lang==='id'?'id-ID':'en-US',{month:'short'}),inc:tx.filter(t=>t.type==='income').reduce((s,t)=>s+Number(t.amount||0),0),exp:tx.filter(t=>t.type==='expense').reduce((s,t)=>s+Number(t.amount||0),0)}});const max=Math.max(1,...values.flatMap(v=>[v.inc,v.exp]));flow.innerHTML=values.map(v=>'<div class="insights-month"><div class="insights-pair"><i style="height:'+Math.max(2,Math.round(v.inc/max*110))+'px;background:#087a5b" title="Pemasukan '+rp(v.inc)+'"></i><i style="height:'+Math.max(2,Math.round(v.exp/max*110))+'px;background:#e9b75e" title="Pengeluaran '+rp(v.exp)+'"></i></div><small>'+esc(v.label)+'</small></div>').join('')+'<div class="insights-legend">● Pemasukan &nbsp; <span>● Pengeluaran</span></div>';
  const expensesEl=document.getElementById('insightsExpenses');
  if(expensesEl){
-  const expenses=values.map(v=>v.exp),peak=Math.max(1,...expenses),width=600,height=230,left=22,right=22,top=22,bottom=40,plotHeight=height-top-bottom,plotWidth=width-left-right;
+  const expenses=values.map(v=>v.exp),peak=Math.max(1,...expenses),width=600,height=170,left=22,right=22,top=18,bottom=34,plotHeight=height-top-bottom,plotWidth=width-left-right;
   const pts=expenses.map((v,i)=>({x:left+i*plotWidth/Math.max(1,expenses.length-1),y:top+plotHeight-v/peak*plotHeight,value:v,label:values[i].label}));
   const path=pts.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ');
   const area=path+' L'+pts[pts.length-1].x+' '+(top+plotHeight)+' L'+pts[0].x+' '+(top+plotHeight)+' Z';
@@ -2972,7 +2972,7 @@ function renderInsights(){
  const goals=data.goals||[],hasHistory=goals.some(g=>Array.isArray(g.history)&&g.history.length);
  if(!hasHistory){savings.innerHTML='<p class="sub">Belum ada riwayat setoran Goals untuk membuat grafik yang akurat.</p>'}else{
   const points=months.map(d=>{const endDate=new Date(d.getFullYear(),d.getMonth()+1,0).toLocaleDateString('en-CA');const amount=goals.reduce((sum,g)=>sum+(g.history||[]).filter(h=>String(h.date||'')<=endDate).reduce((a,h)=>a+Number(h.amount||0),0),0);return {label:d.toLocaleDateString('id-ID',{month:'short'}),value:amount}});
-  const max=Math.max(1,...points.map(p=>p.value)),w=600,h=230,left=20,right=20,top=20,bottom=42,plotW=w-left-right,plotH=h-top-bottom;
+  const max=Math.max(1,...points.map(p=>p.value)),w=600,h=170,left=20,right=20,top=18,bottom=34,plotW=w-left-right,plotH=h-top-bottom;
   const xy=points.map((p,i)=>({x:left+i*plotW/Math.max(1,points.length-1),y:top+plotH-(p.value/max)*plotH,...p}));
   const line=xy.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ');
   const area=line+' L'+xy[xy.length-1].x.toFixed(1)+' '+(top+plotH)+' L'+xy[0].x.toFixed(1)+' '+(top+plotH)+' Z';
