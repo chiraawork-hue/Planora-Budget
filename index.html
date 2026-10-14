@@ -2481,7 +2481,7 @@ function render(){
  safeSpent.textContent='Terpakai '+rp(expense);
  safeBudget.textContent='Budget '+rp(budget);
  const usedPct=budget>0?Math.min(100,Math.round(expense/budget*100)):0;
- safeSpendBar.style.width=usedPct+'%';
+ safeSpendBar.style.width=usedPct+'%';const safePercentPill=document.getElementById('safePercentPill');if(safePercentPill)safePercentPill.textContent=usedPct+'%';
  const waterFill=document.getElementById('safeWaterFill');if(waterFill)waterFill.style.height=usedPct+'%';
  const waterCard=document.getElementById('safeWaterCard');if(waterCard){waterCard.classList.toggle('safe-water-high',usedPct>=75);waterCard.classList.toggle('safe-water-full',usedPct>=100);waterCard.classList.toggle('sea-life-visible',budget>0&&expense/budget>=0.5);waterCard.classList.remove('safe-boat-sinking');waterCard.setAttribute('aria-label','Budget terpakai '+usedPct+' persen')}
  safeSpendNote.textContent=lang==='id'?(budget<=0?'Atur budget bulanan dulu':(expense>budget?'Budget bulan ini sudah terlewati':(safe===availableNow&&availableNow<budgetRemaining?'Dibatasi oleh uang yang benar-benar tersedia':'Sesuai sisa budget bulan ini'))):(budget<=0?'Set your monthly budget first':(expense>budget?'Monthly budget exceeded':(safe===availableNow&&availableNow<budgetRemaining?'Limited by your actual available money':'Based on your remaining monthly budget')));
