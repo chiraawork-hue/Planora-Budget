@@ -1823,6 +1823,14 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 .saving-wallet-picker{display:grid;gap:7px;padding:9px;margin-top:8px;max-height:220px;overflow:auto;background:#f8faff;border:1px solid #e2e8f0;border-radius:14px}.saving-wallet-picker[hidden]{display:none}.saving-wallet-option{display:flex;align-items:center;gap:9px;padding:12px 10px;border:1px solid #e6eaf0;border-radius:11px;background:#fff;color:#1d2939;text-align:left;cursor:pointer}.saving-wallet-option>span:nth-child(2){flex:1;font-size:13px;font-weight:600}.saving-wallet-option small{font-size:11px;color:#687588}.saving-wallet-dot{color:#00b96b}.saving-wallet-option.selected{background:#edfff4;border-color:#73dca0}.saving-wallet-option b{color:#00a859}
 
 .access-support{display:grid;justify-items:center;gap:10px;margin-top:16px;text-align:center}.access-support>span{font-size:12px;color:#68747b}.access-whatsapp{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:11px 17px;border-radius:13px;background:#e9faef;color:#137a43;border:1px solid #b9e8ca;font-size:13px;font-weight:650;text-decoration:none}.access-whatsapp:hover{background:#d9f6e5}
+
+/* Compact activation form: remove reserved error-message space until needed */
+#planoraAccessGate .access-form{padding:15px 17px 13px}
+#planoraAccessGate .access-form #planoraAccessMsg{min-height:0;margin:0;padding:0;line-height:1.45}
+#planoraAccessGate .access-form #planoraAccessMsg:empty{display:none}
+#planoraAccessGate .access-form #planoraAccessMsg:not(:empty){display:block;margin-top:10px}
+#planoraAccessGate .access-note{margin-top:12px}
+#planoraAccessGate .access-support{margin-top:12px;gap:8px}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -3131,7 +3139,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=153').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=154').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
