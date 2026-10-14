@@ -2715,37 +2715,53 @@ function compressMomentImage(file){
   reader.readAsDataURL(file);
  })
 }
+let planoraHeicLoader=null;
+function loadPlanoraHeicConverter(){
+ if(window.heic2any)return Promise.resolve(window.heic2any);
+ if(planoraHeicLoader)return planoraHeicLoader;
+ planoraHeicLoader=new Promise((resolve,reject)=>{
+  const script=document.createElement('script');
+  script.src='https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js';
+  script.async=true;
+  script.onload=()=>window.heic2any?resolve(window.heic2any):reject(new Error('HEIC_LIBRARY_MISSING'));
+  script.onerror=()=>reject(new Error('HEIC_LIBRARY_NETWORK'));
+  document.head.appendChild(script);
+ }).catch(err=>{planoraHeicLoader=null;throw err});
+ return planoraHeicLoader;
+}
+async function convertPlanoraGalleryPhoto(file){
+ const isHeic=/\.(heic|heif)$/i.test(file.name||'')||/image\/(heic|heif)/i.test(file.type||'');
+ if(!isHeic)return compressMomentImage(file);
+ // Some browsers can decode HEIC natively. Try that before loading the converter.
+ try{return await compressMomentImage(file)}catch(e){}
+ const converter=await loadPlanoraHeicConverter();
+ const blob=await converter({blob:file,toType:'image/jpeg',quality:0.78});
+ const converted=Array.isArray(blob)?blob[0]:blob;
+ return compressMomentImage(new File([converted],(file.name||'foto').replace(/\.(heic|heif)$/i,'.jpg'),{type:'image/jpeg'}));
+}
 async function setMomentPhotos(input){
  const files=Array.from(input.files||[]);
  if(!files.length)return;
  const remaining=Math.max(0,3-selectedMomentPhotos.length);
  if(!remaining){input.value='';toastMsg('Maksimal 3 foto per Moment.');return}
- let failures=0;
+ let added=0,failed=0,heicFailed=false;
  for(const file of files.slice(0,remaining)){
   try{
-   // Show the selected photo immediately; compression must never block its preview.
-   const original=await fileToDataURL(file);
-   const item={data:original,name:file.name||'Foto galeri',processing:true};
-   selectedMomentPhotos.push(item);
+   const isHeic=/\.(heic|heif)$/i.test(file.name||'')||/image\/(heic|heif)/i.test(file.type||'');
+   if(isHeic)toastMsg('Mengubah foto HEIC menjadi JPG...');
+   const data=await convertPlanoraGalleryPhoto(file);
+   selectedMomentPhotos.push({data,name:file.name||'Foto galeri'});
+   added++;
    renderSelectedMomentPhotos();
-   try{
-    const compressed=await compressMomentImage(file);
-    if(selectedMomentPhotos.includes(item)){item.data=compressed;item.processing=false;renderSelectedMomentPhotos()}
-   }catch(error){
-    console.warn('Moment photo compression fallback',file.name,error);
-    item.processing=false;
-    // Raw images are only kept temporarily when compression fails.
-    if(original.length>950000){
-     const index=selectedMomentPhotos.indexOf(item);
-     if(index>=0)selectedMomentPhotos.splice(index,1);
-     failures++;
-    }
-    renderSelectedMomentPhotos();
-   }
-  }catch(error){console.warn('Moment gallery file read failed',file.name,error);failures++}
+  }catch(error){
+   console.warn('Moment gallery conversion failed:',file.name,error);
+   failed++;
+   if(/\.(heic|heif)$/i.test(file.name||'')||/image\/(heic|heif)/i.test(file.type||''))heicFailed=true;
+  }
  }
  input.value='';
- if(failures)toastMsg(failures+' foto belum bisa diproses. Coba foto JPG atau PNG.');
+ if(failed)toastMsg(added+' foto masuk, '+failed+' gagal.'+(heicFailed?' Konversi HEIC memerlukan internet; coba ulang.':''));
+ else if(added)toastMsg(added+' foto berhasil dipilih.');
  if(files.length>remaining)toastMsg('Maksimal 3 foto per Moment.');
 }
 function removeMomentPhoto(i){selectedMomentPhotos.splice(i,1);renderSelectedMomentPhotos()}
