@@ -2716,22 +2716,36 @@ function compressMomentImage(file){
  })
 }
 async function setMomentPhotos(input){
- const files=[...(input.files||[])];input.value='';
+ const files=Array.from(input.files||[]);
  if(!files.length)return;
  const remaining=Math.max(0,3-selectedMomentPhotos.length);
- if(!remaining){toastMsg('Maksimal 3 foto per Moment.');return}
- let added=0,failed=0,unsupported=false;
- for(const f of files.slice(0,remaining)){
+ if(!remaining){input.value='';toastMsg('Maksimal 3 foto per Moment.');return}
+ let failures=0;
+ for(const file of files.slice(0,remaining)){
   try{
-   const type=(f.type||'').toLowerCase();
-   if(!type.startsWith('image/')&&!/\.(jpg|jpeg|png|webp|gif|bmp|heic|heif|avif)$/i.test(f.name||''))throw new Error('UNSUPPORTED_FORMAT');
-   const photoData=await compressMomentImage(f);
-   selectedMomentPhotos.push({data:photoData,name:f.name});added++;
-  }catch(e){console.warn('Gagal memproses foto Moment',f.name,e);failed++;if(e.message==='UNSUPPORTED_FORMAT')unsupported=true}
+   // Show the selected photo immediately; compression must never block its preview.
+   const original=await fileToDataURL(file);
+   const item={data:original,name:file.name||'Foto galeri',processing:true};
+   selectedMomentPhotos.push(item);
+   renderSelectedMomentPhotos();
+   try{
+    const compressed=await compressMomentImage(file);
+    if(selectedMomentPhotos.includes(item)){item.data=compressed;item.processing=false;renderSelectedMomentPhotos()}
+   }catch(error){
+    console.warn('Moment photo compression fallback',file.name,error);
+    item.processing=false;
+    // Raw images are only kept temporarily when compression fails.
+    if(original.length>950000){
+     const index=selectedMomentPhotos.indexOf(item);
+     if(index>=0)selectedMomentPhotos.splice(index,1);
+     failures++;
+    }
+    renderSelectedMomentPhotos();
+   }
+  }catch(error){console.warn('Moment gallery file read failed',file.name,error);failures++}
  }
- renderSelectedMomentPhotos();
- if(failed)toastMsg(added+' foto masuk, '+failed+' gagal.'+(unsupported?' Format foto mungkin tidak didukung browser.':''));
- else if(added)toastMsg(added+' foto berhasil dipilih.');
+ input.value='';
+ if(failures)toastMsg(failures+' foto belum bisa diproses. Coba foto JPG atau PNG.');
  if(files.length>remaining)toastMsg('Maksimal 3 foto per Moment.');
 }
 function removeMomentPhoto(i){selectedMomentPhotos.splice(i,1);renderSelectedMomentPhotos()}
