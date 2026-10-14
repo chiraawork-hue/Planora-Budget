@@ -1821,6 +1821,8 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 .wallet-detail-item .wallet-detail-amount{font-size:13px;font-weight:400!important}.wallet-detail-item .wallet-detail-amount.income{color:#00A859}.wallet-detail-item .wallet-detail-amount.expense{color:#E53935}
 
 .saving-wallet-picker{display:grid;gap:7px;padding:9px;margin-top:8px;max-height:220px;overflow:auto;background:#f8faff;border:1px solid #e2e8f0;border-radius:14px}.saving-wallet-picker[hidden]{display:none}.saving-wallet-option{display:flex;align-items:center;gap:9px;padding:12px 10px;border:1px solid #e6eaf0;border-radius:11px;background:#fff;color:#1d2939;text-align:left;cursor:pointer}.saving-wallet-option>span:nth-child(2){flex:1;font-size:13px;font-weight:600}.saving-wallet-option small{font-size:11px;color:#687588}.saving-wallet-dot{color:#00b96b}.saving-wallet-option.selected{background:#edfff4;border-color:#73dca0}.saving-wallet-option b{color:#00a859}
+
+.access-support{display:grid;justify-items:center;gap:10px;margin-top:16px;text-align:center}.access-support>span{font-size:12px;color:#68747b}.access-whatsapp{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:11px 17px;border-radius:13px;background:#e9faef;color:#137a43;border:1px solid #b9e8ca;font-size:13px;font-weight:650;text-decoration:none}.access-whatsapp:hover{background:#d9f6e5}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1835,7 +1837,7 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 <h1>Mulai perjalanan finansialmu.</h1>
 <p class="access-lead">Satu ruang nyaman untuk mengatur uang, menyusun rencana, dan merayakan setiap pencapaian kecil.</p>
 <div class="access-form"><label for="planoraAccessCode">Kode aktivasi kamu</label><input id="planoraAccessCode" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Masukkan kode aktivasi"><button id="planoraActivateBtn">Mulai dengan Planora <span aria-hidden="true">→</span></button><p id="planoraAccessMsg" class="access-error" role="alert"></p></div>
-<p class="access-note">Sudah mendapatkan kode? Masukkan di atas untuk membuka Planora Budget.</p>
+<p class="access-note">Sudah mendapatkan kode? Masukkan di atas untuk membuka Planora Budget.</p><div class="access-support"><span>Belum menerima kode aktivasi?</span><a class="access-whatsapp" href="https://wa.me/6285110525319?text=Halo%20Admin%20Planora%2C%20saya%20sudah%20melakukan%20pembelian%20Planora%20Budget%20Lifetime%20melalui%20Lynk.id%2C%20tetapi%20belum%20menerima%20kode%20aktivasi.%20Mohon%20bantuannya%20ya.%20Terima%20kasih." target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.5 0 .1 5.4.1 12c0 2.1.6 4.2 1.7 6L0 24l6.2-1.6a12 12 0 0 0 5.9 1.5h.1c6.6 0 12-5.4 12-12 0-3.2-1.3-6.2-3.7-8.4ZM12.1 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4a9.8 9.8 0 1 1 8.3 4.6Zm5.4-7.4c-.3-.1-1.8-.9-2.1-1-.3-.1-.5-.1-.7.2-.2.3-.8 1-.9 1.1-.2.2-.4.2-.7.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7l.5-.6c.1-.2.2-.4.3-.6.1-.2 0-.4 0-.6l-1-2.3c-.2-.5-.5-.4-.7-.4h-.6c-.2 0-.6.1-.9.4s-1.1 1.1-1.1 2.6 1.1 3 1.3 1.7 1.5 2 2.5 3.8 6 5.3 3.5 1.4 3.5.9 4.1.8.6-.1 1.8-.7 2.1-1.5.3-.8.3-1.5.2-1.6-.1-.1-.3-.2-.6-.3Z"/></svg>Hubungi WhatsApp</a></div>
 </div></div>
 <div id="planoraOnboarding" class="onboarding-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="onboardTitle"><div class="onboarding-card"><div class="onboarding-top"><span>GET TO KNOW PLANORA</span><button type="button" onclick="finishPlanoraOnboarding()" aria-label="Lewati pengenalan">Lewati ×</button></div><div class="onboarding-content"><div class="onboarding-art" id="onboardIcon"><svg class="planora-ch2" aria-label="Planora Budget" viewBox="0 0 64 64">
 <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#174E3B"/><stop offset=".55" stop-color="#237C59"/><stop offset="1" stop-color="#79AE79"/></linearGradient><linearGradient id="l" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#246B4C"/><stop offset="1" stop-color="#88BC86"/></linearGradient></defs>
@@ -3129,7 +3131,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=151').then(reg=>reg.update()).catch(()=>{});
+applyLanguage();renderPeriodPicker();renderWrappedPicker();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=152').then(reg=>reg.update()).catch(()=>{});
 setTimeout(()=>{let s=document.getElementById('planoraSplash');if(s){s.style.opacity='0';setTimeout(()=>s.remove(),350)}},1950);
 </script>
 <script>
