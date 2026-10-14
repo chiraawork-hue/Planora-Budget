@@ -1831,6 +1831,23 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 #planoraAccessGate .access-form #planoraAccessMsg:not(:empty){display:block;margin-top:10px}
 #planoraAccessGate .access-note{margin-top:12px}
 #planoraAccessGate .access-support{margin-top:12px;gap:8px}
+
+/* V171: What’s Coming Up — clean white two-column cards */
+#home .home-upcoming-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;margin:12px 0 20px!important}
+#home .home-upcoming-card{background:#fff!important;border:1px solid #e5e8eb!important;border-radius:17px!important;padding:13px 12px!important;min-width:0!important;box-shadow:0 2px 8px #10182008!important}
+#home .home-upcoming-head{display:flex!important;flex-wrap:wrap;align-items:flex-start!important;gap:5px!important;margin-bottom:10px!important}
+#home .home-upcoming-head span{display:flex;align-items:center;gap:6px;min-width:0;font-size:12px!important;font-weight:650!important;line-height:1.3;color:#151515}
+#home .home-upcoming-head .upcoming-heading-icon{width:21px!important;height:21px!important;flex-shrink:0;stroke-width:2.2!important}
+#home .upcoming-bill .upcoming-heading-icon{color:#ffb000!important;stroke:#ffb000!important}
+#home .upcoming-goal .upcoming-heading-icon{color:#f52983!important;stroke:#f52983!important}
+#home .home-upcoming-head button{margin-left:auto!important;font-size:10px!important;color:#e83c78!important;font-weight:500!important;padding:2px 0!important}
+#home .home-upcoming-item{gap:5px!important;padding:7px 0!important;border-bottom:1px solid #f0f0f0!important;flex-wrap:wrap}
+#home .home-upcoming-item b{font-size:12px!important;font-weight:600!important}
+#home .home-upcoming-item strong{font-size:12px!important;font-weight:650!important;white-space:normal!important}
+#home .home-upcoming-item small,#home .home-upcoming-goal>small{font-size:10px!important}
+#home .home-upcoming-track{background:#ffe0ee!important}
+#home .home-upcoming-track i{background:#f52983!important}
+@media(max-width:380px){#home .home-upcoming-grid{gap:8px!important}#home .home-upcoming-card{padding:11px 9px!important}#home .home-upcoming-head span{font-size:11px!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
