@@ -1850,11 +1850,13 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 @media(max-width:380px){#home .home-upcoming-grid{gap:8px!important}#home .home-upcoming-card{padding:11px 9px!important}#home .home-upcoming-head span{font-size:11px!important}}
 
 /* V172 — reference-inspired bright blue Safe to Spend ocean */
-#home #safeWaterCard{position:relative!important;min-height:202px!important;border:0!important;border-radius:19px!important;overflow:hidden!important;background:linear-gradient(180deg,#e8f8ff 0%,#d8f3ff 44%,#b6e8ff 65%,#77d2ff 100%)!important;box-shadow:0 3px 12px #187bc514!important;padding:19px 20px!important}
-#home #safeWaterCard::before{content:"";position:absolute;inset:auto -4% 0;height:49%;background:linear-gradient(180deg,#54c6ff 0%,#16a9f6 45%,#008ee7 100%);clip-path:polygon(0 17%,8% 21%,17% 15%,27% 22%,39% 13%,52% 19%,65% 11%,77% 20%,89% 11%,100% 15%,100% 100%,0 100%);z-index:0;pointer-events:none}
-#home #safeWaterCard::after{content:"";position:absolute;inset:auto -4% 0;height:39%;background:linear-gradient(180deg,#26b7ff80,#008ce8bb);clip-path:polygon(0 17%,12% 8%,24% 17%,38% 5%,53% 15%,69% 5%,81% 16%,100% 4%,100% 100%,0 100%);z-index:0;pointer-events:none}
-#home #safeWaterCard .safe-water-fill{background:linear-gradient(180deg,#74d7ff9c,#009ff5d9)!important;opacity:.6;z-index:0!important}
-#home #safeWaterCard.safe-water-high .safe-water-fill,#home #safeWaterCard.safe-water-full .safe-water-fill{background:linear-gradient(180deg,#5cc9ffb8,#008de9d9)!important}
+#home #safeWaterCard{position:relative!important;min-height:202px!important;border:0!important;border-radius:19px!important;overflow:hidden!important;background:linear-gradient(180deg,#e8f8ff 0%,#d8f3ff 65%,#c6edff 100%)!important;box-shadow:0 3px 12px #187bc514!important;padding:19px 20px!important}
+#home #safeWaterCard::before{content:none!important}
+#home #safeWaterCard::after{content:none!important}
+#home #safeWaterCard .safe-water-fill{background:linear-gradient(180deg,#6bd4ff 0%,#17b5ff 36%,#008fe8 100%)!important;opacity:1!important;z-index:0!important;transition:height 850ms cubic-bezier(.22,.7,.3,1)!important}
+#home #safeWaterCard .safe-water-fill::before{content:"";position:absolute;left:-5%;width:110%;height:18px;top:-9px;background:#86ddffbb;border-radius:50%;animation:safeWaterDrift 5s ease-in-out infinite alternate;pointer-events:none}
+#home #safeWaterCard .safe-water-fill::after{content:"";position:absolute;inset:14px 0 0;background:linear-gradient(180deg,#3fc5ff33,#006ac433);pointer-events:none}
+#home #safeWaterCard.safe-water-high .safe-water-fill,#home #safeWaterCard.safe-water-full .safe-water-fill{background:linear-gradient(180deg,#54caff,#079fe9 50%,#007bd7)!important}
 #home #safeWaterCard .safe-water-wave{background:#b0ebff88!important;height:15px!important}
 #home #safeWaterCard .safe-top{align-items:flex-start!important;position:relative!important;z-index:6!important}
 #home #safeWaterCard .safe-label{color:#151a1d!important;font-size:13px!important;font-weight:650!important;letter-spacing:0!important;text-transform:none!important}
