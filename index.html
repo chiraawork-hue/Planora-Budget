@@ -2689,15 +2689,26 @@ function renderSelectedMomentPhotos(){
 function compressMomentImage(file){
  return new Promise((resolve,reject)=>{
   const reader=new FileReader();
-  reader.onerror=reject;
+  reader.onerror=()=>reject(new Error('READ_FAILED'));
   reader.onload=()=>{
    const img=new Image();
-   img.onerror=reject;
+   img.onerror=()=>reject(new Error('UNSUPPORTED_FORMAT'));
    img.onload=()=>{
-    const max=1600,scale=Math.min(1,max/Math.max(img.width,img.height));
-    const c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.width*scale));c.height=Math.max(1,Math.round(img.height*scale));
-    c.getContext('2d').drawImage(img,0,0,c.width,c.height);
-    resolve(c.toDataURL('image/jpeg',.82));
+    try{
+     if(!img.naturalWidth||!img.naturalHeight)throw new Error('UNSUPPORTED_FORMAT');
+     let max=1280,quality=.75,result='';
+     for(let attempt=0;attempt<5;attempt++){
+      const scale=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));
+      const c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.naturalWidth*scale));c.height=Math.max(1,Math.round(img.naturalHeight*scale));
+      const ctx=c.getContext('2d');if(!ctx)throw new Error('CANVAS_FAILED');
+      ctx.drawImage(img,0,0,c.width,c.height);
+      result=c.toDataURL('image/jpeg',quality);
+      if(result.length<650000)break;
+      max=Math.round(max*.78);quality=Math.max(.48,quality-.07);
+     }
+     if(!result.startsWith('data:image/jpeg,'))throw new Error('ENCODE_FAILED');
+     resolve(result);
+    }catch(e){reject(e)}
    };
    img.src=reader.result;
   };
@@ -2705,22 +2716,23 @@ function compressMomentImage(file){
  })
 }
 async function setMomentPhotos(input){
- try{
-  const files=[...(input.files||[])];
-  if(!files.length)return;
-  const remaining=Math.max(0,3-selectedMomentPhotos.length);
-  if(!remaining){toastMsg(lang==='id'?'Sudah maksimal 3 foto':'Maximum 3 photos reached');input.value='';return}
-  if(files.length>remaining)toastMsg('Maksimal 3 foto. '+remaining+' foto lagi bisa ditambahkan.');
-  for(const f of files.slice(0,remaining)){
-   if(!f.type.startsWith('image/'))continue;
-   const data=await compressMomentImage(f);
-   selectedMomentPhotos.push({data,name:f.name});
-  }
-  input.value='';renderSelectedMomentPhotos()
- }catch(err){
-  console.error('photo select error',err);input.value='';
-  toastMsg(lang==='id'?'Foto belum bisa diproses. Coba foto lain.':'Could not process that photo. Try another one.')
+ const files=[...(input.files||[])];input.value='';
+ if(!files.length)return;
+ const remaining=Math.max(0,3-selectedMomentPhotos.length);
+ if(!remaining){toastMsg('Maksimal 3 foto per Moment.');return}
+ let added=0,failed=0,unsupported=false;
+ for(const f of files.slice(0,remaining)){
+  try{
+   const type=(f.type||'').toLowerCase();
+   if(!type.startsWith('image/')&&!/\.(jpg|jpeg|png|webp|gif|bmp|heic|heif|avif)$/i.test(f.name||''))throw new Error('UNSUPPORTED_FORMAT');
+   const photoData=await compressMomentImage(f);
+   selectedMomentPhotos.push({data:photoData,name:f.name});added++;
+  }catch(e){console.warn('Gagal memproses foto Moment',f.name,e);failed++;if(e.message==='UNSUPPORTED_FORMAT')unsupported=true}
  }
+ renderSelectedMomentPhotos();
+ if(failed)toastMsg(added+' foto masuk, '+failed+' gagal.'+(unsupported?' Format foto mungkin tidak didukung browser.':''));
+ else if(added)toastMsg(added+' foto berhasil dipilih.');
+ if(files.length>remaining)toastMsg('Maksimal 3 foto per Moment.');
 }
 function removeMomentPhoto(i){selectedMomentPhotos.splice(i,1);renderSelectedMomentPhotos()}
 function clearMomentPhoto(){selectedMomentPhotos=[];momentGallery.value='';momentPhoto.value='';renderSelectedMomentPhotos()}
