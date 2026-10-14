@@ -1848,6 +1848,25 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 #home .home-upcoming-track{background:#ffe0ee!important}
 #home .home-upcoming-track i{background:#f52983!important}
 @media(max-width:380px){#home .home-upcoming-grid{gap:8px!important}#home .home-upcoming-card{padding:11px 9px!important}#home .home-upcoming-head span{font-size:11px!important}}
+
+/* V172 — reference-inspired bright blue Safe to Spend ocean */
+#home #safeWaterCard{position:relative!important;min-height:202px!important;border:0!important;border-radius:19px!important;overflow:hidden!important;background:linear-gradient(180deg,#e8f8ff 0%,#d8f3ff 44%,#b6e8ff 65%,#77d2ff 100%)!important;box-shadow:0 3px 12px #187bc514!important;padding:19px 20px!important}
+#home #safeWaterCard::before{content:"";position:absolute;inset:auto -4% 0;height:49%;background:linear-gradient(180deg,#54c6ff 0%,#16a9f6 45%,#008ee7 100%);clip-path:polygon(0 17%,8% 21%,17% 15%,27% 22%,39% 13%,52% 19%,65% 11%,77% 20%,89% 11%,100% 15%,100% 100%,0 100%);z-index:0;pointer-events:none}
+#home #safeWaterCard::after{content:"";position:absolute;inset:auto -4% 0;height:39%;background:linear-gradient(180deg,#26b7ff80,#008ce8bb);clip-path:polygon(0 17%,12% 8%,24% 17%,38% 5%,53% 15%,69% 5%,81% 16%,100% 4%,100% 100%,0 100%);z-index:0;pointer-events:none}
+#home #safeWaterCard .safe-water-fill{background:linear-gradient(180deg,#74d7ff9c,#009ff5d9)!important;opacity:.6;z-index:0!important}
+#home #safeWaterCard.safe-water-high .safe-water-fill,#home #safeWaterCard.safe-water-full .safe-water-fill{background:linear-gradient(180deg,#5cc9ffb8,#008de9d9)!important}
+#home #safeWaterCard .safe-water-wave{background:#b0ebff88!important;height:15px!important}
+#home #safeWaterCard .safe-top{align-items:flex-start!important;position:relative!important;z-index:6!important}
+#home #safeWaterCard .safe-label{color:#151a1d!important;font-size:13px!important;font-weight:650!important;letter-spacing:0!important;text-transform:none!important}
+#home #safeWaterCard #safeToSpend{color:#0b1217!important;font-size:clamp(23px,5.8vw,30px)!important;line-height:1.13!important;letter-spacing:-.5px!important;margin-top:4px!important}
+#home #safeWaterCard .safe-foot{position:relative!important;z-index:6!important;justify-content:flex-start!important;margin-top:4px!important}
+#home #safeWaterCard #safeBudget{font-size:12px!important;color:#8595a0!important;font-weight:450!important}
+#home #safeWaterCard .safe-leaf{display:none!important}
+#home #safeWaterCard .safe-percent-pill{position:absolute;top:17px;right:17px;z-index:8;background:#20b978;color:#fff;border-radius:20px;padding:5px 13px;font-size:12px;font-weight:750;line-height:1.2;box-shadow:0 2px 5px #007e4624}
+#home #safeWaterCard .safe-little-boat{z-index:5!important;left:70%!important;top:-38px!important;width:57px!important;height:48px!important}
+#home #safeWaterCard .planora-sea-life{z-index:3!important}
+#home #safeWaterCard .sea-creature{filter:drop-shadow(0 2px 2px #07588922)}
+@media(max-width:520px){#home #safeWaterCard{min-height:201px!important;padding:17px 19px!important}#home #safeWaterCard .safe-little-boat{left:72%!important;width:49px!important;height:43px!important;top:-34px!important}}
 </style>
 </head><body>
 <div id="planoraAccessGate" class="access-hidden"><div class="access-card">
@@ -1878,7 +1897,7 @@ html[data-planora-theme="dark"] body{background:#f5f5f1!important;color:#121713!
 <header><div class="brand-lockup"><img class="planora-header-logo" src="./planora-budget-ch-approved.webp" alt="Logo CH Planora" onerror="this.onerror=null;this.src='./icon.svg'"><div class="brand-wordmark"><div class="brand">Planora <span>Budget</span></div><div class="sub">money, moments & little things.</div></div></div><button class="iconbtn" onclick="page('settings')">⚙</button></header>
 
 <main id="home" class="active"><div class="planora-next-step" id="planoraGuideHome" hidden></div><div class="home-checkin-header"><div class="home-checkin-heading"><div class="eyebrow">Sail with Planora.</div><div class="home-checkin-sub">Arahkan uangmu, nikmati perjalanannya.</div></div><div class="home-period-selectors"><div class="period-boxes" id="homeBoxes"><div class="period-box"><span>BULAN</span><button type="button" id="homeMonthBtn" onclick="openPeriodBox('home','month')">Bulan</button></div><div class="period-box"><span>TAHUN</span><button type="button" id="homeYearBtn" onclick="openPeriodBox('home','year')">Tahun</button></div></div><label class="home-period-field"><span>BULAN</span><select id="homeMonthSelect" aria-label="Pilih bulan" onchange="setHomePeriodMonth(this.value)"></select></label><label class="home-period-field home-year-field"><span>TAHUN</span><select id="homeYearSelect" aria-label="Pilih tahun" onchange="setHomePeriodYear(this.value)"></select></label></div></div>
-<div class="safe-card" id="safeWaterCard">
+<div class="safe-card" id="safeWaterCard"><span class="safe-percent-pill" id="safePercentPill" aria-label="Persentase anggaran terpakai">0%</span>
  <div class="safe-water-fill" id="safeWaterFill" aria-hidden="true"><div class="safe-water-wave"></div><div class="safe-bubbles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="planora-sea-life" aria-hidden="true">
  <span class="sea-creature sea-fish-one"><svg viewBox="0 0 90 46" aria-hidden="true"><defs><linearGradient id="seaFish#e7a266" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f1b66f" stop-opacity=".95"/><stop offset="1" stop-color="#195c78"/></linearGradient></defs><path d="M23 23 3 8Q9 23 3 38Z" fill="#e7a266" stroke="#174d69" stroke-width="1"/><path d="M31 14 42 3 55 14" fill="#e7a266" opacity=".8"/><path d="M24 23C36 3 68 8 83 23 67 40 36 43 24 23Z" fill="url(#seaFish#e7a266)" stroke="#174d69" stroke-width="1.2"/><path d="M42 34 55 43 60 34" fill="#e7a266" opacity=".65"/><path d="M49 13Q45 23 49 34M57 12Q53 23 57 34" fill="none" stroke="#c5e7eb" stroke-opacity=".55" stroke-width="1.5"/><circle cx="73" cy="20" r="2.7" fill="#f9fcfa"/><circle cx="73.5" cy="20" r="1.4" fill="#183b4b"/></svg></span>
  <span class="sea-creature sea-fish-two"><svg viewBox="0 0 90 46" aria-hidden="true"><defs><linearGradient id="seaFish#74b6c4" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#a8d5db" stop-opacity=".95"/><stop offset="1" stop-color="#195c78"/></linearGradient></defs><path d="M23 23 3 8Q9 23 3 38Z" fill="#74b6c4" stroke="#174d69" stroke-width="1"/><path d="M31 14 42 3 55 14" fill="#74b6c4" opacity=".8"/><path d="M24 23C36 3 68 8 83 23 67 40 36 43 24 23Z" fill="url(#seaFish#74b6c4)" stroke="#174d69" stroke-width="1.2"/><path d="M42 34 55 43 60 34" fill="#74b6c4" opacity=".65"/><path d="M49 13Q45 23 49 34M57 12Q53 23 57 34" fill="none" stroke="#c5e7eb" stroke-opacity=".55" stroke-width="1.5"/><circle cx="73" cy="20" r="2.7" fill="#f9fcfa"/><circle cx="73.5" cy="20" r="1.4" fill="#183b4b"/></svg></span>
